@@ -6,8 +6,8 @@ from arcpy import metadata as md
 from arcgis.gis.server import Server
 server_base_url = "https://gis-test.asf.alaska.edu/"
 server = Server(
-    url="{}:6443/arcgis/admin".format(server_base_url),
-    tokenurl="{}:6443/arcgis/rest/generateToken".format(server_base_url),
+    url="{}arcgis/admin".format(server_base_url),
+    tokenurl="{}arcgis/rest/generateToken".format(server_base_url),
     username="<username>",
     password="<password>")
 print(server.url)
