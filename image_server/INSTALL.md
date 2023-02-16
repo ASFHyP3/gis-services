@@ -5,32 +5,35 @@ It also introduces how to publish the gdb dataset.
 ## Reference 
 
 https://enterprise.arcgis.com/en/server/latest/install/linux/install-arcgis-server-on-one-machine.htm
+
 Tools NASA Disasters GitHub repo:
 https://github.com/ASFHyP3/hyp3-nasa-disasters/tree/main/update_image_services
 
 ## Prepare the Deployment
 
-Find the “Esri ArcGIS Enterprise 10.9.1 on Ubuntu (Dec 2021)” AMI in the EC2 console
+Find the “Esri ArcGIS Enterprise 10.9.1 on Ubuntu (Dec 2021)” AMI in the EC2 console by visiting the [ESRI AWS Marketplace](https://aws.amazon.com/marketplace/seller-profile?id=98a100e1-04d1-40b2-aa8a-619411d037d2) and subscribing to the product. You will need to log in under your organization’s account; the organization is subscribing, not the individual user.
 
-Visit the AWS Marketplace and subscribe to the product
-https://aws.amazon.com/marketplace/server/procurement?productId=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-You will need to log in under your organization’s account; the organization is subscribing, not the individual user.
+Upload an SSL certificate into AWS ACM. The same Tools certificate can be used for any of our deployments.
 
-Upload an SSL certificate into AWS ACM
-The same Tools certificate can be used for any of our deployments
-
-Import a public key in the AWS EC2 console
-Existing users can add keys for additional users so that they can SSH in
+Import a public key in the AWS EC2 console by setting up a [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html). Existing users can add keys for additional users so that they can SSH into the instance.
 
 ## Deploy the stack
 
-CloudFormation template is at https://github.com/ASFHyP3/hyp3-nasa-disasters/blob/main/update_image_services/image_server_cloudformation.yml
-Can deploy either from command line or the AWS CloudFormation console
-ImageId would be different for 10.8.1 vs 10.9.1
-Choose the appropriate image for the appropriate Ubuntu version
-Keep defaults on acknowledgement page
-Takes about 5 minutes to stands up the instance and load balancer
-Load balancer will become more critical if we add additional servers
+CloudFormation template is at https://github.com/ASFHyP3/hyp3-nasa-disasters/blob/main/update_image_services/image_server_cloudformation.yml and can be deployed either from command line or the AWS CloudFormation console.
+Check for the correct ImageId, which are different across versions (ie different for 10.8.1 vs 10.9.1).
+and choose the appropriate image for the appropriate Ubuntu version.
+
+If setting up using the UI, go to CloudFormation and launch a new stack using new resources. It will take you to steps:
+1. Upload the [CloudFormation template]()
+2. Specify parameters - some hints are:
+   * Bucket - S3 bucket where data are stored. Disasters data are generally stored in `hyp3-nasa-disasters`
+   * CertificateARN - go to CertificateManager (in `hyp3`), find the active certificate, and copy that ARN
+   * KeyName - KeyPair name for the user planning to first ssh into the instance (ex: jrsmale)
+   * 
+3. and on Keep defaults on acknowledgement page
+
+
+Takes about 5 minutes to stands up the instance and load balancer. Load balancer will become more critical if we add additional servers
 
 
 ## Configure the Server
