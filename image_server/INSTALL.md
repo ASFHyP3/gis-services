@@ -81,6 +81,6 @@ and log in with the siteadmin credentials.
 5. Create admin user accounts 
    1. Security -> users -> new user
    2. Make sure to add administrator role to each user
-   3. Onc eyou have an indiviual account, logout from siteadmin and log in as your individual user
+   3. Once you have an indiviual account, logout from siteadmin and log in as your individual user
 
 
