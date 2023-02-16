@@ -135,8 +135,8 @@ arcpy.management.CalculateFields(
     fields=[
         ['MinPS', '600'],
         ['Category', '2'],
-        ['ProductName', '"COP30_HAND_Overview"'],
-        ['Tag', '"COP30_HAND_Overview"'],
+        ['ProductName', '"GLO30_HAND_Overview"'],
+        ['Tag', '"GLO30_HAND_Overview"'],
         ['Tile', '"Zoom in further to see specific tile information"'],
         ['URLDisplay', '"Zoom in further to access download link"'],
     ],
