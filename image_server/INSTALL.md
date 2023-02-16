@@ -1,13 +1,14 @@
-This Documentation describes the way to deploy of the arcGIS server on the Amazon cloud, and configure the server.
+This Documentation describes the way to deploy the arcGIS server on the Amazon cloud and configure the server.
 It also introduces how to publish the gdb dataset. 
 
 
 ## Reference 
+
 https://enterprise.arcgis.com/en/server/latest/install/linux/install-arcgis-server-on-one-machine.htm
 Tools NASA Disasters GitHub repo:
 https://github.com/ASFHyP3/hyp3-nasa-disasters/tree/main/update_image_services
 
-## Prepare the Deploy
+## Prepare the Deployment
 
 Find the “Esri ArcGIS Enterprise 10.9.1 on Ubuntu (Dec 2021)” AMI in the EC2 console
 
@@ -19,7 +20,7 @@ Upload an SSL certificate into AWS ACM
 The same Tools certificate can be used for any of our deployments
 
 Import a public key in the AWS EC2 console
-Existing users can add keys for additional users so they can SSH in
+Existing users can add keys for additional users so that they can SSH in
 
 ## Deploy the stack
 
@@ -37,13 +38,13 @@ Load balancer will become more critical if we add additional servers
 Scp the prvc file to the server
 
 10.9.1:
-scp ArcGISImageServer_ArcGISServer_1097915.prvc ubuntu@ec2-34-210-78-89.us-west-2.compute.amazonaws.com:/home/ubuntu
+scp ArcGISImageServer_ArcGISServer_1097915.prvc ubuntu@ec2-xx-xxx-xx-xx.us-west-x.compute.amazonaws.com:/home/ubuntu
 
 10.8.1:
-scp ArcGISImageServer_ArcGISServer_1038624.prvc
+scp ArcGISImageServer_ArcGISServer_xxxxxxxx.prvc
 
 ssh to the instance
-ssh ubuntu@ec2-34-210-78-89.us-west-2.compute.amazonaws.com
+ssh ubuntu@ec2-xx-xxx-xx-xx.us-west-x.compute.amazonaws.com
 
 The administrative stuff is done under the ubuntu username:
 Wait a few minutes for auto-updater stuff to run, then
@@ -51,7 +52,7 @@ Sudo apt update
 Sudo apt upgrade
 Sudo apt autoremove (optional)
 
-(accept the default table prompts)
+(accepts the default table prompts)
 
 Image server is installed and owned by the arcgis username:
 su to the arcgis user
@@ -62,7 +63,7 @@ Image Server is installed in different directories between the 10.8.1 AMI and th
 10.9.1 is under /opt/arcgis
 
 Authorize the image server software (drop the opt/ for 10.8.1 in the following commands)
-/opt/arcgis/server/tools/authorizeSoftware -f /home/ubuntu/ArcGISImageServer_ArcGISServer_1097915.prvc -e hjkristenson@alaska.edu
+/opt/arcgis/server/tools/authorizeSoftware -f /home/ubuntu/ArcGISImageServer_ArcGISServer_xxxxxxx.prvc -e your email address
 
 Starting the ArcGIS Software Authorization Wizard
 
@@ -100,15 +101,15 @@ sudo vi /etc/iptables/rules.v4
 -A OUTPUT -o lo -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 6080
 -A OUTPUT -o lo -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 6443
 
-restart the server 
+Restart the server 
 sudo shutdown -r now
 
 ## Configure Image Server
 
-Load balancer is connected (10.8.1): gis-s-LoadB-1BHAMOFNN7M5A-183686994.us-west-2.elb.amazonaws.com
+Load balancer is connected (10.8.1): load_balance_url
 
 Visit the server URL
-https://asj-i-loadb-1duyq7s447zm0-132052851.us-west-2.elb.amazonaws.com/arcgis/manager/
+load_balace_url/arcgis/manager/
 
 Create new site
 Pick a password for the siteadmin user, or use the existing password from the tools user
@@ -177,7 +178,6 @@ Alas, 10.8 requires that both HTTP and HTTPS be enabled. That constraint is gone
 /opt/arcgis/server/tools/admin/createservice -u <username> -p <password> -f /home/arcgis/RTCservices/ASF_S1_RGB.sd -F ASF_S1 -n ASF_S1_RGB
 
 * Publish service definitions
-
 
 * Create a DNS entry for the load balancer
 
