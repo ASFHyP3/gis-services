@@ -36,7 +36,7 @@ arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
     raster_type='Raster Dataset',
     input_path='/home/arcgis/asjohnston/hand.acs',
-    filter='*Copernicus_DSM_COG_10_N0*',
+    filter='*HAND.tif',
 )
 
 arcpy.management.CalculateFields(
