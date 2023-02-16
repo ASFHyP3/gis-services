@@ -39,8 +39,8 @@ new_md.accessConstraints = 'under construction'
 
 # Assign the Metadata object's content to a target item
 # hand_path = r'C:\Users\hjkristenson\Documents\ImageServer\ImageServices\arcgis on gis-test.asf.alaska.edu.ags\GlobalHAND\GLO30_HAND_small\metadata'
-hand_path = r'https://gis-test.asf.alaska.edu/arcgis/rest/services/GlobalHAND/GLO30_HAND_small/ImageServer/info/metadata'
-# hand_path = r'https://gis-test.asf.alaska.edu/arcgis/rest/services/GlobalHAND/GLO30_HAND_small/ImageServer'
+# hand_path = r'https://gis-test.asf.alaska.edu/arcgis/rest/services/GlobalHAND/GLO30_HAND_small/ImageServer/info/metadata'
+hand_path = r'https://gis-test.asf.alaska.edu/arcgis/rest/services/GlobalHAND/GLO30_HAND_small/ImageServer'
 
 tgt_item_md = md.Metadata(hand_path)
 print('is read only: %s' % tgt_item_md.isReadOnly)  # verify that the target is, indeed, read only
