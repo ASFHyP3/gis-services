@@ -1,5 +1,6 @@
 import arcpy
 
+
 arcpy.management.CreateFileGDB(
     out_folder_path='/home/arcgis/asjohnston/',
     out_name='hand.gdb',
@@ -11,6 +12,16 @@ arcpy.management.CreateMosaicDataset(
     coordinate_system=3857,
 )
 
+arcpy.management.AddFields(
+    in_table='/home/arcgis/asjohnston/hand.gdb/hand',
+    field_description=[
+        ['Tile', 'TEXT'],
+        ['DownloadURL', 'TEXT'],
+        ['URLDisplay', 'TEXT'],
+        ['Dataset_ID', 'TEXT'],
+    ],
+)
+
 arcpy.management.CreateCloudStorageConnectionFile(
     out_folder_path='/home/arcgis/asjohnston/',
     out_name='hand.acs',
@@ -19,6 +30,41 @@ arcpy.management.CreateCloudStorageConnectionFile(
     region='us-west-2',
     config_options='AWS_NO_SIGN_REQUEST=YES',
     folder='v1/2021/',
+)
+
+arcpy.management.AddRastersToMosaicDataset(
+    in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
+    raster_type='Raster Dataset',
+    input_path='/home/arcgis/asjohnston/hand.acs',
+    filter='*Copernicus_DSM_COG_10_N0*',
+)
+
+arcpy.management.CalculateFields(
+    in_table='/home/arcgis/asjohnston/hand.gdb/hand',
+    fields=[
+        ['Tile', '!Name!.split("_")[4] + !Name!.split("_")[6]'],
+        ['Tag', '"GLO30_HAND"'],
+        ['Dataset_ID', '"Global_30m_HAND"'],
+        ['ProductName', '"GLO30_HAND_"+ !Name!.split("_")[4] + !Name!.split("_")[6]'],
+        ['URLDisplay', '"GLO30_HAND_"+ !Name!.split("_")[4] + !Name!.split("_")[6]'],
+        ['DownloadURL', '"https://glo-30-hand.s3.amazonaws.com/v1/2021/" + !Name! + ".tif"'],
+        ['MaxPS', '610'],
+    ],
+)
+
+arcpy.management.BuildFootprints(
+    in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
+    reset_footprint='NONE',
+    min_data_value=0,
+    max_data_value=1,
+    approx_num_vertices=12,
+    update_boundary='UPDATE_BOUNDARY',
+)
+
+arcpy.management.BuildBoundary(
+    in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
+    append_to_existing='OVERWRITE',
+    simplification_method='NONE',
 )
 
 arcpy.management.SetMosaicDatasetProperties(
@@ -39,7 +85,6 @@ arcpy.management.SetMosaicDatasetProperties(
     allowed_mosaic_methods='Center;NorthWest;Nadir;LockRaster;ByAttribute;Seamline;None',
     default_mosaic_method='ByAttribute',
     order_field='Name',
-    #order_base=None,
     sorting_order='Ascending',
     mosaic_operator='FIRST',
     blend_width=10,
@@ -51,63 +96,45 @@ arcpy.management.SetMosaicDatasetProperties(
     metadata_level='BASIC',
     transmission_fields='Name;MinPS;MaxPS;LowPS;HighPS;ZOrder;Dataset_ID;CenterX;CenterY;Tag;Tile;ProductName;DownloadURL;URLDisplay',
     use_time='DISABLED',
-    #start_time_field=None,
-    #end_time_field=None
-    #time_format='#',
-    #geographic_transform='#',
     max_num_of_download_items=50,
     max_num_of_records_returned=2000,
     processing_templates='/home/arcgis/asjohnston/GLO30_HAND_2SDstretch.rft.xml;None',
     default_processing_template='/home/arcgis/asjohnston/GLO30_HAND_2SDstretch.rft.xml',
 )
 
-field_description = [
-    ['Tile', 'TEXT'],
-    ['DownloadURL', 'TEXT'],
-    ['URLDisplay', 'TEXT'],
-    ['Dataset_ID', 'TEXT'],
-]
-arcpy.management.AddFields(
-    in_table='/home/arcgis/asjohnston/hand.gdb/hand',
-    field_description=field_description,
-    #template=None,
-)
-
-arcpy.management.AddRastersToMosaicDataset(
-    in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
-    raster_type='Raster Dataset',
-    input_path='/home/arcgis/asjohnston/hand.acs',
-    filter='*Copernicus_DSM_COG_10_N08_00_W01*',
-)
-
-arcpy.management.CalculateFields(
-    in_table='/home/arcgis/asjohnston/hand.gdb/hand',
-    fields=[
-        ['Tile', '!Name!.split("_")[4] + !Name!.split("_")[6]'],
-        ['Tag', '"GLO30_HAND"'],
-        ['Dataset_ID', '"Global_30m_HAND"'],
-        ['ProductName', '"GLO30_HAND_"+ !Name!.split("_")[4] + !Name!.split("_")[6]'],
-        ['URLDisplay', '"GLO30_HAND_"+ !Name!.split("_")[4] + !Name!.split("_")[6]'],
-        ['DownloadURL', '"https://glo-30-hand.s3.amazonaws.com/v1/2021/" + !Name! + ".tif"'],
-        ['MaxPS', '610'],
-    ],
-)
-
-arcpy.management.BuildBoundary(
-    in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
-    #where_clause=None,
-    append_to_existing='OVERWRITE',
-    simplification_method='NONE',
-)
-
 arcpy.management.CalculateCellSizeRanges(
     in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
-    #where_clause=None,
     do_compute_min='NO_MIN_CELL_SIZES',
     do_compute_max='NO_MAX_CELL_SIZES',
     max_range_factor=10,
     cell_size_tolerance_factor=0.8,
     update_missing_only='UPDATE_ALL',
+)
+
+with arcpy.EnvManager(parallelProcessingFactor=7, cellSize=600):
+    arcpy.management.CopyRaster(
+        in_raster='/home/arcgis/asjohnston/hand.gdb/hand',
+        out_rasterdataset='/home/arcgis/raster_store/hand_overview.crf',
+    )
+
+input('aws s3 cp /home/arcgis/raster_store/hand_overview.crf s3://hyp3-nasa-disasters/overviews/hand_overview.crf --recursive')
+
+arcpy.management.AddRastersToMosaicDataset(
+    in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
+    raster_type='Raster Dataset',
+    input_path='/vsis3/hyp3-nasa-disasters/overviews/hand_overview.crf',
+)
+
+selection = arcpy.management.SelectLayerByAttribute(
+    in_layer_or_view='/home/arcgis/asjohnston/hand.gdb/hand',
+    selection_type='NEW_SELECTION',
+    where_clause="Name = 'hand_overview'",
+)
+arcpy.management.CalculateFields(
+    in_table=selection,
+    fields=[
+        ['MinPS', '600'],
+    ],
 )
 
 arcpy.CreateImageSDDraft(
