@@ -1,5 +1,5 @@
 This Documentation describes the way to deploy the arcGIS server on the Amazon cloud and configure the server.
-It also introduces how to publish the gdb dataset. 
+
 
 
 ## Reference 
@@ -32,6 +32,7 @@ If setting up using the UI, go to CloudFormation and launch a new stack using ne
    * 
 3. and on Keep defaults on acknowledgement page
 
+![Specify Stack Details screenshot](images/stack_details.png)
 
 Takes about 5 minutes to stands up the instance and load balancer. Load balancer will become more critical if we add additional servers
 
@@ -66,6 +67,9 @@ sudo shutdown -r now
 
 ## Configure the Image Server
 1. Find the “DNS name” for the new Load Balancer in the AWS EC2 console, e.g. gis-s-LoadB-OT2TD55ZH0GC-1897588225.us-west-2.elb.amazonaws.com
+
+![Load Balancer screenshot](images/load_balancer.png)
+
 2. Create an asf.alaska.edu DNS entry for the load balancer. DNS CNAME records are managed in ASF’s gitlab in the puppet project at https://gitlab.asf.alaska.edu/operations/puppet/-/blob/production/site/modules/dns/files/asf.alaska.edu.db#L112
 3. Visit the server URL
 ```
@@ -78,11 +82,11 @@ https://<asf dns name>.asf.alaska.edu/arcgis/manager/
 and log in with the siteadmin credentials.
 4. Create an administrator role 
    1. Security -> roles -> new role
-   ![screenshot](images/new_role.png)
+   ![New Role screenshot](images/new_role.png)
 5. Create admin user accounts 
    1. Security -> users -> new user
    2. Make sure to add administrator role to each user
    3. Once you have an indiviual account, logout from siteadmin and log in as your individual user
-   ![screenshot](images/new_user.png)
+   ![New User screenshot](images/new_user.png)
    
 
