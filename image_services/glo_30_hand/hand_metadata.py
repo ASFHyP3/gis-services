@@ -1,6 +1,17 @@
 import arcpy
 from arcpy import metadata as md
 
+# Connect to the server with credentials
+# THIS DOES NOT SEEM TO WORK CURRENTLY; CHECK THE ADMIN URL
+from arcgis.gis.server import Server
+server_base_url = "https://gis-test.asf.alaska.edu/"
+server = Server(
+    url="{}:6443/arcgis/admin".format(server_base_url),
+    tokenurl="{}:6443/arcgis/rest/generateToken".format(server_base_url),
+    username="<username>",
+    password="<password>")
+print(server.url)
+
 # Create a new Metadata object and add some content to it
 new_md = md.Metadata()
 new_md.title = 'GLO30_HAND Image Service'
@@ -27,7 +38,7 @@ new_md.credits = 'Copyright 2022 Alaska Satellite Facility (ASF). Produced using
 new_md.accessConstraints = 'under construction'
 
 # Assign the Metadata object's content to a target item
-# hand_path = r'C:\Users\hjkristenson\Documents\ImageServer\ImageServices\arcgis on gis-test.asf.alaska.edu.ags\GlobalHAND\GLO30_HAND_small'
+# hand_path = r'C:\Users\hjkristenson\Documents\ImageServer\ImageServices\arcgis on gis-test.asf.alaska.edu.ags\GlobalHAND\GLO30_HAND_small\metadata'
 # hand_path = r'https://gis-test.asf.alaska.edu/arcgis/rest/services/GlobalHAND/GLO30_HAND_small/ImageServer/info/metadata'
 hand_path = r'https://gis-test.asf.alaska.edu/arcgis/rest/services/GlobalHAND/GLO30_HAND_small/ImageServer'
 
