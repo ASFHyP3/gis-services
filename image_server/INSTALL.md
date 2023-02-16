@@ -78,9 +78,11 @@ https://<asf dns name>.asf.alaska.edu/arcgis/manager/
 and log in with the siteadmin credentials.
 4. Create an administrator role 
    1. Security -> roles -> new role
+   ![screenshot](images/new_role.png)
 5. Create admin user accounts 
    1. Security -> users -> new user
    2. Make sure to add administrator role to each user
    3. Once you have an indiviual account, logout from siteadmin and log in as your individual user
-
+   ![screenshot](images/new_user.png)
+   
 
