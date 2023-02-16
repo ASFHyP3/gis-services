@@ -13,7 +13,7 @@ https://github.com/ASFHyP3/hyp3-nasa-disasters/tree/main/update_image_services
 Find the “Esri ArcGIS Enterprise 10.9.1 on Ubuntu (Dec 2021)” AMI in the EC2 console
 
 Visit the AWS Marketplace and subscribe to the product
-https://aws.amazon.com/marketplace/server/procurement?productId=34fd59e4-ff03-453a-b18e-e01c277d97cb
+https://aws.amazon.com/marketplace/server/procurement?productId=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 You will need to log in under your organization’s account; the organization is subscribing, not the individual user.
 
 Upload an SSL certificate into AWS ACM
@@ -63,7 +63,7 @@ Image Server is installed in different directories between the 10.8.1 AMI and th
 10.9.1 is under /opt/arcgis
 
 Authorize the image server software (drop the opt/ for 10.8.1 in the following commands)
-/opt/arcgis/server/tools/authorizeSoftware -f /home/ubuntu/ArcGISImageServer_ArcGISServer_xxxxxxx.prvc -e your email address
+/opt/arcgis/server/tools/authorizeSoftware -f /home/ubuntu/ArcGISImageServer_ArcGISServer_xxxxxxx.prvc -e your_email_address
 
 Starting the ArcGIS Software Authorization Wizard
 
@@ -155,8 +155,8 @@ git clone https://github.com/ASFHyP3/hyp3-nasa-disasters.git
 conda env create -f /home/arcgis/hyp3-nasa-disasters/update_image_services/environment.yml
 
 * Upload geodatabase to ubuntu user’s home directory
-scp RTCservices_220105.gdb.zip ubuntu@ec2-34-221-16-241.us-west-2.compute.amazonaws.com:/home/ubuntu/
-ssh ubuntu@ec2-34-221-16-241.us-west-2.compute.amazonaws.com
+scp RTCservices_220105.gdb.zip ubuntu@ec2-xx-xxx-xx-xxx.us-west-x.compute.amazonaws.com:/home/ubuntu/
+ssh ubuntu@ec2-xx-xxx-xx-xxx.us-west-x.compute.amazonaws.com
 unzip directory is not installed by default; need to install:
 sudo apt install unzip
 unzip unzip RTCservices_220105.gdb.zip
