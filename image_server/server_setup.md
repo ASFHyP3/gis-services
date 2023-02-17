@@ -46,8 +46,8 @@ It takes about 5 minutes to stand up the instance and load balancer. The load ba
 1. Retrieve the appropriate prvc licence files from s3://hyp3-software/ and scp them to the server.
 ```
 Aws s3 –profile hyp3 s3://hyp3-software/ . –recursive –exclude “*” –include “*.prvc”
-scp ArcGISImageServer_ArcGISServer_1097915.prvc ubuntu@ec2-34-210-78-89.us-west-2.compute.amazonaws.com:/home/ubuntu
-scp ArcGISGISServerAdvanced_ArcGISServer_1097910.prvc ubuntu@ec2-34-210-78-89.us-west-2.compute.amazonaws.com:/home/ubuntu
+scp ArcGISImageServer_ArcGISServer_1097915.prvc ubuntu@ec2-xx-xxx-xx-xx.us-west-2.compute.amazonaws.com:/home/ubuntu
+scp ArcGISGISServerAdvanced_ArcGISServer_1097910.prvc ubuntu@ec2-xx-xxx-xx-xx.us-west-2.compute.amazonaws.com:/home/ubuntu
 ```
 
 2. SSH to the instance (IP address can be found in the EC2 Instance information under Public IP4)
