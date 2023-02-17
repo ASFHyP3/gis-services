@@ -76,6 +76,7 @@ sudo shutdown -r now
 ```
 
 ## Configure the Image Server
+
 1. Find the “DNS name” for the new Load Balancer in the AWS EC2 console, e.g. gis-s-LoadB-OT2TD55ZH0GC-1897588225.us-west-2.elb.amazonaws.com
 
 ![Load Balancer screenshot](images/load_balancer.png)
