@@ -1,23 +1,26 @@
-This document describes the workflow for deploying and configuring an ArcGIS Server with Image Server to an AWS EC2 instance. 
+# Deploying and Configuring an ArcGIS Image Server
+This document describes the workflow for deploying and configuring an ArcGIS Server with Image Server to an AWS EC2 instance.
 
-## References 
+## First Time Setup
 
-https://enterprise.arcgis.com/en/server/latest/install/linux/install-arcgis-server-on-one-machine.htm
+These steps only need to be run once per AWS account.
 
-Tools NASA Disasters GitHub repo:
-https://github.com/ASFHyP3/hyp3-nasa-disasters/tree/main/update_image_services
+1. Visit the [Esri AWS Marketplace](https://aws.amazon.com/marketplace/seller-profile?id=98a100e1-04d1-40b2-aa8a-619411d037d2) and search for the appropriate ubuntu AMI:
+   * https://us-east-1.console.aws.amazon.com/marketplace/home?region=us-west-2#/search!mpSearch/search?text=esri+arcgis+enterprise+on+ubuntu
+2. Find the desired item in the EC2 console and click on it to subscribe. 
+   * As of this writing, the most recent AMI is “Esri ArcGIS Enterprise 10.9.1 on Ubuntu (April 2022)” (ami-0b1ddcef10ffe54fb)
+   * You will need to log in under your organization’s account; the organization is subscribing, not the individual user.
 
-## Prepare the Deployment
+3. Upload an SSL certificate into AWS ACM
+   * The same Tools certificate can be used for any of our deployments
 
-Find the “Esri ArcGIS Enterprise 10.9.1 on Ubuntu (April 2022)” AMI (ami-0b1ddcef10ffe54fb) in the EC2 console by visiting the [ESRI AWS Marketplace](https://aws.amazon.com/marketplace/seller-profile?id=98a100e1-04d1-40b2-aa8a-619411d037d2) and subscribing to the product. You will need to log in under your organization’s account; the organization is subscribing, not the individual user.
-
-Upload an SSL certificate into AWS ACM. The same Tools certificate can be used for any of our deployments.
-
-Import a public key in the AWS EC2 console by setting up a [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html). Existing users can add keys for additional users so that they can SSH into the instance.
+4. Import a public key in the AWS EC2 console by setting up a [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html). 
+   * Existing users can add keys for additional users so they can SSH into the instance
+   * /home/ubuntu/.ssh/authorized_keys
 
 ## Deploy the stack
 
-CloudFormation template is at https://github.com/ASFHyP3/hyp3-nasa-disasters/blob/main/update_image_services/image_server_cloudformation.yml and can be deployed either from command line or the AWS CloudFormation console.
+CloudFormation template is at https://github.com/ASFHyP3/hyp3-nasa-disasters/blob/main/update_image_services/image_server_cloudformation.yml and can be deployed either from the command line or the AWS CloudFormation console.
 
 Check for the correct ImageId, which are different across versions (i.e. different for 10.8.1 vs 10.9.1).
 and choose the appropriate image for the appropriate Ubuntu version.
@@ -93,5 +96,10 @@ and log in with the siteadmin credentials.
    1. Site -> data stores -> register -> raster store
       ![Raster Store screenshot](images/raster_store.png)
    The raster_store is just a directory on the server path, so we can use the File Share type.
-   
 
+## References 
+
+https://enterprise.arcgis.com/en/server/latest/install/linux/install-arcgis-server-on-one-machine.htm
+
+Tools NASA Disasters GitHub repo:
+https://github.com/ASFHyP3/hyp3-nasa-disasters/tree/main/update_image_services
