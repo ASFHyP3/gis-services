@@ -1,19 +1,37 @@
+import subprocess
+
 import arcpy
 
 
+dataset_name = 'GLO30_HAND'
+working_directory = '/home/arcgis/asjohnston/'
+raster_store = '/home/arcgis/raster_store/'
+
+geodatabase = f'{working_directory}{dataset_name}.gdb'
+mosaic_dataset = f'{geodatabase}/{dataset_name}'
+raster_function_template = f'{working_directory}GLO30_HAND_2SDstretch.rft.xml'
+overview_name = f'{dataset_name}_overview'
+local_overview = f'/home/arcgis/raster_store/{overview_name}.crf'
+s3_overview = f'/vsis3/hyp3-nasa-disasters/overviews/{overview_name}.crf'
+service_definition_draft = f'{working_directory}{dataset_name}.sddraft'
+service_definition = f'{working_directory}{dataset_name}.sd'
+
+
+arcpy.env.parallelProcessingFactor = '75%'
+
 arcpy.management.CreateFileGDB(
-    out_folder_path='/home/arcgis/asjohnston/',
-    out_name='hand.gdb',
+    out_folder_path=working_directory,
+    out_name=f'{dataset_name}.gdb',
 )
 
 arcpy.management.CreateMosaicDataset(
-    in_workspace='/home/arcgis/asjohnston/hand.gdb',
-    in_mosaicdataset_name='hand',
+    in_workspace=geodatabase,
+    in_mosaicdataset_name=dataset_name,
     coordinate_system=3857,
 )
 
 arcpy.management.AddFields(
-    in_table='/home/arcgis/asjohnston/hand.gdb/hand',
+    in_table=mosaic_dataset,
     field_description=[
         ['Tile', 'TEXT'],
         ['DownloadURL', 'TEXT'],
@@ -22,25 +40,15 @@ arcpy.management.AddFields(
     ],
 )
 
-arcpy.management.CreateCloudStorageConnectionFile(
-    out_folder_path='/home/arcgis/asjohnston/',
-    out_name='hand.acs',
-    service_provider='AMAZON',
-    bucket_name='glo-30-hand',
-    region='us-west-2',
-    config_options='AWS_NO_SIGN_REQUEST=YES',
-    folder='v1/2021/',
-)
-
 arcpy.management.AddRastersToMosaicDataset(
-    in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
+    in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
-    input_path='/home/arcgis/asjohnston/hand.acs',
+    input_path='/vsis3/glo-30-hand/v1/2021/',
     filter='*HAND.tif',
 )
 
 arcpy.management.CalculateFields(
-    in_table='/home/arcgis/asjohnston/hand.gdb/hand',
+    in_table=mosaic_dataset,
     fields=[
         ['Tile', '!Name!.split("_")[4] + !Name!.split("_")[6]'],
         ['Tag', '"GLO30_HAND"'],
@@ -53,7 +61,7 @@ arcpy.management.CalculateFields(
 )
 
 arcpy.management.BuildFootprints(
-    in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
+    in_mosaic_dataset=mosaic_dataset,
     reset_footprint='NONE',
     min_data_value=0,
     max_data_value=1,
@@ -62,13 +70,13 @@ arcpy.management.BuildFootprints(
 )
 
 arcpy.management.BuildBoundary(
-    in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
+    in_mosaic_dataset=mosaic_dataset,
     append_to_existing='OVERWRITE',
     simplification_method='NONE',
 )
 
 arcpy.management.SetMosaicDatasetProperties(
-    in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
+    in_mosaic_dataset=mosaic_dataset,
     rows_maximum_imagesize=5000,
     columns_maximum_imagesize=5000,
     allowed_compressions='JPEG;NONE;LZ77',
@@ -98,12 +106,12 @@ arcpy.management.SetMosaicDatasetProperties(
     use_time='DISABLED',
     max_num_of_download_items=50,
     max_num_of_records_returned=2000,
-    processing_templates='/home/arcgis/asjohnston/GLO30_HAND_2SDstretch.rft.xml;None',
-    default_processing_template='/home/arcgis/asjohnston/GLO30_HAND_2SDstretch.rft.xml',
+    processing_templates=f'{raster_function_template};None',
+    default_processing_template=raster_function_template,
 )
 
 arcpy.management.CalculateCellSizeRanges(
-    in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
+    in_mosaic_dataset=mosaic_dataset,
     do_compute_min='NO_MIN_CELL_SIZES',
     do_compute_max='NO_MAX_CELL_SIZES',
     max_range_factor=10,
@@ -111,24 +119,24 @@ arcpy.management.CalculateCellSizeRanges(
     update_missing_only='UPDATE_ALL',
 )
 
-with arcpy.EnvManager(parallelProcessingFactor=7, cellSize=600):
+with arcpy.EnvManager(pyramid='PYRAMIDS 3', cellSize=600):
     arcpy.management.CopyRaster(
-        in_raster='/home/arcgis/asjohnston/hand.gdb/hand',
-        out_rasterdataset='/home/arcgis/raster_store/hand_overview.crf',
+        in_raster=mosaic_dataset,
+        out_rasterdataset=local_overview,
     )
 
-input('aws s3 cp /home/arcgis/raster_store/hand_overview.crf s3://hyp3-nasa-disasters/overviews/hand_overview.crf --recursive')
+subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace("/vsis3/", "s3://"), '--recursive'])
 
 arcpy.management.AddRastersToMosaicDataset(
-    in_mosaic_dataset='/home/arcgis/asjohnston/hand.gdb/hand',
+    in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
-    input_path='/vsis3/hyp3-nasa-disasters/overviews/hand_overview.crf',
+    input_path=s3_overview,
 )
 
 selection = arcpy.management.SelectLayerByAttribute(
-    in_layer_or_view='/home/arcgis/asjohnston/hand.gdb/hand',
+    in_layer_or_view=mosaic_dataset,
     selection_type='NEW_SELECTION',
-    where_clause="Name = 'hand_overview'",
+    where_clause=f"Name = '{overview_name}'",
 )
 arcpy.management.CalculateFields(
     in_table=selection,
@@ -143,9 +151,9 @@ arcpy.management.CalculateFields(
 )
 
 arcpy.CreateImageSDDraft(
-    raster_or_mosaic_layer='/home/arcgis/asjohnston/hand.gdb/hand',
-    out_sddraft='/home/arcgis/asjohnston/hand.sddraft',
-    service_name='HAND',
+    raster_or_mosaic_layer=mosaic_dataset,
+    out_sddraft=service_definition_draft,
+    service_name=dataset_name,
     summary="Height Above Nearest Drainage (HAND) is a terrain model that normalizes topography to the relative " \
             "heights along the drainage network and is used to describe the relative soil gravitational potentials " \
             "or the local drainage potentials. Each pixel value represents the vertical distance to the nearest " \
@@ -160,6 +168,6 @@ arcpy.CreateImageSDDraft(
 )
 
 arcpy.server.StageService(
-    in_service_definition_draft='/home/arcgis/asjohnston/hand.sddraft',
-    out_service_definition='/home/arcgis/asjohnston/hand.sd',
+    in_service_definition_draft=service_definition_draft,
+    out_service_definition=service_definition,
 )
