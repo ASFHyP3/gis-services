@@ -7,6 +7,7 @@ These steps only need to be run once per AWS account.
 
 1. Visit the [Esri AWS Marketplace](https://aws.amazon.com/marketplace/seller-profile?id=98a100e1-04d1-40b2-aa8a-619411d037d2) and search for the appropriate ubuntu AMI:
    * https://us-east-1.console.aws.amazon.com/marketplace/home?region=us-west-2#/search!mpSearch/search?text=esri+arcgis+enterprise+on+ubuntu
+
 2. Find the desired item in the EC2 console and click on it to subscribe. 
    * As of this writing, the most recent AMI is “Esri ArcGIS Enterprise 10.9.1 on Ubuntu (April 2022)” (ami-0b1ddcef10ffe54fb)
    * You will need to log in under your organization’s account; the organization is subscribing, not the individual user.
@@ -48,14 +49,18 @@ Aws s3 –profile hyp3 s3://hyp3-software/ . –recursive –exclude “*” –
 scp ArcGISImageServer_ArcGISServer_1097915.prvc ubuntu@ec2-34-210-78-89.us-west-2.compute.amazonaws.com:/home/ubuntu
 scp ArcGISGISServerAdvanced_ArcGISServer_1097910.prvc ubuntu@ec2-34-210-78-89.us-west-2.compute.amazonaws.com:/home/ubuntu
 ```
-2. Ssh to the instance (IP address can be found in the EC2 Instance information under Public IP4)
+
+2. SSH to the instance (IP address can be found in the EC2 Instance information under Public IP4)
+
 3. Add any needed public keys to `/home/ubuntu/.ssh/authorized_keys` so that other Tools team members can ssh to the server
+
 4. After the instance is created, wait 5-15 minutes for the initial auto-updater to finish running, then copy the [root setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/root_setup.sh) to the server and run it as the root user. If you get an error about `/var/lib/dpkg/lock`, that means the auto-updater is still running; wait and try again later.
 ```
 sudo su root
 /bin/bash root_setup.sh
 ```
-   Accept any default prompts during the apt installations. 
+   * Accept any default prompts during the apt installations.
+
 5. Copy the [arcgis setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/arcgis_setup.sh) to the server and run it as the arcgis user.
 ```
 sudo su arcgis
@@ -64,6 +69,7 @@ cp /home/ubuntu/*.prvc /home/arcgis/
 export SITE_PASSWORD=<new password for the siteadmin user in the manager app>
 /bin/bash arcgis_setup.sh
 ```
+
 6.  Restart the server 
 ```
 sudo shutdown -r now
@@ -75,7 +81,8 @@ sudo shutdown -r now
 ![Load Balancer screenshot](images/load_balancer.png)
 
 2. Create an asf.alaska.edu DNS entry for the load balancer. DNS CNAME records are managed in ASF’s gitlab in the puppet project at https://gitlab.asf.alaska.edu/operations/puppet/-/blob/production/site/modules/dns/files/asf.alaska.edu.db#L112
-3. Visit the server URL
+
+3. Visit the server URL and log in with the siteadmin credentials:
 ```
 https://<load balancer dns name>/arcgis/manager/
 ```
@@ -83,15 +90,17 @@ or
 ```
 https://<asf dns name>.asf.alaska.edu/arcgis/manager/
 ```
-and log in with the siteadmin credentials.
+
 4. Create an administrator role 
    1. Security -> roles -> new role
    ![New Role screenshot](images/new_role.png)
+
 5. Create admin user accounts 
    1. Security -> users -> new user
+   ![New User screenshot](images/new_user.png)
    2. Make sure to add administrator role to each user
    3. Once you have an indiviual account, logout from siteadmin and log in as your individual user
-   ![New User screenshot](images/new_user.png)
+
 6. Register raster store 
    1. Site -> data stores -> register -> raster store
       ![Raster Store screenshot](images/raster_store.png)
