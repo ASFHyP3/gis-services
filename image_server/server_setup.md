@@ -1,8 +1,6 @@
-This Documentation describes the way to deploy the arcGIS server on the Amazon cloud and configure the server.
+This document describes the workflow for deploying and configuring an ArcGIS Server with Image Server to an AWS EC2 instance. 
 
-
-
-## Reference 
+## References 
 
 https://enterprise.arcgis.com/en/server/latest/install/linux/install-arcgis-server-on-one-machine.htm
 
@@ -11,7 +9,7 @@ https://github.com/ASFHyP3/hyp3-nasa-disasters/tree/main/update_image_services
 
 ## Prepare the Deployment
 
-Find the “Esri ArcGIS Enterprise 10.9.1 on Ubuntu (Dec 2021)” AMI in the EC2 console by visiting the [ESRI AWS Marketplace](https://aws.amazon.com/marketplace/seller-profile?id=98a100e1-04d1-40b2-aa8a-619411d037d2) and subscribing to the product. You will need to log in under your organization’s account; the organization is subscribing, not the individual user.
+Find the “Esri ArcGIS Enterprise 10.9.1 on Ubuntu (April 2022)” AMI (ami-0b1ddcef10ffe54fb) in the EC2 console by visiting the [ESRI AWS Marketplace](https://aws.amazon.com/marketplace/seller-profile?id=98a100e1-04d1-40b2-aa8a-619411d037d2) and subscribing to the product. You will need to log in under your organization’s account; the organization is subscribing, not the individual user.
 
 Upload an SSL certificate into AWS ACM. The same Tools certificate can be used for any of our deployments.
 
@@ -20,25 +18,28 @@ Import a public key in the AWS EC2 console by setting up a [key pair](https://do
 ## Deploy the stack
 
 CloudFormation template is at https://github.com/ASFHyP3/hyp3-nasa-disasters/blob/main/update_image_services/image_server_cloudformation.yml and can be deployed either from command line or the AWS CloudFormation console.
-Check for the correct ImageId, which are different across versions (ie different for 10.8.1 vs 10.9.1).
+
+Check for the correct ImageId, which are different across versions (i.e. different for 10.8.1 vs 10.9.1).
 and choose the appropriate image for the appropriate Ubuntu version.
 
-If setting up using the UI, go to CloudFormation and launch a new stack using new resources. It will take you to steps:
+If setting up using the UI, go to CloudFormation and launch a new stack using new resources. Follow the steps below:
+
 1. Upload the [CloudFormation template]()
+
 2. Specify parameters - some hints are:
    * Bucket - S3 bucket where data are stored. Disasters data are generally stored in `hyp3-nasa-disasters`
    * CertificateARN - go to CertificateManager (in `hyp3`), find the active certificate, and copy that ARN
    * KeyName - KeyPair name for the user planning to first ssh into the instance (ex: jrsmale)
-   * 
-3. and on Keep defaults on acknowledgement page
+
+3. Keep defaults on acknowledgement page
 
 ![Specify Stack Details screenshot](images/stack_details.png)
 
-Takes about 5 minutes to stands up the instance and load balancer. Load balancer will become more critical if we add additional servers
+It takes about 5 minutes to stand up the instance and load balancer. The load balancer will become more critical if we add additional servers.
 
 ## Configure the Server
 
-1. Retrieve the appropriate prvc licence files from s3://hyp3-software/ and scp them to the server
+1. Retrieve the appropriate prvc licence files from s3://hyp3-software/ and scp them to the server.
 ```
 Aws s3 –profile hyp3 s3://hyp3-software/ . –recursive –exclude “*” –include “*.prvc”
 scp ArcGISImageServer_ArcGISServer_1097915.prvc ubuntu@ec2-34-210-78-89.us-west-2.compute.amazonaws.com:/home/ubuntu
@@ -88,5 +89,9 @@ and log in with the siteadmin credentials.
    2. Make sure to add administrator role to each user
    3. Once you have an indiviual account, logout from siteadmin and log in as your individual user
    ![New User screenshot](images/new_user.png)
+6. Register raster store 
+   1. Site -> data stores -> register -> raster store
+      ![Raster Store screenshot](images/raster_store.png)
+   The raster_store is just a directory on the server path, so we can use the File Share type.
    
 
