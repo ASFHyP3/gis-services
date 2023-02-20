@@ -10,7 +10,7 @@ raster_store = '/home/arcgis/raster_store/'
 geodatabase = f'{working_directory}{dataset_name}.gdb'
 mosaic_dataset = f'{geodatabase}/{dataset_name}'
 raster_function_template = f'{working_directory}GLO30_HAND_2SDstretch.rft.xml'
-overview_name = f'{dataset_name}_overview'
+overview_name = f'{dataset_name}_Overview'
 local_overview = f'/home/arcgis/raster_store/{overview_name}.crf'
 s3_overview = f'/vsis3/hyp3-nasa-disasters/overviews/{overview_name}.crf'
 service_definition_draft = f'{working_directory}{dataset_name}.sddraft'
@@ -44,7 +44,7 @@ arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
     input_path='/vsis3/glo-30-hand/v1/2021/',
-    filter='*HAND.tif',
+    filter='REGEX:.*Copernicus_DSM_COG_10_[NS][0-8]\d_00_[EW]\d\d\d_00_HAND.tif',
 )
 
 arcpy.management.CalculateFields(
@@ -119,7 +119,7 @@ arcpy.management.CalculateCellSizeRanges(
     update_missing_only='UPDATE_ALL',
 )
 
-with arcpy.EnvManager(pyramid='PYRAMIDS 3', cellSize=600):
+with arcpy.EnvManager(cellSize=600):
     arcpy.management.CopyRaster(
         in_raster=mosaic_dataset,
         out_rasterdataset=local_overview,
@@ -143,8 +143,8 @@ arcpy.management.CalculateFields(
     fields=[
         ['MinPS', '600'],
         ['Category', '2'],
-        ['ProductName', '"GLO30_HAND_Overview"'],
-        ['Tag', '"GLO30_HAND_Overview"'],
+        ['ProductName', f'"{overview_name}"'],
+        ['Tag', f'"{overview_name}"'],
         ['Tile', '"Zoom in further to see specific tile information"'],
         ['URLDisplay', '"Zoom in further to access download link"'],
     ],
