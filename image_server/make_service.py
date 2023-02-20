@@ -1,3 +1,4 @@
+import argparse
 import arcpy
 import configparser
 
@@ -169,14 +170,16 @@ def make_service(cfg):
     )
 
 
-config = configparser.RawConfigParser()
-
-config.read('config.cfg')
-
-cfg = dict(config.items('GDB'))
-
-make_service(cfg)
-
-print('completed ...')
+def get_config_dict(cfg):
+    config = configparser.RawConfigParser()
+    config.read(cfg)
+    return dict(config.items('GDB'))
 
 
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('cfg', help='config file name')
+    args = parser.parse_args()
+    make_service(get_config_dict(args.cfg))
+    print("completed ...")
