@@ -164,7 +164,7 @@ arcpy.management.AddRastersToMosaicDataset(
 )
 
 # Calculate the date range of the items in the mosaic dataset
-ds_cursor = arcpy.da.UpdateCursor(mosaic_dataset, ["Tag", "StartDate"])
+ds_cursor = arcpy.da.SearchCursor(mosaic_dataset, ["Tag", "StartDate"])
 stdatelist = []
 if (ds_cursor is not None):
     print('Determining Start and End Dates...')
@@ -173,6 +173,9 @@ if (ds_cursor is not None):
             stdatelist.append(row[1])
     stdate = min(stdatelist)
     endate = min(stdatelist)
+
+stdate_buffer = stdate + datetime.timedelta(hours=-8)
+endate_buffer = endate + datetime.timedelta(hours=8)
 
 # Calculate custom field values for the overview record
 
@@ -188,8 +191,8 @@ arcpy.management.CalculateFields(
         ['MinPS', '1600'],
         ['Category', '2'],
         ['GroupName', '"Mosaic Overview"'],
-        ['StartDate', f'{stdate} + datetime.timedelta(hours=-8)'],
-        ['EndDate', f'{endate} + datetime.timedelta(hours=8)'],
+        ['StartDate', f'"{stdate_buffer}"'],
+        ['EndDate', f'"{endate_buffer}"'],
     ],
 )
 
