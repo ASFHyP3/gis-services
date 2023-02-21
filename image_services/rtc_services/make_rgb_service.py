@@ -167,7 +167,7 @@ arcpy.management.AddRastersToMosaicDataset(
 ds_cursor = arcpy.da.UpdateCursor(mosaic_dataset, ["Tag", "StartDate"])
 stdatelist = []
 if (ds_cursor is not None):
-    log.Message('Determining Start and End Dates...', 0)
+    print('Determining Start and End Dates...')
     for row in ds_cursor:
         if row[0] != 'Dataset':
             stdatelist.append(row[1])
@@ -199,7 +199,7 @@ print(f'Publishing {service_definition_draft}...')
 arcpy.CreateImageSDDraft(
     raster_or_mosaic_layer=mosaic_dataset,
     out_sddraft=service_definition_draft,
-    service_name=dataset_name,
+    service_name=service_name,
     summary="Sentinel-1 RGB Decomposition of RTC VV and VH imagery, processed by ASF. "
             "Blue areas have low returns in VV and VH (smooth surfaces such as calm water, "
             "but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume "
