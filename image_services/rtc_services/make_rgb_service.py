@@ -9,13 +9,13 @@ service_name = 'ASF_S1_RGB'
 dataset_name = 'RGB'
 working_directory = '/home/arcgis/hjkristenson/RTCServices/'
 output_name = f'{project_name}_{dataset_name}_{today}'
-output_path = f'{working_directory}{project_name}_{today}'
 raster_store = '/home/arcgis/raster_store/'
 s3_path = '/vsis3/hyp3-nasa-disasters/'
 s3_prefix = 'RTC_services/'
 
 geodatabase = f'{output_name}.gdb'
 mosaic_dataset = f'{geodatabase}/{dataset_name}'
+mosaic_dataset_path = f'{working_directory}{mosaic_dataset}'
 raster_function_template = f'None'
 overview_name = f'{project_name}_{dataset_name}_{today}_overview'
 local_overview = f'/home/arcgis/raster_store/{overview_name}.crf'
@@ -70,7 +70,7 @@ arcpy.management.CalculateFields(
         ['MaxPS', '1610'],
         ['StartDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" + !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" + !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
         ['EndDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" + !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" + !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
-        ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{s3_prefix}/"+!Name!+".tif"'],
+        ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{s3_prefix}"+!Name!+".tif"'],
     ],
 )
 
@@ -200,7 +200,7 @@ arcpy.management.CalculateFields(
 
 print(f'Publishing {service_definition_draft}...')
 arcpy.CreateImageSDDraft(
-    raster_or_mosaic_layer=mosaic_dataset,
+    raster_or_mosaic_layer=mosaic_dataset_path,
     out_sddraft=service_definition_draft,
     service_name=service_name,
     summary="Sentinel-1 RGB Decomposition of RTC VV and VH imagery, processed by ASF. "
