@@ -52,7 +52,7 @@ arcpy.management.AddFields(
 )
 
 # Add source raster records to mosaic dataset
-print(f'Adding source rasters to {mosaic_dataset}')
+print(f'Adding source rasters to {mosaic_dataset}...')
 arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
@@ -76,7 +76,7 @@ arcpy.management.CalculateFields(
 
 # Build raster footprints and mosaic dataset boundary
 
-print('Building raster footprints...')
+print(f'Building raster footprints for {mosaic_dataset}...')
 arcpy.management.BuildFootprints(
     in_mosaic_dataset=mosaic_dataset,
     reset_footprint='NONE',
@@ -86,7 +86,7 @@ arcpy.management.BuildFootprints(
     update_boundary='UPDATE_BOUNDARY',
 )
 
-print('Building mosaic dataset boundary...')
+print(f'Building {mosaic_dataset} dataset boundary...')
 arcpy.management.BuildBoundary(
     in_mosaic_dataset=mosaic_dataset,
     append_to_existing='OVERWRITE',
@@ -95,7 +95,7 @@ arcpy.management.BuildBoundary(
 
 # Set mosaic dataset properties
 
-print('Setting mosaic dataset properties...')
+print(f'Setting properties for {mosaic_dataset}...')
 arcpy.management.SetMosaicDatasetProperties(
     in_mosaic_dataset=mosaic_dataset,
     rows_maximum_imagesize=5000,
@@ -146,14 +146,14 @@ arcpy.management.CalculateCellSizeRanges(
 
 # Generate mosaic dataset overview and add it to the mosaic dataset
 
-print('Generating local copy of overview CRF...')
+print(f'Generating {local_overview}...')
 with arcpy.EnvManager(cellSize=1200):
     arcpy.management.CopyRaster(
         in_raster=mosaic_dataset,
         out_rasterdataset=local_overview,
     )
 
-print('Moving CRF to S3 storage...')
+print(f'Moving CRF to {s3_overview}...')
 subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace("/vsis3/", "s3://"), '--recursive'])
 
 print('Adding overview to mosaic dataset...')
