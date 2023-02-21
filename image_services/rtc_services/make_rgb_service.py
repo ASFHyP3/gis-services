@@ -8,7 +8,8 @@ project_name = 'RTCservices'
 service_name = 'ASF_S1_RGB'
 dataset_name = 'RGB'
 working_directory = '/home/arcgis/hjkristenson/RTCServices/'
-output_name = f'{working_directory}{project_name}_{today}'
+output_name = f'{project_name}_{today}'
+output_path = f'{working_directory}{project_name}_{today}'
 raster_store = '/home/arcgis/raster_store/'
 s3_path = '/vsis3/hyp3-nasa-disasters/'
 s3_prefix = 'RTC_services/'
@@ -25,17 +26,22 @@ service_definition = f'{output_name}.sd'
 
 arcpy.env.parallelProcessingFactor = '75%'
 
+# Create new file geodatabase, add a mosaic dataset, add additional fields
+
+print(f'Creating {geodatabase}...')
 arcpy.management.CreateFileGDB(
     out_folder_path=working_directory,
-    out_name=f'{dataset_name}.gdb',
+    out_name=geodatabase,
 )
 
+print(f'Creating {mosaic_dataset}...')
 arcpy.management.CreateMosaicDataset(
     in_workspace=geodatabase,
     in_mosaicdataset_name=dataset_name,
     coordinate_system=3857,
 )
 
+print(f'Adding fields to {mosaic_dataset}...')
 arcpy.management.AddFields(
     in_table=mosaic_dataset,
     field_description=[
@@ -45,13 +51,17 @@ arcpy.management.AddFields(
     ],
 )
 
+# Add source raster records to mosaic dataset
+print(f'Adding source rasters to {mosaic_dataset}...')
 arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
     input_path=f'{s3_path}{s3_prefix}',
-    filter='*_202302*rgb.tif',
+    filter='*202302*rgb.tif',
 )
 
+# Calculate custom field values
+print(f'Calculating custom field values in {mosaic_dataset}...')
 arcpy.management.CalculateFields(
     in_table=mosaic_dataset,
     fields=[
@@ -60,10 +70,13 @@ arcpy.management.CalculateFields(
         ['MaxPS', '1610'],
         ['StartDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" + !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" + !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
         ['EndDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" + !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" + !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
-        ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{s3_prefix}!Name!.tif"'],
+        ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{s3_prefix}/"+!Name!+".tif"'],
     ],
 )
 
+# Build raster footprints and mosaic dataset boundary
+
+print(f'Building raster footprints for {mosaic_dataset}...')
 arcpy.management.BuildFootprints(
     in_mosaic_dataset=mosaic_dataset,
     reset_footprint='NONE',
@@ -73,12 +86,16 @@ arcpy.management.BuildFootprints(
     update_boundary='UPDATE_BOUNDARY',
 )
 
+print(f'Building {mosaic_dataset} dataset boundary...')
 arcpy.management.BuildBoundary(
     in_mosaic_dataset=mosaic_dataset,
     append_to_existing='OVERWRITE',
     simplification_method='NONE',
 )
 
+# Set mosaic dataset properties
+
+print(f'Setting properties for {mosaic_dataset}...')
 arcpy.management.SetMosaicDatasetProperties(
     in_mosaic_dataset=mosaic_dataset,
     rows_maximum_imagesize=5000,
@@ -117,6 +134,7 @@ arcpy.management.SetMosaicDatasetProperties(
     default_processing_template=raster_function_template,
 )
 
+print('Calculating cell size ranges...')
 arcpy.management.CalculateCellSizeRanges(
     in_mosaic_dataset=mosaic_dataset,
     do_compute_min='NO_MIN_CELL_SIZES',
@@ -126,14 +144,19 @@ arcpy.management.CalculateCellSizeRanges(
     update_missing_only='UPDATE_ALL',
 )
 
+# Generate mosaic dataset overview and add it to the mosaic dataset
+
+print(f'Generating {local_overview}...')
 with arcpy.EnvManager(cellSize=1200):
     arcpy.management.CopyRaster(
         in_raster=mosaic_dataset,
         out_rasterdataset=local_overview,
     )
 
+print(f'Moving CRF to {s3_overview}...')
 subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace("/vsis3/", "s3://"), '--recursive'])
 
+print('Adding overview to mosaic dataset...')
 arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
@@ -151,11 +174,14 @@ if (ds_cursor is not None):
     stdate = min(stdatelist)
     endate = min(stdatelist)
 
+# Calculate custom field values for the overview record
+
 selection = arcpy.management.SelectLayerByAttribute(
     in_layer_or_view=mosaic_dataset,
     selection_type='NEW_SELECTION',
     where_clause=f"Name = '{overview_name}'",
 )
+print('Calculating custom fields for overview record...')
 arcpy.management.CalculateFields(
     in_table=selection,
     fields=[
@@ -167,6 +193,9 @@ arcpy.management.CalculateFields(
     ],
 )
 
+# Publish a service definition
+
+print(f'Publishing {service_definition_draft}...')
 arcpy.CreateImageSDDraft(
     raster_or_mosaic_layer=mosaic_dataset,
     out_sddraft=service_definition_draft,
@@ -178,6 +207,7 @@ arcpy.CreateImageSDDraft(
             "returns and relatively low VH returns (such as urban or sparsely vegetated areas).",
 )
 
+print(f'Publishing {service_definition}...')
 arcpy.server.StageService(
     in_service_definition_draft=service_definition_draft,
     out_service_definition=service_definition,
