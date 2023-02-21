@@ -49,7 +49,7 @@ arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
     input_path=f'{s3_path}{s3_prefix}',
-    filter='*rgb.tif',
+    filter='*_202302*rgb.tif',
 )
 
 arcpy.management.CalculateFields(
