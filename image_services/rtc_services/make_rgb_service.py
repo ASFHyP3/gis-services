@@ -68,7 +68,7 @@ arcpy.management.BuildFootprints(
     in_mosaic_dataset=mosaic_dataset,
     reset_footprint='NONE',
     min_data_value=0,
-    max_data_value=1,
+    max_data_value=4294967295,
     approx_num_vertices=12,
     update_boundary='UPDATE_BOUNDARY',
 )
