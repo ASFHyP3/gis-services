@@ -172,7 +172,7 @@ if (ds_cursor is not None):
         if row[0] != 'Dataset':
             stdatelist.append(row[1])
     stdate = min(stdatelist)
-    endate = min(stdatelist)
+    endate = max(stdatelist)
 
 stdate_buffer = stdate + datetime.timedelta(hours=-8)
 endate_buffer = endate + datetime.timedelta(hours=8)
