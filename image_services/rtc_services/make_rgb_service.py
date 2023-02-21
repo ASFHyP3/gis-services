@@ -27,7 +27,7 @@ arcpy.env.parallelProcessingFactor = '75%'
 
 arcpy.management.CreateFileGDB(
     out_folder_path=working_directory,
-    out_name=f'{dataset_name}.gdb',
+    out_name=geodatabase,
 )
 
 arcpy.management.CreateMosaicDataset(
@@ -49,7 +49,7 @@ arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
     input_path=f'{s3_path}{s3_prefix}',
-    filter='*rgb.tif',
+    filter='*202302*rgb.tif',
 )
 
 arcpy.management.CalculateFields(
