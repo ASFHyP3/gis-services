@@ -13,6 +13,7 @@ working_directory = '/home/arcgis/RTCServices/'
 raster_store = '/home/arcgis/raster_store/'
 s3_path = '/vsis3/hyp3-nasa-disasters/'
 s3_prefix = 'RTC_services/'
+raster_filter = '*rgb.tif'
 
 output_name = f'{project_name}_{dataset_name}_{today}'
 geodatabase = f'{output_name}.gdb'
@@ -58,7 +59,7 @@ arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
     input_path=f'{s3_path}{s3_prefix}',
-    filter='*202302*rgb.tif',
+    filter=raster_filter,
 )
 
 # Calculate custom field values
