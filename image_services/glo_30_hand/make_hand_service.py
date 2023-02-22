@@ -4,14 +4,17 @@ import traceback
 
 import arcpy
 
+# FIXME don't break lines (because it breaks URLs)
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('working_directory')
 parser.add_argument(
     '--rasters-filter',
-    default='.*Copernicus_DSM_COG_10_[NS][0-8]\d_00_[EW]\d\d\d_00_HAND.tif',
+    default='REGEX:.*Copernicus_DSM_COG_10_[NS][0-8]\d_00_[EW]\d\d\d_00_HAND.tif',
     help=(
-        'Rasters from the glo-30-hand collection will be filtered through this '
-        'regex before they are added to the mosaic dataset.'
+        'Rasters from the glo-30-hand collection will be selected using this '
+        'filter before they are added to the mosaic dataset. See '
+        'https://pro.arcgis.com/en/pro-app/latest/tool-reference/data-management/add-rasters-to-mosaic-dataset.htm '
+        'for filter syntax.'
     )
 )
 args = parser.parse_args()
@@ -63,7 +66,7 @@ try:
         in_mosaic_dataset=mosaic_dataset,
         raster_type='Raster Dataset',
         input_path='/vsis3/glo-30-hand/v1/2021/',
-        filter=f'REGEX:{args.rasters_filter}',
+        filter=args.rasters_filter,
     )
 
     print('CalculateFields')
