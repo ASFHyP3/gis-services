@@ -206,5 +206,5 @@ try:
         out_service_definition=service_definition,
     )
 except arcpy.ExecuteError:
-    traceback.print_exc()
     print(arcpy.GetMessages())
+    raise
