@@ -7,6 +7,7 @@ import arcpy
 # FIXME don't break lines (because it breaks URLs)
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('working_directory')
+parser.add_argument('--dataset-name', default='GLO30_HAND', help='Dataset name.')
 parser.add_argument(
     '--rasters-filter',
     default='REGEX:.*Copernicus_DSM_COG_10_[NS][0-8]\d_00_[EW]\d\d\d_00_HAND.tif',
@@ -20,7 +21,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 
-dataset_name = 'GLO30_HAND'
+dataset_name = args.dataset_name
 working_directory = args.working_directory
 raster_store = '/home/arcgis/raster_store/'
 
