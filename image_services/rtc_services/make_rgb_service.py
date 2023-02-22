@@ -4,15 +4,17 @@ import subprocess
 import arcpy
 
 today = datetime.datetime.now(datetime.timezone.utc).strftime("%y%m%d_%H%M")
+
+# Set project variables
 project_name = 'RTCservices'
 service_name = 'ASF_S1_RGB'
 dataset_name = 'RGB'
-working_directory = '/home/arcgis/hjkristenson/RTCServices/'
-output_name = f'{project_name}_{dataset_name}_{today}'
+working_directory = '/home/arcgis/RTCServices/'
 raster_store = '/home/arcgis/raster_store/'
 s3_path = '/vsis3/hyp3-nasa-disasters/'
 s3_prefix = 'RTC_services/'
 
+output_name = f'{project_name}_{dataset_name}_{today}'
 geodatabase = f'{output_name}.gdb'
 mosaic_dataset = f'{geodatabase}/{dataset_name}'
 mosaic_dataset_path = f'{working_directory}{mosaic_dataset}'
@@ -20,9 +22,8 @@ raster_function_template = f'None'
 overview_name = f'{project_name}_{dataset_name}_{today}_overview'
 local_overview = f'/home/arcgis/raster_store/{overview_name}.crf'
 s3_overview = f'/vsis3/hyp3-nasa-disasters/overviews/{overview_name}.crf'
-service_definition_draft = f'{output_name}.sddraft'
-service_definition = f'{output_name}.sd'
-
+service_definition_draft = f'{working_directory}{output_name}.sddraft'
+service_definition = f'{working_directory}{output_name}.sd'
 
 arcpy.env.parallelProcessingFactor = '75%'
 
