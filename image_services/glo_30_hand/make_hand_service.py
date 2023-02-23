@@ -1,6 +1,7 @@
 import argparse
+import os
 import subprocess
-import traceback
+import tempfile
 
 import arcpy
 
@@ -29,7 +30,7 @@ geodatabase = f'{working_directory}{dataset_name}.gdb'
 mosaic_dataset = f'{geodatabase}/{dataset_name}'
 raster_function_template = f'{working_directory}GLO30_HAND_2SDstretch.rft.xml'
 overview_name = f'{dataset_name}_Overview'
-local_overview = f'/home/arcgis/raster_store/{overview_name}.crf'
+local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'/vsis3/hyp3-nasa-disasters/overviews/{overview_name}.crf'
 service_definition_draft = f'{working_directory}{dataset_name}.sddraft'
 service_definition = f'{working_directory}{dataset_name}.sd'
@@ -147,15 +148,17 @@ try:
         update_missing_only='UPDATE_ALL',
     )
 
-    with arcpy.EnvManager(cellSize=600):
-        print('CopyRaster')
-        arcpy.management.CopyRaster(
-            in_raster=mosaic_dataset,
-            out_rasterdataset=local_overview,
-        )
+    with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
+        local_overview = os.path.join(temp_dir, local_overview_filename)
+        with arcpy.EnvManager(cellSize=600):
+            print(f'Copying from {mosaic_dataset} to {local_overview}')
+            arcpy.management.CopyRaster(
+                in_raster=mosaic_dataset,
+                out_rasterdataset=local_overview,
+            )
 
-    print('aws s3 cp')
-    subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace("/vsis3/", "s3://"), '--recursive'])
+        print('aws s3 cp')
+        subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace("/vsis3/", "s3://"), '--recursive'])
 
     print('AddRastersToMosaicDataset')
     arcpy.management.AddRastersToMosaicDataset(
