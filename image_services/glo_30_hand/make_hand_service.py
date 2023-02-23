@@ -5,7 +5,6 @@ import tempfile
 
 import arcpy
 
-# FIXME don't break lines (because it breaks URLs)
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('working_directory')
 parser.add_argument('--dataset-name', default='GLO30_HAND', help='Dataset name.')
@@ -14,9 +13,8 @@ parser.add_argument(
     default='REGEX:.*Copernicus_DSM_COG_10_[NS][0-8]\d_00_[EW]\d\d\d_00_HAND.tif',
     help=(
         'Rasters from the glo-30-hand collection will be selected using this '
-        'filter before they are added to the mosaic dataset. See '
-        'https://pro.arcgis.com/en/pro-app/latest/tool-reference/data-management/add-rasters-to-mosaic-dataset.htm '
-        'for filter syntax.'
+        'filter before they are added to the mosaic dataset. The syntax is as '
+        'expected by the `filter` option of arcpy.management.AddRastersToMosaicDataset.'
     )
 )
 args = parser.parse_args()
