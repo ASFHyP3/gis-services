@@ -32,7 +32,6 @@ raster_function_template = f'{working_directory}GLO30_HAND_2SDstretch.rft.xml'
 overview_name = f'{dataset_name}_Overview'
 local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'/vsis3/hyp3-nasa-disasters/overviews/{overview_name}.crf'
-service_definition_draft = f'{working_directory}{dataset_name}.sddraft'
 service_definition = f'{working_directory}{dataset_name}.sd'
 
 
@@ -151,7 +150,7 @@ try:
     with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
         local_overview = os.path.join(temp_dir, local_overview_filename)
         with arcpy.EnvManager(cellSize=600):
-            print(f'Copying from {mosaic_dataset} to {local_overview}')
+            print(f'CopyRaster from {mosaic_dataset} to {local_overview}')
             arcpy.management.CopyRaster(
                 in_raster=mosaic_dataset,
                 out_rasterdataset=local_overview,
@@ -186,29 +185,30 @@ try:
         ],
     )
 
-    print('CreateImageSDDraft')
-    arcpy.CreateImageSDDraft(
-        raster_or_mosaic_layer=mosaic_dataset,
-        out_sddraft=service_definition_draft,
-        service_name=dataset_name,
-        summary="Height Above Nearest Drainage (HAND) is a terrain model that normalizes topography to the relative " \
-                "heights along the drainage network and is used to describe the relative soil gravitational potentials " \
-                "or the local drainage potentials. Each pixel value represents the vertical distance to the nearest " \
-                "drainage. The HAND data provides near-worldwide land coverage at 30 meters and was produced from " \
-                "the 2021 release of the Copernicus GLO-30 Public DEM as distributed in the Registry of Open Data on " \
-                "AWS (https://registry.opendata.aws/copernicus-dem/) using the the ASF Tools Python Package " \
-                "(https://hyp3-docs.asf.alaska.edu/tools/asf_tools_api/#asf_tools.hand.calculate) and the PySheds " \
-                "Python library (https://github.com/mdbartos/pysheds). The HAND data are provided as a tiled set of " \
-                "Cloud Optimized GeoTIFFs (COGs) with 30-meter (1 arcsecond) pixel spacing. The COGs are organized " \
-                "into the same 1 degree by 1 degree grid tiles as the GLO-30 DEM, and individual tiles are " \
-                "pixel-aligned to the corresponding COG DEM tile.",
-    )
+    with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
+        print(f'CreateImageSDDraft: {service_definition_draft.name}')
+        arcpy.CreateImageSDDraft(
+            raster_or_mosaic_layer=mosaic_dataset,
+            out_sddraft=service_definition_draft.name,
+            service_name=dataset_name,
+            summary="Height Above Nearest Drainage (HAND) is a terrain model that normalizes topography to the relative " \
+                        "heights along the drainage network and is used to describe the relative soil gravitational potentials " \
+                        "or the local drainage potentials. Each pixel value represents the vertical distance to the nearest " \
+                        "drainage. The HAND data provides near-worldwide land coverage at 30 meters and was produced from " \
+                        "the 2021 release of the Copernicus GLO-30 Public DEM as distributed in the Registry of Open Data on " \
+                        "AWS (https://registry.opendata.aws/copernicus-dem/) using the the ASF Tools Python Package " \
+                        "(https://hyp3-docs.asf.alaska.edu/tools/asf_tools_api/#asf_tools.hand.calculate) and the PySheds " \
+                        "Python library (https://github.com/mdbartos/pysheds). The HAND data are provided as a tiled set of " \
+                        "Cloud Optimized GeoTIFFs (COGs) with 30-meter (1 arcsecond) pixel spacing. The COGs are organized " \
+                        "into the same 1 degree by 1 degree grid tiles as the GLO-30 DEM, and individual tiles are " \
+                        "pixel-aligned to the corresponding COG DEM tile.",
+        )
 
-    print('StageService')
-    arcpy.server.StageService(
-        in_service_definition_draft=service_definition_draft,
-        out_service_definition=service_definition,
-    )
+        print('StageService')
+        arcpy.server.StageService(
+            in_service_definition_draft=service_definition_draft.name,
+            out_service_definition=service_definition,
+        )
 except arcpy.ExecuteError:
     print(arcpy.GetMessages())
     raise
