@@ -158,7 +158,7 @@ arcpy.management.AddRastersToMosaicDataset(
 
 ds_cursor = arcpy.da.SearchCursor(mosaic_dataset, ["Tag", "StartDate"])
 stdatelist = []
-if (ds_cursor is not None):
+if ds_cursor is not None:
     print('Determining Start and End Dates...')
     for row in ds_cursor:
         if row[0] != 'Dataset':
