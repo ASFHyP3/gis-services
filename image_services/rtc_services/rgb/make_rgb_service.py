@@ -156,34 +156,30 @@ arcpy.management.AddRastersToMosaicDataset(
     input_path=s3_overview,
 )
 
-ds_cursor = arcpy.da.SearchCursor(mosaic_dataset, ["Tag", "StartDate"])
+print('Calculating Overview Start and End Dates...')
 stdatelist = []
-if ds_cursor is not None:
-    print('Determining Start and End Dates...')
+with arcpy.da.SearchCursor(mosaic_dataset, ["Tag", "StartDate"]) as ds_cursor:
     for row in ds_cursor:
         if row[0] != 'Dataset':
             stdatelist.append(row[1])
-    stdate = min(stdatelist)
-    endate = max(stdatelist)
+stdate = min(stdatelist) + datetime.timedelta(hours=-8)
+endate = max(stdatelist) + datetime.timedelta(hours=8)
 
-stdate_buffer = stdate + datetime.timedelta(hours=-8)
-endate_buffer = endate + datetime.timedelta(hours=8)
-
+print('Calculating custom fields for overview record...')
 selection = arcpy.management.SelectLayerByAttribute(
     in_layer_or_view=mosaic_dataset,
     selection_type='NEW_SELECTION',
     where_clause=f"Name = '{overview_name}'",
 )
 
-print('Calculating custom fields for overview record...')
 arcpy.management.CalculateFields(
     in_table=selection,
     fields=[
         ['MinPS', '1600'],
         ['Category', '2'],
         ['GroupName', '"Mosaic Overview"'],
-        ['StartDate', f'"{stdate_buffer}"'],
-        ['EndDate', f'"{endate_buffer}"'],
+        ['StartDate', f'"{stdate}"'],
+        ['EndDate', f'"{endate}"'],
     ],
 )
 
