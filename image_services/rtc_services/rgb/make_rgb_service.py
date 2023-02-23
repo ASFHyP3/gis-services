@@ -5,7 +5,6 @@ import arcpy
 
 today = datetime.datetime.now(datetime.timezone.utc).strftime("%y%m%d_%H%M")
 
-# Set project variables
 project_name = 'RTCservices'
 service_name = 'ASF_S1_RGB'
 dataset_name = 'RGB'
@@ -29,7 +28,6 @@ service_definition = f'{working_directory}{output_name}.sd'
 
 arcpy.env.parallelProcessingFactor = '75%'
 
-# Create new file geodatabase, add a mosaic dataset, add additional fields
 
 print(f'Creating {geodatabase}...')
 arcpy.management.CreateFileGDB(
@@ -54,7 +52,6 @@ arcpy.management.AddFields(
     ],
 )
 
-# Add source raster records to mosaic dataset
 print(f'Adding source rasters to {mosaic_dataset}...')
 arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset=mosaic_dataset,
@@ -63,7 +60,6 @@ arcpy.management.AddRastersToMosaicDataset(
     filter=raster_filter,
 )
 
-# Calculate custom field values
 print(f'Calculating custom field values in {mosaic_dataset}...')
 arcpy.management.CalculateFields(
     in_table=mosaic_dataset,
@@ -76,8 +72,6 @@ arcpy.management.CalculateFields(
         ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{s3_prefix}"+!Name!+".tif"'],
     ],
 )
-
-# Build raster footprints and mosaic dataset boundary
 
 print(f'Building raster footprints for {mosaic_dataset}...')
 arcpy.management.BuildFootprints(
@@ -95,8 +89,6 @@ arcpy.management.BuildBoundary(
     append_to_existing='OVERWRITE',
     simplification_method='NONE',
 )
-
-# Set mosaic dataset properties
 
 print(f'Setting properties for {mosaic_dataset}...')
 arcpy.management.SetMosaicDatasetProperties(
@@ -147,8 +139,6 @@ arcpy.management.CalculateCellSizeRanges(
     update_missing_only='UPDATE_ALL',
 )
 
-# Generate mosaic dataset overview and add it to the mosaic dataset
-
 print(f'Generating {local_overview}...')
 with arcpy.EnvManager(cellSize=1200):
     arcpy.management.CopyRaster(
@@ -166,10 +156,9 @@ arcpy.management.AddRastersToMosaicDataset(
     input_path=s3_overview,
 )
 
-# Calculate the date range of the items in the mosaic dataset
 ds_cursor = arcpy.da.SearchCursor(mosaic_dataset, ["Tag", "StartDate"])
 stdatelist = []
-if (ds_cursor is not None):
+if ds_cursor is not None:
     print('Determining Start and End Dates...')
     for row in ds_cursor:
         if row[0] != 'Dataset':
@@ -180,13 +169,12 @@ if (ds_cursor is not None):
 stdate_buffer = stdate + datetime.timedelta(hours=-8)
 endate_buffer = endate + datetime.timedelta(hours=8)
 
-# Calculate custom field values for the overview record
-
 selection = arcpy.management.SelectLayerByAttribute(
     in_layer_or_view=mosaic_dataset,
     selection_type='NEW_SELECTION',
     where_clause=f"Name = '{overview_name}'",
 )
+
 print('Calculating custom fields for overview record...')
 arcpy.management.CalculateFields(
     in_table=selection,
@@ -198,8 +186,6 @@ arcpy.management.CalculateFields(
         ['EndDate', f'"{endate_buffer}"'],
     ],
 )
-
-# Publish a service definition
 
 print(f'Publishing {service_definition_draft}...')
 arcpy.CreateImageSDDraft(
