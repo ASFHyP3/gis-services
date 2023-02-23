@@ -1,9 +1,13 @@
 import argparse
+import logging
 import os
 import subprocess
 import tempfile
 
 import arcpy
+
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('working_directory')
@@ -36,20 +40,20 @@ service_definition = f'{working_directory}{dataset_name}.sd'
 arcpy.env.parallelProcessingFactor = '75%'
 
 try:
-    print('CreateFileGDB')
+    logging.info('CreateFileGDB')
     arcpy.management.CreateFileGDB(
         out_folder_path=working_directory,
         out_name=f'{dataset_name}.gdb',
     )
 
-    print('CreateMosaicDataset')
+    logging.info('CreateMosaicDataset')
     arcpy.management.CreateMosaicDataset(
         in_workspace=geodatabase,
         in_mosaicdataset_name=dataset_name,
         coordinate_system=3857,
     )
 
-    print('AddFields')
+    logging.info('AddFields')
     arcpy.management.AddFields(
         in_table=mosaic_dataset,
         field_description=[
@@ -60,7 +64,7 @@ try:
         ],
     )
 
-    print('AddRastersToMosaicDataset')
+    logging.info('AddRastersToMosaicDataset')
     arcpy.management.AddRastersToMosaicDataset(
         in_mosaic_dataset=mosaic_dataset,
         raster_type='Raster Dataset',
@@ -68,7 +72,7 @@ try:
         filter=args.rasters_filter,
     )
 
-    print('CalculateFields')
+    logging.info('CalculateFields')
     arcpy.management.CalculateFields(
         in_table=mosaic_dataset,
         fields=[
@@ -82,7 +86,7 @@ try:
         ],
     )
 
-    print('BuildFootprints')
+    logging.info('BuildFootprints')
     arcpy.management.BuildFootprints(
         in_mosaic_dataset=mosaic_dataset,
         reset_footprint='NONE',
@@ -92,14 +96,14 @@ try:
         update_boundary='UPDATE_BOUNDARY',
     )
 
-    print('BuildBoundary')
+    logging.info('BuildBoundary')
     arcpy.management.BuildBoundary(
         in_mosaic_dataset=mosaic_dataset,
         append_to_existing='OVERWRITE',
         simplification_method='NONE',
     )
 
-    print('SetMosaicDatasetProperties')
+    logging.info('SetMosaicDatasetProperties')
     arcpy.management.SetMosaicDatasetProperties(
         in_mosaic_dataset=mosaic_dataset,
         rows_maximum_imagesize=5000,
@@ -135,7 +139,7 @@ try:
         default_processing_template=raster_function_template,
     )
 
-    print('CalculateCellSizeRanges')
+    logging.info('CalculateCellSizeRanges')
     arcpy.management.CalculateCellSizeRanges(
         in_mosaic_dataset=mosaic_dataset,
         do_compute_min='NO_MIN_CELL_SIZES',
@@ -148,29 +152,29 @@ try:
     with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
         local_overview = os.path.join(temp_dir, local_overview_filename)
         with arcpy.EnvManager(cellSize=600):
-            print(f'CopyRaster from {mosaic_dataset} to {local_overview}')
+            logging.info(f'CopyRaster from {mosaic_dataset} to {local_overview}')
             arcpy.management.CopyRaster(
                 in_raster=mosaic_dataset,
                 out_rasterdataset=local_overview,
             )
 
-        print('aws s3 cp')
+        logging.info('aws s3 cp')
         subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace("/vsis3/", "s3://"), '--recursive'])
 
-    print('AddRastersToMosaicDataset')
+    logging.info('AddRastersToMosaicDataset')
     arcpy.management.AddRastersToMosaicDataset(
         in_mosaic_dataset=mosaic_dataset,
         raster_type='Raster Dataset',
         input_path=s3_overview,
     )
 
-    print('SelectLayerByAttribute')
+    logging.info('SelectLayerByAttribute')
     selection = arcpy.management.SelectLayerByAttribute(
         in_layer_or_view=mosaic_dataset,
         selection_type='NEW_SELECTION',
         where_clause=f"Name = '{overview_name}'",
     )
-    print('CalculateFields')
+    logging.info('CalculateFields')
     arcpy.management.CalculateFields(
         in_table=selection,
         fields=[
@@ -184,7 +188,7 @@ try:
     )
 
     with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
-        print(f'CreateImageSDDraft: {service_definition_draft.name}')
+        logging.info(f'CreateImageSDDraft: {service_definition_draft.name}')
         arcpy.CreateImageSDDraft(
             raster_or_mosaic_layer=mosaic_dataset,
             out_sddraft=service_definition_draft.name,
@@ -202,11 +206,11 @@ try:
                         "pixel-aligned to the corresponding COG DEM tile.",
         )
 
-        print('StageService')
+        logging.info('StageService')
         arcpy.server.StageService(
             in_service_definition_draft=service_definition_draft.name,
             out_service_definition=service_definition,
         )
 except arcpy.ExecuteError:
-    print(arcpy.GetMessages())
+    logging.error(arcpy.GetMessages())
     raise
