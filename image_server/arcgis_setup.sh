@@ -3,6 +3,8 @@ set -ex
 
 /opt/arcgis/server/tools/authorizeSoftware -f ArcGISGISServerAdvanced_ArcGISServer_1097910.prvc -e hjkristenson@alaska.edu
 
+mkdir /home/arcgis/raster_store
+
 wget https://gisupdates.esri.com/QFE/S-1091-P-762/ArcGIS-1091-S-K1-Patch-linux.tar
 wget https://gisupdates.esri.com/QFE/S-1091-P-770/ArcGIS-1091-S-SQ-Patch-linux.tar
 wget https://gisupdates.esri.com/QFE/S-1091-P-798/ArcGIS-1091-S-SEC2022U1-PatchB-linux.tar
