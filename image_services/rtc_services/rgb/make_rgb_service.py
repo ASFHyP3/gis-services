@@ -1,48 +1,58 @@
+import argparse
 import datetime
+import json
+import logging
+import os
 import subprocess
+import tempfile
 
 import arcpy
+from arcgis.gis.server import Server
 
-today = datetime.datetime.now(datetime.timezone.utc).strftime("%y%m%d_%H%M")
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
+
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--raster-filter', default='*rgb.tif')
+parser.add_argument('--server-connection-file', default='server_connection.json')
+parser.add_argument('--service-name', default='ASF_S1_RGB')
+parser.add_argument('--service-folder', default='ASF_S1')
+parser.add_argument('--working-directory', default=os.getcwd())
+args = parser.parse_args()
+
+today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
 
 project_name = 'RTCservices'
-service_name = 'ASF_S1_RGB'
 dataset_name = 'RGB'
-working_directory = '/home/arcgis/gis-services/image_services/rtc_services/rgb/'
 raster_store = '/home/arcgis/raster_store/'
 s3_path = '/vsis3/hyp3-nasa-disasters/'
-overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
 s3_prefix = 'RTC_services/'
-raster_filter = '*rgb.tif'
+overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
 
 output_name = f'{project_name}_{dataset_name}_{today}'
-geodatabase = f'{output_name}.gdb'
-mosaic_dataset = f'{geodatabase}/{dataset_name}'
-mosaic_dataset_path = f'{working_directory}{mosaic_dataset}'
-raster_function_template = f'None'
-overview_name = f'{project_name}_{dataset_name}_{today}_overview'
-local_overview = f'{raster_store}{overview_name}.crf'
+raster_function_template = 'None'
+overview_name = f'{output_name}_overview'
+local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
-service_definition_draft = f'{working_directory}{output_name}.sddraft'
-service_definition = f'{working_directory}{output_name}.sd'
+service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
 arcpy.env.parallelProcessingFactor = '75%'
 
 
-print(f'Creating {geodatabase}...')
-arcpy.management.CreateFileGDB(
-    out_folder_path=working_directory,
-    out_name=geodatabase,
+logging.info(f'Creating geodatabase...')
+geodatabase = arcpy.management.CreateFileGDB(
+    out_folder_path=args.working_directory,
+    out_name=f'{output_name}.gdb',
 )
 
-print(f'Creating {mosaic_dataset}...')
-arcpy.management.CreateMosaicDataset(
+logging.info(f'Creating mosaic_dataset...')
+mosaic_dataset = arcpy.management.CreateMosaicDataset(
     in_workspace=geodatabase,
     in_mosaicdataset_name=dataset_name,
     coordinate_system=3857,
 )
 
-print(f'Adding fields to {mosaic_dataset}...')
+logging.info(f'Adding fields to {mosaic_dataset}...')
 arcpy.management.AddFields(
     in_table=mosaic_dataset,
     field_description=[
@@ -52,15 +62,15 @@ arcpy.management.AddFields(
     ],
 )
 
-print(f'Adding source rasters to {mosaic_dataset}...')
+logging.info(f'Adding source rasters to {mosaic_dataset}...')
 arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
     input_path=f'{s3_path}{s3_prefix}',
-    filter=raster_filter,
+    filter=args.raster_filter,
 )
 
-print(f'Calculating custom field values in {mosaic_dataset}...')
+logging.info(f'Calculating custom field values in {mosaic_dataset}...')
 arcpy.management.CalculateFields(
     in_table=mosaic_dataset,
     fields=[
@@ -73,7 +83,7 @@ arcpy.management.CalculateFields(
     ],
 )
 
-print(f'Building raster footprints for {mosaic_dataset}...')
+logging.info(f'Building raster footprints for {mosaic_dataset}...')
 arcpy.management.BuildFootprints(
     in_mosaic_dataset=mosaic_dataset,
     reset_footprint='NONE',
@@ -83,14 +93,14 @@ arcpy.management.BuildFootprints(
     update_boundary='UPDATE_BOUNDARY',
 )
 
-print(f'Building {mosaic_dataset} dataset boundary...')
+logging.info(f'Building {mosaic_dataset} dataset boundary...')
 arcpy.management.BuildBoundary(
     in_mosaic_dataset=mosaic_dataset,
     append_to_existing='OVERWRITE',
     simplification_method='NONE',
 )
 
-print(f'Setting properties for {mosaic_dataset}...')
+logging.info(f'Setting properties for {mosaic_dataset}...')
 arcpy.management.SetMosaicDatasetProperties(
     in_mosaic_dataset=mosaic_dataset,
     rows_maximum_imagesize=5000,
@@ -129,7 +139,7 @@ arcpy.management.SetMosaicDatasetProperties(
     default_processing_template=raster_function_template,
 )
 
-print('Calculating cell size ranges...')
+logging.info('Calculating cell size ranges...')
 arcpy.management.CalculateCellSizeRanges(
     in_mosaic_dataset=mosaic_dataset,
     do_compute_min='NO_MIN_CELL_SIZES',
@@ -139,33 +149,32 @@ arcpy.management.CalculateCellSizeRanges(
     update_missing_only='UPDATE_ALL',
 )
 
-print(f'Generating {local_overview}...')
-with arcpy.EnvManager(cellSize=1200):
-    arcpy.management.CopyRaster(
-        in_raster=mosaic_dataset,
-        out_rasterdataset=local_overview,
-    )
+with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
+    local_overview = os.path.join(temp_dir, local_overview_filename)
 
-print(f'Moving CRF to {s3_overview}...')
-subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace("/vsis3/", "s3://"), '--recursive'])
+    logging.info(f'Generating {local_overview}...')
+    with arcpy.EnvManager(cellSize=1200):
+        arcpy.management.CopyRaster(
+            in_raster=mosaic_dataset,
+            out_rasterdataset=local_overview,
+        )
 
-print('Adding overview to mosaic dataset...')
+    logging.info(f'Moving CRF to {s3_overview}...')
+    subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
+
+logging.info('Adding overview to mosaic dataset...')
 arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
     input_path=s3_overview,
 )
 
-print('Calculating Overview Start and End Dates...')
-stdatelist = []
-with arcpy.da.SearchCursor(mosaic_dataset, ["Tag", "StartDate"]) as ds_cursor:
-    for row in ds_cursor:
-        if row[0] != 'Dataset':
-            stdatelist.append(row[1])
-stdate = min(stdatelist) + datetime.timedelta(hours=-8)
-endate = max(stdatelist) + datetime.timedelta(hours=8)
+logging.info('Calculating Overview Start and End Dates...')
+start_dates = [row[1] for row in arcpy.da.SearchCursor(mosaic_dataset, ['Tag', 'StartDate']) if row[0] != 'Dataset']
+overview_start_date = min(start_dates) + datetime.timedelta(hours=-8)
+overview_end_date = max(start_dates) + datetime.timedelta(hours=8)
 
-print('Calculating custom fields for overview record...')
+logging.info('Calculating custom fields for overview record...')
 selection = arcpy.management.SelectLayerByAttribute(
     in_layer_or_view=mosaic_dataset,
     selection_type='NEW_SELECTION',
@@ -178,25 +187,39 @@ arcpy.management.CalculateFields(
         ['MinPS', '1600'],
         ['Category', '2'],
         ['GroupName', '"Mosaic Overview"'],
-        ['StartDate', f'"{stdate}"'],
-        ['EndDate', f'"{endate}"'],
+        ['StartDate', f'"{overview_start_date}"'],
+        ['EndDate', f'"{overview_end_date}"'],
     ],
 )
 
-print(f'Publishing {service_definition_draft}...')
-arcpy.CreateImageSDDraft(
-    raster_or_mosaic_layer=mosaic_dataset_path,
-    out_sddraft=service_definition_draft,
-    service_name=service_name,
-    summary="Sentinel-1 RGB Decomposition of RTC VV and VH imagery, processed by ASF. "
-            "Blue areas have low returns in VV and VH (smooth surfaces such as calm water, "
-            "but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume "
-            "scatterers such as vegetation or some types of snow/ice), and red areas have relatively high VV "
-            "returns and relatively low VH returns (such as urban or sparsely vegetated areas).",
-)
+with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
+    logging.info(f'Creating draft service definition {service_definition_draft.name}...')
+    arcpy.CreateImageSDDraft(
+        raster_or_mosaic_layer=mosaic_dataset,
+        out_sddraft=service_definition_draft.name,
+        service_name=args.service_name,
+        summary='Sentinel-1 RGB Decomposition of RTC VV and VH imagery, processed by ASF. '
+                'Blue areas have low returns in VV and VH (smooth surfaces such as calm water, '
+                'but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume '
+                'scatterers such as vegetation or some types of snow/ice), and red areas have relatively high VV '
+                'returns and relatively low VH returns (such as urban or sparsely vegetated areas).',
+    )
 
-print(f'Publishing {service_definition}...')
-arcpy.server.StageService(
-    in_service_definition_draft=service_definition_draft,
-    out_service_definition=service_definition,
-)
+    logging.info(f'Creating service definition {service_definition}...')
+    arcpy.server.StageService(
+        in_service_definition_draft=service_definition_draft.name,
+        out_service_definition=service_definition,
+    )
+
+with open(args.server_connection_file) as f:
+    server_connection = json.load(f)
+server = Server(**server_connection)
+
+for service in server.services.list(folder=args.service_folder):
+    if service.properties['serviceName'] == args.service_name:
+        logging.info(f'Deleting existing {args.service_folder}/{args.service_name} service...')
+        service.delete()
+        break
+
+logging.info(f'Publishing {service_definition}...')
+server.publish_sd(service_definition, folder=args.service_folder)

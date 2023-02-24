@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(mess
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('working_directory')
-parser.add_argument('--dataset-name', default='GLO30_HAND', help='Dataset name.')
+parser.add_argument('--output-name', default='GLO30_HAND', help='Dataset name.')
 parser.add_argument(
     '--rasters-filter',
     default='REGEX:.*Copernicus_DSM_COG_10_[NS][0-8]\d_00_[EW]\d\d\d_00_HAND.tif',
@@ -24,17 +24,18 @@ parser.add_argument(
 args = parser.parse_args()
 
 
-dataset_name = args.dataset_name
+dataset_name = 'GLO30_HAND'
+output_name = args.output_name
 working_directory = args.working_directory
 raster_store = '/home/arcgis/raster_store/'
 
-geodatabase = f'{working_directory}{dataset_name}.gdb'
+geodatabase = f'{working_directory}{output_name}.gdb'
 mosaic_dataset = f'{geodatabase}/{dataset_name}'
 raster_function_template = f'{working_directory}GLO30_HAND_2SDstretch.rft.xml'
 overview_name = f'{dataset_name}_Overview'
 local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'/vsis3/hyp3-nasa-disasters/overviews/{overview_name}.crf'
-service_definition = f'{working_directory}{dataset_name}.sd'
+service_definition = f'{working_directory}{output_name}.sd'
 
 
 arcpy.env.parallelProcessingFactor = '75%'
@@ -43,7 +44,7 @@ try:
     logging.info('CreateFileGDB')
     arcpy.management.CreateFileGDB(
         out_folder_path=working_directory,
-        out_name=f'{dataset_name}.gdb',
+        out_name=f'{output_name}.gdb',
     )
 
     logging.info('CreateMosaicDataset')
