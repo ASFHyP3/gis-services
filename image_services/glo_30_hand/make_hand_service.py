@@ -183,6 +183,7 @@ try:
             ['Category', '2'],
             ['ProductName', f'"{overview_name}"'],
             ['Tag', f'"{overview_name}"'],
+            ['Dataset_ID', '"Global_30m_HAND_Overview"'],
             ['Tile', '"Zoom in further to see specific tile information"'],
             ['URLDisplay', '"Zoom in further to access download link"'],
         ],
