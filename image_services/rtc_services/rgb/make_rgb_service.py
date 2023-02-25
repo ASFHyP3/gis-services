@@ -39,20 +39,20 @@ service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 arcpy.env.parallelProcessingFactor = '75%'
 
 
-logging.info(f'Creating geodatabase...')
+logging.info(f'Creating geodatabase')
 geodatabase = arcpy.management.CreateFileGDB(
     out_folder_path=args.working_directory,
     out_name=f'{output_name}.gdb',
 )
 
-logging.info(f'Creating mosaic_dataset...')
-mosaic_dataset = arcpy.management.CreateMosaicDataset(
+logging.info(f'Creating mosaic dataset')
+mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
     in_workspace=geodatabase,
     in_mosaicdataset_name=dataset_name,
     coordinate_system=3857,
-)
+))
 
-logging.info(f'Adding fields to {mosaic_dataset}...')
+logging.info(f'Adding fields to {mosaic_dataset}')
 arcpy.management.AddFields(
     in_table=mosaic_dataset,
     field_description=[
@@ -62,7 +62,7 @@ arcpy.management.AddFields(
     ],
 )
 
-logging.info(f'Adding source rasters to {mosaic_dataset}...')
+logging.info(f'Adding source rasters to {mosaic_dataset}')
 arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
@@ -70,7 +70,7 @@ arcpy.management.AddRastersToMosaicDataset(
     filter=args.raster_filter,
 )
 
-logging.info(f'Calculating custom field values in {mosaic_dataset}...')
+logging.info(f'Calculating custom field values in {mosaic_dataset}')
 arcpy.management.CalculateFields(
     in_table=mosaic_dataset,
     fields=[
@@ -83,7 +83,7 @@ arcpy.management.CalculateFields(
     ],
 )
 
-logging.info(f'Building raster footprints for {mosaic_dataset}...')
+logging.info(f'Building raster footprints for {mosaic_dataset}')
 arcpy.management.BuildFootprints(
     in_mosaic_dataset=mosaic_dataset,
     reset_footprint='NONE',
@@ -93,14 +93,14 @@ arcpy.management.BuildFootprints(
     update_boundary='UPDATE_BOUNDARY',
 )
 
-logging.info(f'Building {mosaic_dataset} dataset boundary...')
+logging.info(f'Building {mosaic_dataset} dataset boundary')
 arcpy.management.BuildBoundary(
     in_mosaic_dataset=mosaic_dataset,
     append_to_existing='OVERWRITE',
     simplification_method='NONE',
 )
 
-logging.info(f'Setting properties for {mosaic_dataset}...')
+logging.info(f'Setting properties for {mosaic_dataset}')
 arcpy.management.SetMosaicDatasetProperties(
     in_mosaic_dataset=mosaic_dataset,
     rows_maximum_imagesize=5000,
@@ -139,7 +139,7 @@ arcpy.management.SetMosaicDatasetProperties(
     default_processing_template=raster_function_template,
 )
 
-logging.info('Calculating cell size ranges...')
+logging.info('Calculating cell size ranges')
 arcpy.management.CalculateCellSizeRanges(
     in_mosaic_dataset=mosaic_dataset,
     do_compute_min='NO_MIN_CELL_SIZES',
@@ -152,29 +152,29 @@ arcpy.management.CalculateCellSizeRanges(
 with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
     local_overview = os.path.join(temp_dir, local_overview_filename)
 
-    logging.info(f'Generating {local_overview}...')
+    logging.info(f'Generating {local_overview}')
     with arcpy.EnvManager(cellSize=1200):
         arcpy.management.CopyRaster(
             in_raster=mosaic_dataset,
             out_rasterdataset=local_overview,
         )
 
-    logging.info(f'Moving CRF to {s3_overview}...')
+    logging.info(f'Moving CRF to {s3_overview}')
     subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
 
-logging.info('Adding overview to mosaic dataset...')
+logging.info('Adding overview to mosaic dataset')
 arcpy.management.AddRastersToMosaicDataset(
     in_mosaic_dataset=mosaic_dataset,
     raster_type='Raster Dataset',
     input_path=s3_overview,
 )
 
-logging.info('Calculating Overview Start and End Dates...')
+logging.info('Calculating Overview Start and End Dates')
 start_dates = [row[1] for row in arcpy.da.SearchCursor(mosaic_dataset, ['Tag', 'StartDate']) if row[0] != 'Dataset']
 overview_start_date = min(start_dates) + datetime.timedelta(hours=-8)
 overview_end_date = max(start_dates) + datetime.timedelta(hours=8)
 
-logging.info('Calculating custom fields for overview record...')
+logging.info('Calculating custom fields for overview record')
 selection = arcpy.management.SelectLayerByAttribute(
     in_layer_or_view=mosaic_dataset,
     selection_type='NEW_SELECTION',
@@ -193,7 +193,7 @@ arcpy.management.CalculateFields(
 )
 
 with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
-    logging.info(f'Creating draft service definition {service_definition_draft.name}...')
+    logging.info(f'Creating draft service definition {service_definition_draft.name}')
     arcpy.CreateImageSDDraft(
         raster_or_mosaic_layer=mosaic_dataset,
         out_sddraft=service_definition_draft.name,
@@ -205,7 +205,7 @@ with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
                 'returns and relatively low VH returns (such as urban or sparsely vegetated areas).',
     )
 
-    logging.info(f'Creating service definition {service_definition}...')
+    logging.info(f'Creating service definition {service_definition}')
     arcpy.server.StageService(
         in_service_definition_draft=service_definition_draft.name,
         out_service_definition=service_definition,
@@ -217,9 +217,9 @@ server = Server(**server_connection)
 
 for service in server.services.list(folder=args.service_folder):
     if service.properties['serviceName'] == args.service_name:
-        logging.info(f'Deleting existing {args.service_folder}/{args.service_name} service...')
+        logging.info(f'Deleting existing {args.service_folder}/{args.service_name} service')
         service.delete()
         break
 
-logging.info(f'Publishing {service_definition}...')
+logging.info(f'Publishing {service_definition}')
 server.publish_sd(service_definition, folder=args.service_folder)
