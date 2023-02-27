@@ -30,10 +30,10 @@ s3_prefix = 'RTC_services/'
 overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
 
 output_name = f'{project_name}_{dataset_name}_{today}'
-raster_function_template = f'{working_directory}Sentinel1_RTC_Power.rft.xml;' \
-                           f'{working_directory}Sentinel1_RTC_Amplitude.rft.xml;' \
-                           f'{working_directory}Sentinel1_RTC_dB.rft.xml'
-default_raster_function_template = f'{working_directory}Sentinel1_RTC_Amplitude.rft.xml'
+raster_function_template = f'{args.working_directory}Sentinel1_RTC_Power.rft.xml;' \
+                           f'{args.working_directory}Sentinel1_RTC_Amplitude.rft.xml;' \
+                           f'{args.working_directory}Sentinel1_RTC_dB.rft.xml'
+default_raster_function_template = f'{args.working_directory}Sentinel1_RTC_Amplitude.rft.xml'
 overview_name = f'{output_name}_overview'
 local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
