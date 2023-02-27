@@ -30,7 +30,10 @@ s3_prefix = 'RTC_services/'
 overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
 
 output_name = f'{project_name}_{dataset_name}_{today}'
-raster_function_template = 'None'
+raster_function_template = f'{working_directory}Sentinel1_RTC_Power.rft.xml;' \
+                           f'{working_directory}Sentinel1_RTC_Amplitude.rft.xml;' \
+                           f'{working_directory}Sentinel1_RTC_dB.rft.xml'
+default_raster_function_template = f'{working_directory}Sentinel1_RTC_Amplitude.rft.xml'
 overview_name = f'{output_name}_overview'
 local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
@@ -136,7 +139,7 @@ arcpy.management.SetMosaicDatasetProperties(
     max_num_of_download_items=50,
     max_num_of_records_returned=2000,
     processing_templates=f'{raster_function_template};None',
-    default_processing_template=raster_function_template,
+    default_processing_template=default_raster_function_template,
 )
 
 logging.info('Calculating cell size ranges')
