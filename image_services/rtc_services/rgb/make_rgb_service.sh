@@ -2,7 +2,7 @@
 
 # wrapper script to run make_rgb_service.py via a cron schedule
 # some arcpy commands require the python session to be tied to a terminal, so the crontab should look like:
-# 0 0 * * * script -qef -c /home/arcgis/gis-services/image_services/rtc_services/rgb/make_rgb_service.sh -a /home/arcgis/gis-services/image_services/rtc_services/rgb/make_rgb_service.log
+# 0 8 * * * script -qef -c /home/arcgis/gis-services/image_services/rtc_services/rgb/make_rgb_service.sh -a /home/arcgis/gis-services/image_services/rtc_services/rgb/make_rgb_service.log
 
 set -e
 source /home/arcgis/miniconda3/etc/profile.d/conda.sh
