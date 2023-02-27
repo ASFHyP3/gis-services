@@ -171,8 +171,8 @@ arcpy.management.AddRastersToMosaicDataset(
 
 logging.info('Calculating Overview Start and End Dates')
 start_dates = [row[1] for row in arcpy.da.SearchCursor(mosaic_dataset, ['Tag', 'StartDate']) if row[0] != 'Dataset']
-overview_start_date = min(start_dates) + datetime.timedelta(hours=-8)
-overview_end_date = max(start_dates) + datetime.timedelta(hours=8)
+overview_start_date = min(start_dates).replace(microsecond=0) + datetime.timedelta(hours=-8)
+overview_end_date = max(start_dates).replace(microsecond=0) + datetime.timedelta(hours=8)
 
 logging.info('Calculating custom fields for overview record')
 selection = arcpy.management.SelectLayerByAttribute(
