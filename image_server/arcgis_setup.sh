@@ -2,6 +2,7 @@
 set -ex
 
 /opt/arcgis/server/tools/authorizeSoftware -f ArcGISGISServerAdvanced_ArcGISServer_1097910.prvc -e hjkristenson@alaska.edu
+/opt/arcgis/server/tools/authorizeSoftware -f ArcGISImageServer_ArcGISServer_1097915.prvc -e hjkristenson@alaska.edu
 
 mkdir /home/arcgis/raster_store
 
