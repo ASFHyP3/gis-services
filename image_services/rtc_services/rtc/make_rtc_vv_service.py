@@ -30,7 +30,11 @@ s3_prefix = 'RTC_services/'
 overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
 
 output_name = f'{project_name}_{dataset_name}_{today}'
-raster_function_template = 'None'
+raster_function_template = f'{args.working_directory}/Sentinel1_RTC_Power.rft.xml;' \
+                           f'{args.working_directory}/Sentinel1_RTC_Amplitude.rft.xml;' \
+                           f'{args.working_directory}/Sentinel1_RTC_dB.rft.xml;' \
+                           f'{args.working_directory}/Sentinel1_RTC_dB_Stretch.rft.xml'
+default_raster_function_template = f'{args.working_directory}/Sentinel1_RTC_dB_Stretch.rft.xml'
 overview_name = f'{output_name}_overview'
 local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
@@ -136,7 +140,7 @@ arcpy.management.SetMosaicDatasetProperties(
     max_num_of_download_items=50,
     max_num_of_records_returned=2000,
     processing_templates=f'{raster_function_template};None',
-    default_processing_template=raster_function_template,
+    default_processing_template=default_raster_function_template,
 )
 
 logging.info('Calculating cell size ranges')
@@ -171,8 +175,8 @@ arcpy.management.AddRastersToMosaicDataset(
 
 logging.info('Calculating Overview Start and End Dates')
 start_dates = [row[1] for row in arcpy.da.SearchCursor(mosaic_dataset, ['Tag', 'StartDate']) if row[0] != 'Dataset']
-overview_start_date = min(start_dates) + datetime.timedelta(hours=-8)
-overview_end_date = max(start_dates) + datetime.timedelta(hours=8)
+overview_start_date = min(start_dates).replace(microsecond=0) + datetime.timedelta(hours=-8)
+overview_end_date = max(start_dates).replace(microsecond=0) + datetime.timedelta(hours=8)
 
 logging.info('Calculating custom fields for overview record')
 selection = arcpy.management.SelectLayerByAttribute(
