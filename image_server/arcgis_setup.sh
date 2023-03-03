@@ -14,6 +14,7 @@ wget https://gisupdates.esri.com/QFE/S-1091-P-807/ArcGIS-1091-S-MPS-Patch-linux.
 wget https://gisupdates.esri.com/QFE/S-1091-P-824/ArcGIS-1091-S-SEC2022U2-Patch-linux.tar
 wget https://gisupdates.esri.com/QFE/S-1091-P-854/ArcGIS-1091-S-UNDM3-Patch-linux.tar
 wget https://gisupdates.esri.com/QFE/S-1091-P-856/ArcGIS-1091-S-GSQ-Patch-linux.tar
+wget https://gisupdates.esri.com/QFE/S-1091-P-871/ArcGIS-1091-S-CPS-Patch-linux.tar
 wget https://gisupdates.esri.com/QFE/PFA-1091-P-785/ArcGIS-1091-PFA-SEC2022U1-Patch-linux.tar
 wget https://gisupdates.esri.com/QFE/PFA-1091-P-805/ArcGIS-1091-PFA-QCS-Patch-linux.tar
 wget https://gisupdates.esri.com/QFE/PFA-1091-P-839/ArcGIS-1091-PFA-SEC2022U2-PatchB-linux.tar
