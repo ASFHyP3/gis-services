@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(mess
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--server-connection-file', default='server_connection.json')
 parser.add_argument('--working-directory', default=os.getcwd())
-parser.add_argument('config-file')
+parser.add_argument('config_file')
 args = parser.parse_args()
 
 today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
