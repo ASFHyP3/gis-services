@@ -30,9 +30,9 @@ with open(args.config_file) as f:
     config = json.load(f)
 
 output_name = f'{project_name}_{config["dataset_name"]}_{today}'
-raster_function_template = pre_res = [f'{args.working_directory}/{template};' for template in config['raster_function_templates']]
+raster_function_template = ''.join([f'{os.path.join(args.working_directory, template)};' for template in config['raster_function_templates']])
 if config["default_raster_function_template"] != "None":
-    default_raster_function_template = f'{args.working_directory}/{config["default_raster_function_template"]}'
+    default_raster_function_template = os.path.join(args.working_directory, config["default_raster_function_template"])
 else:
     default_raster_function_template = "None"
 overview_name = f'{output_name}_overview'
