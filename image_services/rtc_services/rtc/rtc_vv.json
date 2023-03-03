@@ -1,0 +1,14 @@
+{
+  "dataset_name": "RTC_VV",
+  "raster_filter": "*_VV.tif",
+  "raster_function_templates": [
+    "Sentinel1_RTC_Power.rft.xml",
+    "Sentinel1_RTC_Amplitude.rft.xml",
+    "Sentinel1_RTC_dB.rft.xml",
+    "Sentinel1_RTC_dB_Stretch.rft.xml"
+  ],
+  "default_raster_function_template": "Sentinel1_RTC_dB_Stretch.rft.xml",
+  "service_folder": "ASF_S1",
+  "service_name": "ASF_S1_RTC_VV",
+  "service_summary": "Radiometric Terrain Corrected (RTC) products generated from Sentinel-1 SAR imagery, processed by ASF. Surface water appears very dark under calm conditions, as signal bounces off the surface away from the sensor. High VV values are commonly driven by surface roughness and/or high soil moisture."
+}
