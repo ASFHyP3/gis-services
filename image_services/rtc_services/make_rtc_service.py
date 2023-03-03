@@ -13,9 +13,9 @@ from arcgis.gis.server import Server
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--config-file')
 parser.add_argument('--server-connection-file', default='server_connection.json')
 parser.add_argument('--working-directory', default=os.getcwd())
+parser.add_argument('config-file')
 args = parser.parse_args()
 
 today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
@@ -31,7 +31,10 @@ with open(args.config_file) as f:
 
 output_name = f'{project_name}_{config["dataset_name"]}_{today}'
 raster_function_template = pre_res = [f'{args.working_directory}/{template};' for template in config['raster_function_templates']]
-default_raster_function_template = f'{args.working_directory}/{config["default_raster_function_template"]}'
+if config["default_raster_function_template" != "None":
+    default_raster_function_template = f'{args.working_directory}/{config["default_raster_function_template"]}'
+else:
+    default_raster_function_template = "None"
 overview_name = f'{output_name}_overview'
 local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
@@ -75,7 +78,7 @@ logging.info(f'Calculating custom field values in {mosaic_dataset}')
 arcpy.management.CalculateFields(
     in_table=mosaic_dataset,
     fields=[
-        ['GroupName', f'{config["group_name"]}'],
+        ['GroupName', '!Name![:46]'],
         ['Tag', '!Name!.split("_")[8]'],
         ['MaxPS', '1610'],
         ['StartDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" + !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" + !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
@@ -136,7 +139,7 @@ arcpy.management.SetMosaicDatasetProperties(
     end_time_field='EndDate',
     max_num_of_download_items=50,
     max_num_of_records_returned=2000,
-    processing_templates=f'{raster_function_template};None',
+    processing_templates=f'{raster_function_template}None',
     default_processing_template=default_raster_function_template,
 )
 
