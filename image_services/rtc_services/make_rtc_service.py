@@ -31,7 +31,7 @@ with open(args.config_file) as f:
 
 output_name = f'{project_name}_{config["dataset_name"]}_{today}'
 raster_function_template = pre_res = [f'{args.working_directory}/{template};' for template in config['raster_function_templates']]
-if config["default_raster_function_template" != "None":
+if config["default_raster_function_template"] != "None":
     default_raster_function_template = f'{args.working_directory}/{config["default_raster_function_template"]}'
 else:
     default_raster_function_template = "None"
