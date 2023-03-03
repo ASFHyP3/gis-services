@@ -5,8 +5,7 @@
     "Sentinel1_RTC_Power.rft.xml",
     "Sentinel1_RTC_Amplitude.rft.xml",
     "Sentinel1_RTC_dB.rft.xml",
-    "Sentinel1_RTC_dB_Stretch.rft.xml",
-    "None"
+    "Sentinel1_RTC_dB_Stretch.rft.xml"
   ],
   "default_raster_function_template": "Sentinel1_RTC_dB_Stretch.rft.xml",
   "service_folder": "ASF_S1",
