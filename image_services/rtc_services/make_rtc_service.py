@@ -39,6 +39,7 @@ service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
 arcpy.env.parallelProcessingFactor = '75%'
 
+
 logging.info(f'Creating geodatabase')
 geodatabase = arcpy.management.CreateFileGDB(
     out_folder_path=args.working_directory,
@@ -186,7 +187,7 @@ arcpy.management.CalculateFields(
     fields=[
         ['MinPS', '1600'],
         ['Category', '2'],
-        ['GroupName', f'{config["group_name"]}'],
+        ['GroupName', '"Mosaic Overview"'],
         ['StartDate', f'"{overview_start_date}"'],
         ['EndDate', f'"{overview_end_date}"'],
     ],
