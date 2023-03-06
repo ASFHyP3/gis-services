@@ -40,8 +40,6 @@ local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
 service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
-arcpy.env.parallelProcessingFactor = '75%'
-
 try:
 
     logging.info(f'Creating geodatabase')
@@ -158,7 +156,7 @@ try:
         local_overview = os.path.join(temp_dir, local_overview_filename)
 
         logging.info(f'Generating {local_overview}')
-        with arcpy.EnvManager(cellSize=1200):
+        with arcpy.EnvManager(cellSize=1200, parallelProcessingFactor='75%'):
             arcpy.management.CopyRaster(
                 in_raster=mosaic_dataset,
                 out_rasterdataset=local_overview,
