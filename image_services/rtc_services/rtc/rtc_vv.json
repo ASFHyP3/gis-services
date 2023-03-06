@@ -10,5 +10,29 @@
   "default_raster_function_template": "Sentinel1_RTC_dB_Stretch.rft.xml",
   "service_folder": "ASF_S1",
   "service_name": "ASF_S1_RTC_VV",
-  "service_summary": "Radiometric Terrain Corrected (RTC) products generated from Sentinel-1 SAR imagery, processed by ASF. Surface water appears very dark under calm conditions, as signal bounces off the surface away from the sensor. High VV values are commonly driven by surface roughness and/or high soil moisture."
+  "properties": {
+    "accessInformation": "",
+    "catalogPath": "",
+    "culture": "en-US",
+    "description": "Sentinel-1 RGB Decomposition of RTC VV and VH imagery, processed by ASF. Blue areas have low returns in VV and VH (smooth surfaces such as calm water, but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume scatterers such as vegetation or some types of snow/ice), and red areas have relatively high VV returns and relatively low VH returns (such as urban or sparsely vegetated areas).",
+    "guid": "",
+    "licenseInfo": "",
+    "maxScale": 0,
+    "minScale": 0,
+    "name": "",
+    "snippet": "Sentinel-1 RGB Decomposition of RTC VV and VH imagery, processed by ASF. Blue areas have low returns in VV and VH (smooth surfaces such as calm water, but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume scatterers such as vegetation or some types of snow/ice), and red areas have relatively high VV returns and relatively low VH returns (such as urban or sparsely vegetated areas).",
+    "spatialReference": "",
+    "summary": "Sentinel-1 RGB Decomposition of RTC VV and VH imagery, processed by ASF. Blue areas have low returns in VV and VH (smooth surfaces such as calm water, but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume scatterers such as vegetation or some types of snow/ice), and red areas have relatively high VV returns and relatively low VH returns (such as urban or sparsely vegetated areas).",
+    "tags": [],
+    "thumbnail": "",
+    "title": "",
+    "type": "Image Service",
+    "typeKeywords": [
+      "Data",
+      "Service",
+      "Image Service",
+      "ArcGIS Server"
+    ],
+    "url": ""
+  }
 }
