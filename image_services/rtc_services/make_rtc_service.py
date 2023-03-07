@@ -5,6 +5,7 @@ import logging
 import os
 import subprocess
 import tempfile
+import xml.etree.ElementTree as ET
 
 import arcpy
 from arcgis.gis.server import Server
@@ -206,6 +207,12 @@ try:
             summary=config['service_summary'],
         )
 
+        tree = ET.parse(service_definition_draft.name)
+        root = tree.getroot()
+        for key, value in config['service_definition_overrides'].items():
+            root.find(key).text = value
+        tree.write(service_definition_draft.name)
+
         logging.info(f'Creating service definition {service_definition}')
         arcpy.server.StageService(
             in_service_definition_draft=service_definition_draft.name,
@@ -215,12 +222,6 @@ try:
     with open(args.server_connection_file) as f:
         server_connection = json.load(f)
     server = Server(**server_connection)
-
-    for service in server.services.list(folder=config['service_folder']):
-        if service.properties['serviceName'] == config['service_name']:
-            logging.info(f'Deleting existing {config["service_folder"]}/{config["service_name"]} service')
-            service.delete()
-            break
 
     logging.info(f'Publishing {service_definition}')
     server.publish_sd(service_definition, folder=config['service_folder'])
