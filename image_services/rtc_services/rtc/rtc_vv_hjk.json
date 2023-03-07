@@ -10,6 +10,7 @@
   "default_raster_function_template": "Sentinel1_RTC_dB_Stretch.rft.xml",
   "service_folder": "hjkristenson",
   "service_name": "ASF_S1_RTC_VV_TEST",
+  "service_summary": "Test service summary",
   "service_definition_overrides": {
     "Type": "esriServiceDefinitionType_Replacement",
     "ItemInfo/Title": "ASF S1 RTC VV",
