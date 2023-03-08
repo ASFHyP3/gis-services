@@ -204,7 +204,6 @@ try:
             raster_or_mosaic_layer=mosaic_dataset,
             out_sddraft=service_definition_draft.name,
             service_name=config['service_name'],
-            summary=config['service_summary'],
         )
 
         tree = ET.parse(service_definition_draft.name)
