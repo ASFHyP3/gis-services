@@ -98,7 +98,7 @@
                         </PropertySetProperty>
                         <PropertySetProperty xsi:type='typens:PropertySetProperty'>
                             <Key>description</Key>
-                            <Value xsi:type='xs:string'>Test service summary</Value>
+                            <Value xsi:type='xs:string'></Value>
                         </PropertySetProperty>
                         <PropertySetProperty xsi:type='typens:PropertySetProperty'>
                             <Key>supportedImageReturnTypes</Key>
