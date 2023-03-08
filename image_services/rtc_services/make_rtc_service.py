@@ -5,7 +5,7 @@ import logging
 import os
 import subprocess
 import tempfile
-import xml.etree.ElementTree as ET
+from lxml import etree
 
 import arcpy
 from arcgis.gis.server import Server
@@ -206,10 +206,9 @@ try:
             service_name=config['service_name'],
         )
 
-        tree = ET.parse(service_definition_draft.name)
-        root = tree.getroot()
+        tree = etree.parse(service_definition_draft.name)
         for key, value in config['service_definition_overrides'].items():
-            root.find(key).text = value
+            tree.find(key).text = value
         tree.write(service_definition_draft.name)
 
         logging.info(f'Creating service definition {service_definition}')
