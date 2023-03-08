@@ -98,7 +98,7 @@
                         </PropertySetProperty>
                         <PropertySetProperty xsi:type='typens:PropertySetProperty'>
                             <Key>description</Key>
-                            <Value xsi:type='xs:string'></Value>
+                            <Value xsi:type='xs:string'>This is the other description property</Value>
                         </PropertySetProperty>
                         <PropertySetProperty xsi:type='typens:PropertySetProperty'>
                             <Key>supportedImageReturnTypes</Key>
@@ -312,7 +312,7 @@
                         </PropertySetProperty>
                         <PropertySetProperty xsi:type='typens:PropertySetProperty'>
                             <Key>copyright</Key>
-                            <Value xsi:type='xs:string'>This is the copyright property</Value>
+                            <Value xsi:type='xs:string'>RTC products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.</Value>
                         </PropertySetProperty>
                     </PropertyArray>
                 </ConfigurationProperties>
