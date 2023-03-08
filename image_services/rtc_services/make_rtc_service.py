@@ -31,7 +31,8 @@ with open(args.config_file) as f:
     config = json.load(f)
 
 output_name = f'{project_name}_{config["dataset_name"]}_{today}'
-raster_function_template = ''.join([f'{os.path.join(args.working_directory, template)};' for template in config['raster_function_templates']])
+raster_function_template = ''.join([f'{os.path.join(args.working_directory, template)};'
+                                    for template in config['raster_function_templates']])
 if config["default_raster_function_template"] != "None":
     default_raster_function_template = os.path.join(args.working_directory, config["default_raster_function_template"])
 else:
@@ -44,14 +45,12 @@ service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 arcpy.env.parallelProcessingFactor = '75%'
 
 try:
-
-    logging.info(f'Creating geodatabase')
+    logging.info('Creating geodatabase')
     geodatabase = arcpy.management.CreateFileGDB(
         out_folder_path=args.working_directory,
         out_name=f'{output_name}.gdb',
     )
-
-    logging.info(f'Creating mosaic dataset')
+    logging.info('Creating mosaic dataset')
     mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
         in_workspace=geodatabase,
         in_mosaicdataset_name=config['dataset_name'],
@@ -83,8 +82,12 @@ try:
             ['GroupName', '!Name![:46]'],
             ['Tag', '!Name!.split("_")[8]'],
             ['MaxPS', '1610'],
-            ['StartDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" + !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" + !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
-            ['EndDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" + !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" + !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
+            ['StartDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" '
+                          '+ !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" '
+                          '+ !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
+            ['EndDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" '
+                        '+ !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" '
+                        '+ !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
             ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{s3_prefix}"+!Name!+".tif"'],
         ],
     )
@@ -135,7 +138,8 @@ try:
         cell_size_tolerance=1.8,
         cell_size=3,
         metadata_level='BASIC',
-        transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;CenterY;Tag;ProductName;GroupName;DownloadURL',
+        transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;CenterY;'
+                            'Tag;ProductName;GroupName;DownloadURL',
         use_time='ENABLED',
         start_time_field='StartDate',
         end_time_field='EndDate',
