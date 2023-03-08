@@ -87,7 +87,7 @@
             <ServiceFolder></ServiceFolder>
             <DataFolder></DataFolder>
             <Definition xsi:type='typens:SVCConfigurationDefinition'>
-                <Description>This is the description property</Description>
+                <Description>Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by ASF.</Description>
                 <ConfigurationProperties xsi:type='typens:PropertySet'>
                     <PropertyArray xsi:type='typens:ArrayOfPropertySetProperty'>
                         <PropertySetProperty xsi:type='typens:PropertySetProperty'>
@@ -98,7 +98,7 @@
                         </PropertySetProperty>
                         <PropertySetProperty xsi:type='typens:PropertySetProperty'>
                             <Key>description</Key>
-                            <Value xsi:type='xs:string'>This is the other description property</Value>
+                            <Value xsi:type='xs:string'>Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by ASF. Values for the VV polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.</Value>
                         </PropertySetProperty>
                         <PropertySetProperty xsi:type='typens:PropertySetProperty'>
                             <Key>supportedImageReturnTypes</Key>
