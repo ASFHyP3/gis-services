@@ -8,6 +8,7 @@ import tempfile
 
 import arcpy
 from arcgis.gis.server import Server
+from lxml import etree
 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
@@ -203,8 +204,12 @@ try:
             raster_or_mosaic_layer=mosaic_dataset,
             out_sddraft=service_definition_draft.name,
             service_name=config['service_name'],
-            summary=config['service_summary'],
         )
+
+        tree = etree.parse(service_definition_draft.name)
+        for key, value in config['service_definition_overrides'].items():
+            tree.find(key).text = value
+        tree.write(service_definition_draft.name)
 
         logging.info(f'Creating service definition {service_definition}')
         arcpy.server.StageService(
@@ -215,12 +220,6 @@ try:
     with open(args.server_connection_file) as f:
         server_connection = json.load(f)
     server = Server(**server_connection)
-
-    for service in server.services.list(folder=config['service_folder']):
-        if service.properties['serviceName'] == config['service_name']:
-            logging.info(f'Deleting existing {config["service_folder"]}/{config["service_name"]} service')
-            service.delete()
-            break
 
     logging.info(f'Publishing {service_definition}')
     server.publish_sd(service_definition, folder=config['service_folder'])

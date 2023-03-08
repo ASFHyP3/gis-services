@@ -6,5 +6,11 @@
   "default_raster_function_template": "None",
   "service_folder": "ASF_S1",
   "service_name": "ASF_S1_RGB",
-  "service_summary": "Sentinel-1 RGB Decomposition of RTC VV and VH imagery, processed by ASF. Blue areas have low returns in VV and VH (smooth surfaces such as calm water, but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume scatterers such as vegetation or some types of snow/ice), and red areas have relatively high VV returns and relatively low VH returns (such as urban or sparsely vegetated areas)."
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "ItemInfo/Title": "ASF S1 RGB",
+    "ItemInfo/Credits": "RGB Decomposition products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "ItemInfo/Description": "Sentinel-1 RGB Decomposition of RTC VV and VH imagery, processed by ASF. Blue areas have low returns in VV and VH (smooth surfaces such as calm water, but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume scatterers such as vegetation or some types of snow/ice), and red areas have relatively high VV returns and relatively low VH returns (such as urban or sparsely vegetated areas).",
+    "ItemInfo/Snippet": "RGB Decomposition of Sentinel-1 Radiometric Terrain Corrected (RTC) VV and VH imagery, processed by ASF."
+  }
 }
