@@ -14,7 +14,7 @@ parser.add_argument('working_directory')
 parser.add_argument('--dataset-name', default='GLO30_HAND', help='Dataset name.')
 parser.add_argument(
     '--rasters-filter',
-    default='REGEX:.*Copernicus_DSM_COG_10_[NS][0-8]\d_00_[EW]\d\d\d_00_HAND.tif',
+    default=r'REGEX:.*Copernicus_DSM_COG_10_[NS][0-8]\d_00_[EW]\d\d\d_00_HAND.tif',
     help=(
         'Rasters from the glo-30-hand collection will be selected using this '
         'filter before they are added to the mosaic dataset. The syntax is as '
@@ -131,7 +131,8 @@ try:
         cell_size_tolerance=1.8,
         cell_size=3,
         metadata_level='BASIC',
-        transmission_fields='Name;MinPS;MaxPS;LowPS;HighPS;ZOrder;Dataset_ID;CenterX;CenterY;Tag;Tile;ProductName;DownloadURL;URLDisplay',
+        transmission_fields='Name;MinPS;MaxPS;LowPS;HighPS;ZOrder;Dataset_ID;CenterX;CenterY;Tag;Tile;ProductName;'
+                            'DownloadURL;URLDisplay',
         use_time='DISABLED',
         max_num_of_download_items=50,
         max_num_of_records_returned=2000,
@@ -194,17 +195,18 @@ try:
             raster_or_mosaic_layer=mosaic_dataset,
             out_sddraft=service_definition_draft.name,
             service_name=dataset_name,
-            summary="Height Above Nearest Drainage (HAND) is a terrain model that normalizes topography to the relative " \
-                        "heights along the drainage network and is used to describe the relative soil gravitational potentials " \
-                        "or the local drainage potentials. Each pixel value represents the vertical distance to the nearest " \
-                        "drainage. The HAND data provides near-worldwide land coverage at 30 meters and was produced from " \
-                        "the 2021 release of the Copernicus GLO-30 Public DEM as distributed in the Registry of Open Data on " \
-                        "AWS (https://registry.opendata.aws/copernicus-dem/) using the the ASF Tools Python Package " \
-                        "(https://hyp3-docs.asf.alaska.edu/tools/asf_tools_api/#asf_tools.hand.calculate) and the PySheds " \
-                        "Python library (https://github.com/mdbartos/pysheds). The HAND data are provided as a tiled set of " \
-                        "Cloud Optimized GeoTIFFs (COGs) with 30-meter (1 arcsecond) pixel spacing. The COGs are organized " \
-                        "into the same 1 degree by 1 degree grid tiles as the GLO-30 DEM, and individual tiles are " \
-                        "pixel-aligned to the corresponding COG DEM tile.",
+            summary="Height Above Nearest Drainage (HAND) is a terrain model that normalizes topography to the "
+                    "relative heights along the drainage network and is used to describe the relative soil "
+                    "gravitational potentials or the local drainage potentials. Each pixel value represents the "
+                    "vertical distance to the nearest drainage. The HAND data provides near-worldwide land coverage "
+                    "at 30 meters and was produced from the 2021 release of the Copernicus GLO-30 Public DEM as "
+                    "distributed in the Registry of Open Data on AWS (https://registry.opendata.aws/copernicus-dem/) "
+                    "using the the ASF Tools Python Package ("
+                    "https://hyp3-docs.asf.alaska.edu/tools/asf_tools_api/#asf_tools.hand.calculate) and the PySheds "
+                    "Python library (https://github.com/mdbartos/pysheds). The HAND data are provided as a tiled set "
+                    "of Cloud Optimized GeoTIFFs (COGs) with 30-meter (1 arcsecond) pixel spacing. The COGs are "
+                    "organized into the same 1 degree by 1 degree grid tiles as the GLO-30 DEM, and individual tiles "
+                    "are pixel-aligned to the corresponding COG DEM tile.",
         )
 
         logging.info('StageService')
