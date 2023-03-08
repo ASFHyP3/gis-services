@@ -87,7 +87,7 @@
             <ServiceFolder></ServiceFolder>
             <DataFolder></DataFolder>
             <Definition xsi:type='typens:SVCConfigurationDefinition'>
-                <Description></Description>
+                <Description>This is the description property</Description>
                 <ConfigurationProperties xsi:type='typens:PropertySet'>
                     <PropertyArray xsi:type='typens:ArrayOfPropertySetProperty'>
                         <PropertySetProperty xsi:type='typens:PropertySetProperty'>
@@ -312,7 +312,7 @@
                         </PropertySetProperty>
                         <PropertySetProperty xsi:type='typens:PropertySetProperty'>
                             <Key>copyright</Key>
-                            <Value xsi:type='xs:string'></Value>
+                            <Value xsi:type='xs:string'>This is the copyright property</Value>
                         </PropertySetProperty>
                     </PropertyArray>
                 </ConfigurationProperties>
