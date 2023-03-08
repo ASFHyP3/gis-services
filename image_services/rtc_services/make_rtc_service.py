@@ -5,10 +5,10 @@ import logging
 import os
 import subprocess
 import tempfile
-from lxml import etree
 
 import arcpy
 from arcgis.gis.server import Server
+from lxml import etree
 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
