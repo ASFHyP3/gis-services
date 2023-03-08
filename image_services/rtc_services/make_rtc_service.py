@@ -45,12 +45,12 @@ service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 arcpy.env.parallelProcessingFactor = '75%'
 
 try:
-    logging.info(f'Creating geodatabase')
+    logging.info('Creating geodatabase')
     geodatabase = arcpy.management.CreateFileGDB(
         out_folder_path=args.working_directory,
         out_name=f'{output_name}.gdb',
     )
-    logging.info(f'Creating mosaic dataset')
+    logging.info('Creating mosaic dataset')
     mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
         in_workspace=geodatabase,
         in_mosaicdataset_name=config['dataset_name'],
