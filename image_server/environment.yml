@@ -1,0 +1,8 @@
+name: arcpy
+channels:
+  - esri
+dependencies:
+  - arcgis-server-py3=10.9.1
+  - lxml
+variables:
+  ARCGISHOME: /opt/arcgis/server/
