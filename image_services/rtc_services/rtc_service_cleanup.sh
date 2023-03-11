@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #pull any remote changes
-cd /home/arcgis/gis_services
+cd /home/arcgis/gis-services
 git pull
 
 #Script that sorts through rtc image_services directories and deletes geodatabases and service definitions > a day old
