@@ -16,21 +16,19 @@ Publishers must add the NASA SIT Portal to their list of portals in ArcGIS. This
 
 ## Publish a Service
 
-1. Navigate to the geodatabase with the mosaic dataset in the Catalog pane in ArcGIS Pro
-2. Expand the geodatabase to view the mosaic dataset
-3. Drag the mosaic dataset into the map view and verify that it behaves as expected
-4. Right-click the mosaic dataset in the Catalog pane, and select Edit Metadata
-![Edit Metadata Figure](images/EditMetadata.PNG)
-5. Populate the Title, Tags, Summary, Description and Credits sections and click the Save button at the top of the window
-6. Right-click the mosaic dataset in the Catalog pane and select Share As Web Layer
+1. Download the prepared geodatabases from our [Google Drive](https://drive.google.com/file/d/1sK29IyFrTxNvlO3zGk4g7V4hHMpPYNW5/view) and unzip contents. 
+2. Navigate to the geodatabase with the mosaic dataset in the Catalog pane in ArcGIS Pro
+3. Expand the geodatabase to view the mosaic dataset
+4. Drag the mosaic dataset into the map view and verify that it behaves as expected
+5. Right-click the mosaic dataset in the Catalog pane and select Share As Web Layer
 ![Share As Web Layer](images/ShareAsWebLayer.PNG)
-7. Select the options in the General tab
+6. Select the options in the General tab
 ![Share As Web Layer Dialog](images/ShareAsWebLayerDialog.PNG)
    1. Set the Portal Folder to GSSICB
    2. Set the Server to https://url_to_gis_server/image (this is not the default in the Server dropdown menu, and if this is not changed, there will be a licensing error)
    3. Set the server Folder to GSSICB
    4. Select Earthdata GIS under the Share options
-8. Click the Analyze button
+7. Click the Analyze button
    1. There is the possibility that a number of errors and warnings will be identified.
 ![Unique Numeric IDs Error](images/UniqueNumericIDs.PNG)
       1. The licensing error occurs when the server option has not been changed to the /image option in the dropdown menu
@@ -38,7 +36,7 @@ Publishers must add the NASA SIT Portal to their list of portals in ArcGIS. This
       3. The data source is recognized as not being in a registered location, and will warn that the data will be copied to the server. This is fine. It's not copying all the source rasters, but just the metadata and other necessary data.
       4. Mosaic dataset items are not analyzed. This is also okay.
    2. If there are errors identified, they must be fixed before publishing is possible. Warnings do not need to be fixed (unless it identifies something that should be addressed, like missing metadata, etc.)
-9. Click the Publish button
+8. Click the Publish button
    1. It will take a while to stage and publish the service
-10. Once the publishing process is complete, the service will be listed in the portal in the Content tab, inside the GSSICB folder.
-    1. The item description contains all the metadata set in ArcGIS Pro. There's a link under the Layer section that takes you to the REST Endpoint metadata page.
+9. Once the publishing process is complete, the service will be listed in the portal in the Content tab, inside the GSSICB folder.
+   1. The item description contains all the metadata set in ArcGIS Pro. There's a link under the Layer section that takes you to the REST Endpoint metadata page.
