@@ -3,7 +3,7 @@
 #pull any remote changes
 cd /home/arcgis/gis-services
 git pull
-chmod 777 /home/arcgis/gis-services/image_services/rtc_services/rtc_service_cleanup.sh
+find /home/arcgis/gis-services/image_services/rtc_services/ -name *.sh -exec chmod 777 {} \;
 
 #Script that sorts through rtc image_services directories and deletes geodatabases and service definitions > a day old
 
