@@ -16,7 +16,7 @@ Publishers must add the NASA SIT Portal to their list of portals in ArcGIS. This
 
 ## Publish a Service
 
-1. Download the prepared geodatabases from our [Google Drive](https://drive.google.com/file/d/1sK29IyFrTxNvlO3zGk4g7V4hHMpPYNW5/view) and unzip contents. 
+1. Download prepared geodatabases from our [S3 Bucket](https://asf-gis-services.s3.us-west-2.amazonaws.com/GSSICB/) and unzip contents. 
 2. Navigate to the geodatabase with the mosaic dataset in the Catalog pane in ArcGIS Pro
 3. Expand the geodatabase to view the mosaic dataset
 4. Drag the mosaic dataset into the map view and verify that it behaves as expected
