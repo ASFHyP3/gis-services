@@ -5,6 +5,7 @@ import logging
 import os
 import subprocess
 import tempfile
+from pathlib import Path
 
 import arcpy
 from arcgis.gis.server import Server
@@ -14,7 +15,7 @@ from lxml import etree
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--server-connection-file', default='server_connection.json')
+parser.add_argument('--server-connection-file', default='/home/arcgis/server_connection.json')
 parser.add_argument('--working-directory', default=os.getcwd())
 parser.add_argument('config_file')
 args = parser.parse_args()
@@ -24,12 +25,13 @@ today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
 raster_store = '/home/arcgis/raster_store/'
 s3_path = '/vsis3/hyp3-nasa-disasters/'
 overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
+template_directory = Path(__file__).parent / 'raster_function_templates'
 
 with open(args.config_file) as f:
     config = json.load(f)
 
 output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
-raster_function_template = ''.join([f'{os.path.join(args.working_directory, template)};'
+raster_function_template = ''.join([f'{template_directory / template};'
                                     for template in config['raster_function_templates']])
 if config["default_raster_function_template"] != "None":
     default_raster_function_template = os.path.join(args.working_directory, config["default_raster_function_template"])

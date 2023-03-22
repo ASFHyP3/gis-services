@@ -8,6 +8,5 @@ set -e
 source /home/arcgis/miniconda3/etc/profile.d/conda.sh
 conda activate arcpy
 python /home/arcgis/gis-services/image_services/rtc_services/make_rtc_service.py \
-  --server-connection-file /home/arcgis/server_connection.json \
   --working-directory $1 \
   $2
