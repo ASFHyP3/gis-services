@@ -86,7 +86,8 @@ try:
             ['EndDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" '
                         '+ !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" '
                         '+ !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
-            ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{config["s3_prefix"]}"+!Name!+".tif"'],
+            ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{config["s3_prefix"]}" '
+                            f'+ !Name! + ".tif"'],
         ],
     )
 
