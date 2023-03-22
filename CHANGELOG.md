@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Configuration files supporting image services for the USDA project
 ### Changed
-- `rtc_services` directory now has one folder per project (nasa_disasters, usda) and a shared folder for raster function
-  templates
+- `rtc_services` directory now has one folder per project (`nasa_disasters`, `usda`) and a shared folder for raster
+  function templates
 - Updates for `make_rtc_service.py`:
   - `project_name` and `s3_prefix` are now specified in each configuration file rather than hardcoded
   - Default value for `--server-connection-file` is now `/home/arcgis/server_connection.json`
