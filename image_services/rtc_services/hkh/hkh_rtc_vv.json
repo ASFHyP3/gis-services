@@ -1,0 +1,25 @@
+{
+  "project_name": "HKH",
+  "s3_prefix": "HKHwatermaps/",
+  "dataset_name": "RTC_VV",
+  "raster_filter": "*_VV.tif",
+  "raster_function_templates": [
+    "Sentinel1_RTC_Power.rft.xml",
+    "Sentinel1_RTC_Amplitude.rft.xml",
+    "Sentinel1_RTC_dB.rft.xml",
+    "Sentinel1_RTC_dB_Stretch.rft.xml"
+  ],
+  "default_raster_function_template": "Sentinel1_RTC_dB_Stretch.rft.xml",
+  "service_folder": "HKH",
+  "service_name": "HKH_RTC_VV",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by ASF. Values for the VV (cross-polarized) polarization are generally driven by volume scattering, with more complex volume scatterers (such as dense vegetation) returning higher backscatter values. Surface water generally appears very dark, as it is predominantly a surface scatterer; most returns remain in the primary polarization.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "RTC products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "ItemInfo/Title": "HKH RTC VV",
+    "ItemInfo/Credits": "RTC products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "ItemInfo/Description": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by ASF. Values for the VV (cross-polarized) polarization are generally driven by volume scattering, with more complex volume scatterers (such as dense vegetation) returning higher backscatter values. Surface water generally appears very dark, as it is predominantly a surface scatterer; most returns remain in the primary polarization.",
+    "ItemInfo/Snippet": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by ASF."
+  }
+}
