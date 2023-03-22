@@ -21,16 +21,14 @@ args = parser.parse_args()
 
 today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
 
-project_name = 'RTCservices'
 raster_store = '/home/arcgis/raster_store/'
 s3_path = '/vsis3/hyp3-nasa-disasters/'
-s3_prefix = 'RTC_services/'
 overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
 
 with open(args.config_file) as f:
     config = json.load(f)
 
-output_name = f'{project_name}_{config["dataset_name"]}_{today}'
+output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
 raster_function_template = ''.join([f'{os.path.join(args.working_directory, template)};'
                                     for template in config['raster_function_templates']])
 if config["default_raster_function_template"] != "None":
@@ -71,7 +69,7 @@ try:
     arcpy.management.AddRastersToMosaicDataset(
         in_mosaic_dataset=mosaic_dataset,
         raster_type='Raster Dataset',
-        input_path=f'{s3_path}{s3_prefix}',
+        input_path=f'{s3_path}{config["s3_prefix"]}',
         filter=config['raster_filter'],
     )
 
@@ -88,7 +86,7 @@ try:
             ['EndDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" '
                         '+ !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" '
                         '+ !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
-            ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{s3_prefix}"+!Name!+".tif"'],
+            ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{config["s3_prefix"]}"+!Name!+".tif"'],
         ],
     )
 
