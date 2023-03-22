@@ -1,0 +1,21 @@
+{
+  "project_name": "HKH",
+  "s3_prefix": "HKH/",
+  "dataset_name": "RGB",
+  "raster_filter": "*rgb.tif",
+  "raster_function_templates": [
+  ],
+  "default_raster_function_template": "None",
+  "service_folder": "HKH",
+  "service_name": "HKH_RGB",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "RGB Decomposition of Sentinel-1 Radiometric Terrain Corrected (RTC) VV and VH imagery, processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Sentinel-1 RGB Decomposition of RTC VV and VH imagery, processed by ASF. Blue areas have low returns in VV and VH (smooth surfaces such as calm water, but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume scatterers such as vegetation or some types of snow/ice), and red areas have relatively high VV returns and relatively low VH returns (such as urban or sparsely vegetated areas).",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "RGB Decomposition products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "ItemInfo/Title": "HKH RGB",
+    "ItemInfo/Credits": "RGB Decomposition products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "ItemInfo/Description": "Sentinel-1 RGB Decomposition of RTC VV and VH imagery, processed by ASF. Blue areas have low returns in VV and VH (smooth surfaces such as calm water, but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume scatterers such as vegetation or some types of snow/ice), and red areas have relatively high VV returns and relatively low VH returns (such as urban or sparsely vegetated areas).",
+    "ItemInfo/Snippet": "RGB Decomposition of Sentinel-1 Radiometric Terrain Corrected (RTC) VV and VH imagery, processed by ASF."
+  }
+}
