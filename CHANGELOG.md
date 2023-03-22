@@ -5,13 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [0.2.1]
-### Added
-- Configuration files supporting image services for the HKH Flood Monitoring project
-
 ## [0.2.0]
 ### Added
-- Configuration files supporting image services for the USDA project
+- Configuration files supporting image services for the USDA and HKH Flood Monitoring projects
 ### Changed
 - `rtc_services` directory now has one folder per project (`nasa_disasters`, `usda`) and a shared folder for raster
   function templates
