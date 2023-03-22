@@ -1,6 +1,6 @@
 {
   "project_name": "HKH",
-  "s3_prefix": "hkh/",
+  "s3_prefix": "HKH_RGB/",
   "dataset_name": "RTC_VH",
   "raster_filter": "*_VH.tif",
   "raster_function_templates": [
