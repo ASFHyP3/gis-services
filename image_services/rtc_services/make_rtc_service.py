@@ -34,7 +34,7 @@ output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
 raster_function_template = ''.join([f'{template_directory / template};'
                                     for template in config['raster_function_templates']])
 if config["default_raster_function_template"] != "None":
-    default_raster_function_template = os.path.join(args.working_directory, config["default_raster_function_template"])
+    default_raster_function_template = str(template_directory / config["default_raster_function_template"])
 else:
     default_raster_function_template = "None"
 overview_name = f'{output_name}_overview'
