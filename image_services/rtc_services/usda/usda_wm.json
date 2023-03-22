@@ -4,10 +4,9 @@
   "dataset_name": "WM",
   "raster_filter": "*_WM.tif",
   "raster_function_templates": [
-    "WatermapExtentBlueOnly.rft.xml",
-    "WatermapExtentWhiteandBlue.rft.xml"
+    "WatermapExtentBlue.rft.xml"
   ],
-  "default_raster_function_template": "WatermapExtentBlueOnly.rft.xml",
+  "default_raster_function_template": "WatermapExtentBlue.rft.xml",
   "service_folder": "USDA",
   "service_name": "USDA_WM",
   "service_definition_overrides": {
