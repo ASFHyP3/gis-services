@@ -1,7 +1,7 @@
 {
   "project_name": "USDA",
   "s3_prefix": "USDA_valid_zeros_nodata/",
-  "dataset_name": "WM_New_NoData_Format",
+  "dataset_name": "WM_NewNoData",
   "raster_filter": "*_WM.tif",
   "raster_function_templates": [
     "WatermapExtentBlueOnly.rft.xml",
