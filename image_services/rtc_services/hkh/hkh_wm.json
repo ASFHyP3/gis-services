@@ -1,0 +1,23 @@
+{
+  "project_name": "HKH",
+  "s3_prefix": "HKHwatermaps/",
+  "dataset_name": "WM",
+  "raster_filter": "*_WM.tif",
+  "raster_function_templates": [
+    "WatermapExtentBlueOnly.rft.xml",
+    "WatermapExtentWhiteandBlue.rft.xml"
+  ],
+  "default_raster_function_template": "WatermapExtentBlueOnly.rft.xml",
+  "service_folder": "HKH",
+  "service_name": "HKH_Watermap_Extent",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "Watermap Extent products generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF using the HydroSAR Hydro30 workflow.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Watermap Extent products generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF using the HydroSAR Hydro30 workflow. Pixel values of 1 indicate surface water, 0 is used for non-water pixels. Refer to https://ntrs.nasa.gov/citations/20210020271 for more information.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "Watermap Extent products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "ItemInfo/Title": "HKH WM",
+    "ItemInfo/Credits": "Watermap Extent products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "ItemInfo/Description": "Watermap Extent products generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF using the HydroSAR Hydro30 workflow. Pixel values of 1 indicate surface water, 0 is used for non-water pixels. Refer to https://ntrs.nasa.gov/citations/20210020271 for more information.",
+    "ItemInfo/Snippet": "Watermap Extent products generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF using the HydroSAR Hydro30 workflow."
+  }
+}

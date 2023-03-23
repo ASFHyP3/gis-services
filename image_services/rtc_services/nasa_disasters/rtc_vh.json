@@ -1,4 +1,6 @@
 {
+  "project_name": "RTCservices",
+  "s3_prefix": "RTC_services/",
   "dataset_name": "RTC_VH",
   "raster_filter": "*_VH.tif",
   "raster_function_templates": [
