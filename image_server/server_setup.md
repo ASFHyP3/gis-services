@@ -87,6 +87,8 @@ conda env create -f environment.yml
 8. Activate the arcpy conda environment and verify that the arcpy package can be imported
 ```
 conda activate arcpy
+python
+import arcpy
 ```
    - the ArcGIS licensing must be valid to access the arcpy package
    - if the arcpy package is not available for import, ensure that the ArcGIS Server license has been activated, and install arcpy in the arcpy conda environment once the license has been successfully applied
