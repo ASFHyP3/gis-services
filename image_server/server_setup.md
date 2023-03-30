@@ -67,7 +67,7 @@ sudo su root
    * If you get an error about `/var/lib/dpkg/lock`, that means the auto-updater is still running; wait and try again later
    * Accept any default prompts during the apt installations
 
-6. Run the [arcgis setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/arcgis_setup.sh) as the arcgis user to activate the ArcGIS Server licenses
+6. Run the [arcgis setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/arcgis_setup.sh) as the arcgis user to activate the ArcGIS Server licenses and apply patches to the server
 ```
 sudo su arcgis
 cd /home/arcgis/
