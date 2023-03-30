@@ -43,7 +43,7 @@ It takes about 5 minutes to stand up the instance and load balancer. The load ba
 
 ## Configure the Server
 
-1. Retrieve the appropriate prvc licence files from s3://hyp3-software/ and scp them to the server.
+1. Retrieve the appropriate prvc licence files for the ArcGIS Server and Image Server from s3://hyp3-software/ and scp them to the server
 ```
 Aws s3 –profile hyp3 s3://hyp3-software/ . –recursive –exclude “*” –include “*.prvc”
 scp ArcGISImageServer_ArcGISServer_1097915.prvc ubuntu@ec2-xx-xxx-xx-xx.us-west-2.compute.amazonaws.com:/home/ubuntu
@@ -52,18 +52,22 @@ scp ArcGISGISServerAdvanced_ArcGISServer_1097910.prvc ubuntu@ec2-xx-xxx-xx-xx.us
 
 2. SSH to the instance (IP address can be found in the EC2 Instance information under Public IP4)
 
+
 3. Add any needed public keys to `/home/ubuntu/.ssh/authorized_keys` so that other Tools team members can ssh to the server
+
 
 4. Clone the [gis-services github repository](https://github.com/ASFHyP3/gis-services/) to the server
 
-5. After the instance is created, wait 5-15 minutes for the initial auto-updater to finish running, then run the [root setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/root_setup.sh) script from the github repo on the server as the root user. If you get an error about `/var/lib/dpkg/lock`, that means the auto-updater is still running; wait and try again later.
+
+5. After the instance is created, wait 5-15 minutes for the initial auto-updater to finish running, then run the [root setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/root_setup.sh) from the github repo on the server as the root user
 ```
 sudo su root
 /bin/bash root_setup.sh
 ```
-   * Accept any default prompts during the apt installations.
+   * If you get an error about `/var/lib/dpkg/lock`, that means the auto-updater is still running; wait and try again later
+   * Accept any default prompts during the apt installations
 
-6. Run the [arcgis setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/arcgis_setup.sh) script as the arcgis user.
+6. Run the [arcgis setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/arcgis_setup.sh) as the arcgis user to activate the ArcGIS Server licenses
 ```
 sudo su arcgis
 cd /home/arcgis/
@@ -72,7 +76,7 @@ export SITE_PASSWORD=<new password for the siteadmin user in the manager app>
 /bin/bash arcgis_setup.sh
 ```
 
-7. Download the mini conda installer and run it
+7. Download and run the mini conda installer and create the arcpy conda environment
 ```
 wget https://repo.anaconda.com/miniconda/Miniconda3-py310_23.1.0-1-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
@@ -81,9 +85,13 @@ conda env create -f environment.yml
 ```
 
 8. Activate the arcpy conda environment and verify that the arcpy package can be imported
-   1. The ArcGIS licensing must be valid to access the arcpy package
-   2. If the arcpy module is not available, install arcpy in the arcpy conda environment once licensing has been applied
-   
+```
+conda activate arcpy
+```
+   - the ArcGIS licensing must be valid to access the arcpy package
+   - if the arcpy package is not available for import, ensure that the ArcGIS Server license has been activated, and install arcpy in the arcpy conda environment once the license has been successfully applied
+
+
 9. Restart the server 
 ```
 sudo shutdown -r now
