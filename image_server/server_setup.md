@@ -54,14 +54,16 @@ scp ArcGISGISServerAdvanced_ArcGISServer_1097910.prvc ubuntu@ec2-xx-xxx-xx-xx.us
 
 3. Add any needed public keys to `/home/ubuntu/.ssh/authorized_keys` so that other Tools team members can ssh to the server
 
-4. After the instance is created, wait 5-15 minutes for the initial auto-updater to finish running, then copy the [root setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/root_setup.sh) to the server and run it as the root user. If you get an error about `/var/lib/dpkg/lock`, that means the auto-updater is still running; wait and try again later.
+4. Clone the [gis-services github repository](https://github.com/ASFHyP3/gis-services/) to the server
+
+5. After the instance is created, wait 5-15 minutes for the initial auto-updater to finish running, then run the [root setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/root_setup.sh) script from the github repo on the server as the root user. If you get an error about `/var/lib/dpkg/lock`, that means the auto-updater is still running; wait and try again later.
 ```
 sudo su root
 /bin/bash root_setup.sh
 ```
    * Accept any default prompts during the apt installations.
 
-5. Copy the [arcgis setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/arcgis_setup.sh) to the server and run it as the arcgis user.
+6. Run the [arcgis setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/arcgis_setup.sh) script as the arcgis user.
 ```
 sudo su arcgis
 cd /home/arcgis/
@@ -70,7 +72,7 @@ export SITE_PASSWORD=<new password for the siteadmin user in the manager app>
 /bin/bash arcgis_setup.sh
 ```
 
-6.  Restart the server 
+7. Restart the server 
 ```
 sudo shutdown -r now
 ```
