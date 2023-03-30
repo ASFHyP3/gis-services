@@ -72,7 +72,19 @@ export SITE_PASSWORD=<new password for the siteadmin user in the manager app>
 /bin/bash arcgis_setup.sh
 ```
 
-7. Restart the server 
+7. Download the mini conda installer and run it
+```
+wget https://repo.anaconda.com/miniconda/Miniconda3-py310_23.1.0-1-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+cd /home/arcgis/gis-services/image_server/
+conda env create -f environment.yml
+```
+
+8. Activate the arcpy conda environment and verify that the arcpy package can be imported
+   1. The ArcGIS licensing must be valid to access the arcpy package
+   2. If the arcpy module is not available, install arcpy in the arcpy conda environment once licensing has been applied
+   
+9. Restart the server 
 ```
 sudo shutdown -r now
 ```
