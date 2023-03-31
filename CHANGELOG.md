@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Generation of mosaic datasets is now scheduled on a separate EC2 instance from the EC2 instance that hosts the
   ArcGIS Image Server web application.
+- Updated [documentation for server deployment and configuration](image_server/server_setup.md) based on the two-server configuration
 
 ## [0.2.0]
 ### Added
