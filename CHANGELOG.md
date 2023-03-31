@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.0]
 ### Added
 - Documentation for publishing services to Earthdata GIS using existing MDCS-generated mosaic datasets
+- Sample metadata for GSSICB services
 ### Changed
 - Generation of mosaic datasets is now scheduled on a separate EC2 instance from the EC2 instance that hosts the
   ArcGIS Image Server web application.
