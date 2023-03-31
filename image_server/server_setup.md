@@ -129,7 +129,7 @@ These steps are only required for an ArcGIS Server that will be running processi
 
 1. Download and run the mini conda installer and create the arcpy conda environment
 ```
-wget https://repo.anaconda.com/miniconda/Miniconda3-py310_23.1.0-1-Linux-x86_64.sh
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 cd /home/arcgis/gis-services/image_server/
 conda env create -f environment.yml
