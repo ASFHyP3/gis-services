@@ -177,19 +177,17 @@ https://<asf dns name>.asf.alaska.edu/arcgis/manager/
    1. Security -> roles -> new role
    ![New Role screenshot](images/new_role.png)
 
+5. Create a publisher role
+   ![publisher role screenshot](images/publisher_role.png)
 
-5. Create admin user accounts 
+6. Create admin user accounts 
    1. Security -> users -> new user
    ![New User screenshot](images/new_user.png)
    2. Make sure to add administrator role to each user
    3. Once you have an individual account, logout from siteadmin and log in as your individual user
 
-
-6. Register raster store 
-   1. Site -> data stores -> register -> raster store
-      ![Raster Store screenshot](images/raster_store.png)
-   
-   2. The raster_store is just a directory on the server path, so we can use the File Share type.
+7. Create an `asf_services` publisher user
+   ![ASF Services User screenshot](images/asf_services_user.png)
 
 ## References 
 
