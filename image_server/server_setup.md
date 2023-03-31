@@ -99,11 +99,20 @@ import arcpy
    - the ArcGIS licensing must be valid to access the arcpy package
    - if the arcpy package is not available for import, ensure that the ArcGIS Server license has been activated, and install arcpy in the arcpy conda environment once the license has been successfully applied
 
+9. As the arcgis user, create and edit a server_connection.json file in /home/arcgis/ and populate it with the following information (refer to AWS Secrets Manager for username and password):
+```
+{
+    "url": "https://name-of-image-server.asf.alaska.edu/arcgis/admin",
+    "username": "<username>",
+    "password": "<password>"
+}
+```
 
-9. Restart the server 
+10. Restart the server 
 ```
 sudo shutdown -r now
 ```
+
 
 ## Configure the Image Server
 
@@ -132,7 +141,7 @@ https://<asf dns name>.asf.alaska.edu/arcgis/manager/
    1. Security -> users -> new user
    ![New User screenshot](images/new_user.png)
    2. Make sure to add administrator role to each user
-   3. Once you have an indiviual account, logout from siteadmin and log in as your individual user
+   3. Once you have an individual account, logout from siteadmin and log in as your individual user
 
 
 6. Register raster store 
