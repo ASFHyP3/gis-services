@@ -84,7 +84,16 @@ scp ArcGISGISServerAdvanced_ArcGISServer_1097910.prvc ubuntu@ec2-xx-xxx-xx-xx.us
 3. Add any needed public keys to `/home/ubuntu/.ssh/authorized_keys` so that other Tools team members can ssh to the server
 
 
-4. Clone the [gis-services github repository](https://github.com/ASFHyP3/gis-services/) to the server
+4. Clone the [gis-services github repository](https://github.com/ASFHyP3/gis-services/) to `/home/arcgis/` on the server
+```
+sudo su arcgis
+cd /home/arcgis/
+git clone https://github.com/ASFHyP3/gis-services/
+# check out the `develop` branch if on a test server; check out the `main` branch if on a production server
+# git checkout main
+# git checkout develop
+exit
+```
 
 
 5. After the instance is created, wait 5-15 minutes for the initial auto-updater to finish running, then run the [root setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/root_setup.sh) from the github repo on the server as the root user
