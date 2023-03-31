@@ -100,7 +100,8 @@ exit
 5. After the instance is created, wait 5-15 minutes for the initial auto-updater to finish running, then run the [root setup script](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/root_setup.sh) from the github repo on the server as the root user
 ```
 sudo su root
-/bin/bash root_setup.sh
+/bin/bash /home/arcgis/gis-services/image_server/root_setup.sh
+exit
 ```
    * If you get an error about `/var/lib/dpkg/lock`, that means the auto-updater is still running; wait and try again later
    * Accept any default prompts during the apt installations
@@ -112,7 +113,7 @@ sudo su arcgis
 cd /home/arcgis/
 cp /home/ubuntu/*.prvc /home/arcgis/
 export SITE_PASSWORD=<new password for the siteadmin user in the manager app>
-/bin/bash arcgis_setup.sh
+/bin/bash /home/arcgis/gis-services/image_server/arcgis_setup.sh
 ```
 
 7. Restart the server 
