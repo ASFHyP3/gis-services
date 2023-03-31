@@ -68,7 +68,7 @@ It takes about 5 minutes to stand up the instance and load balancer. The load ba
 
 ## Configure the Server
 
-1. Retrieve the appropriate prvc licence files for the ArcGIS Server and Image Server from s3://hyp3-software/ and scp them to the server
+1. Retrieve the appropriate prvc licence files on your local machine for the ArcGIS Server and Image Server from s3://hyp3-software/ and scp them to the server
 ```
 Aws s3 –profile hyp3 s3://hyp3-software/ . –recursive –exclude “*” –include “*.prvc”
 scp ArcGISImageServer_ArcGISServer_1097915.prvc ubuntu@ec2-xx-xxx-xx-xx.us-west-2.compute.amazonaws.com:/home/ubuntu
