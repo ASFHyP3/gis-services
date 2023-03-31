@@ -19,7 +19,7 @@ We use the server environment for two critical components:
 
 For our initial deployment we used a single server for both functions. We found that the performance of the image services suffered during times of intense compute demands in the processing workflows. In some cases, users would encounter an unspecified error when loading the image services in a web map.
 
-To improve reliability on the hosting front, we have transitioned to a stack configuration that includes one EC2 instance running ArcGIS Server (the "processing server") and one EC2 instance running ArcGIS Server with the Image Server extension (the "image server" or hosting server). The processing server is used for running the scripts to generate the mosaic datasets and service definitions, but the service definitions are published to the image server for hosting. 
+To improve reliability on the hosting front, we have transitioned to a stack configuration that includes one EC2 instance running ArcGIS Server (the "processing server"), one EC2 instance running ArcGIS Server with the Image Server extension (the "image server" or hosting server), and an AWS Load Balancer. The processing server is used for running the scripts to generate the mosaic datasets and service definitions, but the service definitions are published to the image server for hosting. 
 
 ## First Time Setup
 
