@@ -66,7 +66,8 @@ If setting up using the UI, go to CloudFormation and launch a new stack using ne
 
 It takes about 5 minutes to stand up the instance and load balancer. The load balancer will become more critical if we add additional servers.
 
-## Configure the Server
+## Configure the ArcGIS Server
+These steps are required for all servers, regardless of whether they will be configured as processing servers or image servers.
 
 1. Retrieve the appropriate prvc licence files on your local machine for the ArcGIS Server and Image Server from s3://hyp3-software/ and scp them to the server
 ```
@@ -104,7 +105,18 @@ export SITE_PASSWORD=<new password for the siteadmin user in the manager app>
 /bin/bash arcgis_setup.sh
 ```
 
-7. Download and run the mini conda installer and create the arcpy conda environment
+7. Restart the server 
+```
+sudo shutdown -r now
+```
+
+8. Configure the server based on whether it will be a [processing server](#configure-a-processing-server) or an [image server](#configure-the-image-server), as detailed in the next two sections. 
+
+
+## Configure a Processing Server
+These steps are only required for an ArcGIS Server that will be running processing scripts. See the [next section](#configure-the-image-server) for configuring an image server (used to host the services).
+
+1. Download and run the mini conda installer and create the arcpy conda environment
 ```
 wget https://repo.anaconda.com/miniconda/Miniconda3-py310_23.1.0-1-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
@@ -112,7 +124,7 @@ cd /home/arcgis/gis-services/image_server/
 conda env create -f environment.yml
 ```
 
-8. Activate the arcpy conda environment and verify that the arcpy package can be imported
+2. Activate the arcpy conda environment and verify that the arcpy package can be imported
 ```
 conda activate arcpy
 python
@@ -121,7 +133,7 @@ import arcpy
    - the ArcGIS licensing must be valid to access the arcpy package
    - the first-time import for arcpy might take a couple of minutes, but if the arcpy package is not available for import, ensure that the ArcGIS Server license has been activated, and install arcpy in the arcpy conda environment once the license has been successfully applied
 
-9. As the arcgis user, create and edit a server_connection.json file in /home/arcgis/ and populate it with the following information (refer to AWS Secrets Manager for username and password):
+3. As the arcgis user, create and edit a server_connection.json file in /home/arcgis/ and populate it with the following information (refer to AWS Secrets Manager for username and password):
 ```
 {
     "url": "https://name-of-image-server.asf.alaska.edu/arcgis/admin",
@@ -130,13 +142,9 @@ import arcpy
 }
 ```
 
-10. Restart the server 
-```
-sudo shutdown -r now
-```
-
 
 ## Configure the Image Server
+These steps are only required for an ArcGIS Server that will be hosting image services. See the [previous section](#configure-a-processing-server) for configuring a server to run processing scripts.
 
 1. Find the “DNS name” for the new Load Balancer in the AWS EC2 console, e.g. gis-s-LoadB-OT2TD55ZH0GC-1897588225.us-west-2.elb.amazonaws.com
 
