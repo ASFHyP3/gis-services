@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0]
+### Changed
+- Generation of mosaic datasets is now scheduled on a separate EC2 instance from the EC2 instance that hosts the
+  ArcGIS Image Server web application.
+
+## [0.2.0]
+### Added
+- Configuration files supporting image services for the USDA and HKH Flood Monitoring projects
+### Changed
+- `rtc_services` directory now has one folder per project (`nasa_disasters`, `usda`) and a shared folder for raster
+  function templates
+- Updates for `make_rtc_service.py`:
+  - `project_name` and `s3_prefix` are now specified in each configuration file rather than hardcoded
+  - Default value for `--server-connection-file` is now `/home/arcgis/server_connection.json`
+
+## [0.1.2]
+### Added
+- Shell script to pull updates from Git and cleanup `.gdb` and `.sd` RTC services added for automation with `crontab`.
 
 ## [0.1.1]
 ### Changed
