@@ -28,11 +28,46 @@ Publishers must add the NASA SIT Portal to their list of portals in ArcGIS. This
 
 If the source rasters do not render correctly, try repairing the path to the pixel cache in the mosaic dataset.
 
-1. Right-click on the Mosaic Dataset in the Table of Contents and select Data > Repair Mosaic Dataset Paths
+For some services published using MDCS (or subsequently repaired), a specific path is defined for the pixel cache, which makes it easy to identify the directory involving the pixel cache and replacing its path with a directory path on the computer being used to publish the image service. 
+
+In other cases, if the pixel cache location was either defined using relative paths or has already been repaired, the path may be a generically named directory.
+
+The easiest scenario is illustrated below, but refer to the [Pixel Cache Path Exceptions](#pixel-cache-path-exceptions) box afterwards for more information about difficulties and specific conditions that may be encountered during this process.
+
+1. Create a directory on your local computer named "PixelCache"
+2. Right-click on the Mosaic Dataset in the Table of Contents and select Data > Repair Mosaic Dataset Paths
 ![Repair Paths](images/RepairPaths.PNG)
-2. Scroll to the path to the PixelCache directory, and replace it with a path on your local computer.
+3. Scroll to the path to the PixelCache directory, and replace it with the path for the PixelCache directory on your local computer
 ![Pixel Cache Path](images/PixelCachePath.PNG)
-3. Click OK to exit the dialog
+4. Click OK to exit the dialog
+
+> ## ⚠ ALERT
+>### Pixel Cache Path Exceptions
+>
+>If using the GSSICB files archived in s3://asf-gis-services/GSSICB/, there are three different paths used to repair the Pixel Cache path: 
+> 
+>* C:\Users\Administrator\Documents\ArcGIS
+>* C:\Users\asjohnston\Desktop\image_server
+>* C:\Users\hjkristenson\Documents\ImageServer
+>
+>In general, the path involving the pixel cache is the 4th entry in the list of paths, but it's unclear if that is always the case. If in doubt, you can also click the check-box to only display broken paths, which will reduce the number of options. 
+> 
+> While other paths in the list may be broken, the only one that requires a fix in this workflow is the one that impacts the pixel cache. It is not, however, problematic to set all of the broken file paths to local paths if you are not sure which one requires the change.
+>
+>Note that the repaired paths may not include the PixelCache designation in the path following the repair, but rather truncate the listed path to a parent directory beyond which the paths match. 
+> 
+>For example, the repairs illustrated in step 3 above did not retain the full path after the repairs were complete; the path listed in the mosaic dataset includes only the portion of the path that didn't originally match:
+>
+>- Old path: `G:\Projects\2209_ImageServices\ImageServices\PixelCache`
+>- New path: `C:\Users\hjkristenson\Documents\ImageServer\ImageServices\PixelCache`
+>- Path currently displayed: `C:\Users\hjkristenson\Documents\ImageServer\ `
+>
+>If using GSSICB files from the original source computer, there are two scenarios: 
+>1. COH12_VV services use relative paths, so the directory to repair is `C:\Users\hjkristenson\PycharmProjects\hyp3-nasa-disasters`
+>   * You can use any path on your local computer to replace the broken path, but be aware that a folder structure will be generated to next within it to mirror the original path, ending with a PixelCache directory
+>2. All of the other GSSICB services use the following path for the pixel cache: `G:\Projects\2209_ImageServices\ImageServices\PixelCache`
+>   * In this case, it's easiest to set a local path that ends in a PixelCache directory
+
 
 ## Edit the Metadata for the Mosaic Dataset
 
