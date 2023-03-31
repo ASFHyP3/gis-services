@@ -1,10 +1,17 @@
-GSSICB_COH12_VV_DJF
+Title:
+GSSICB 12-day Median {HH} Coherence {Dec/Jan/Feb}
 
+Tags:
 ASF, Alaska Satellite Facility, Synthetic Aperture Radar, SAR, Sentinel-1, Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter, Coherence
 
-Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter: 12-day median coherence for Dec/Jan/Feb in VV polarization. Pixel values in source rasters are the coherence value (ranging from 0 to 1) multiplied by 100. A processing template is applied to display the standard coherence values (0 to 1) in the service.
+Summary:
+Global {Winter} ({December/January/February}) median 12-day coherence (COH12) in {HH} polarization from the Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set.
 
-Global Winter (December/January/February) median COH12 (12-day coherence) in VV polarization from the Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set (https://registry.opendata.aws/ebd-sentinel-1-global-coherence-backscatter/).
+Description:
+Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter: 12-day median coherence for {December/January/February} in {HH} polarization. Pixel values in source rasters are the coherence value (ranging from 0 to 1) multiplied by 100. A processing template is included with the service to provide the standard coherence values (0 to 1) along with the original source raster values.
+The source rasters referenced in this service are available on the Registry of Open Data on AWS: https://registry.opendata.aws/ebd-sentinel-1-global-coherence-backscatter/
 
+Credits:
 Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set was accessed on 11 November 2022 from https://registry.opendata.aws/ebd-sentinel-1-global-coherence-backscatter.
+
 
