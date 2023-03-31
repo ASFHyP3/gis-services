@@ -63,7 +63,6 @@ Resources:
           SubnetId: !Select [0, !Ref SubnetIds]
           GroupSet:
             - !Ref ImageServerSecurityGroup
-            - !Ref SshSecurityGroup
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
