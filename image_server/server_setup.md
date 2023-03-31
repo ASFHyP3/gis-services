@@ -117,7 +117,7 @@ python
 import arcpy
 ```
    - the ArcGIS licensing must be valid to access the arcpy package
-   - if the arcpy package is not available for import, ensure that the ArcGIS Server license has been activated, and install arcpy in the arcpy conda environment once the license has been successfully applied
+   - the first-time import for arcpy might take a couple of minutes, but if the arcpy package is not available for import, ensure that the ArcGIS Server license has been activated, and install arcpy in the arcpy conda environment once the license has been successfully applied
 
 9. As the arcgis user, create and edit a server_connection.json file in /home/arcgis/ and populate it with the following information (refer to AWS Secrets Manager for username and password):
 ```
