@@ -43,13 +43,6 @@ Resources:
           SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
           ToPort: 6443
           FromPort: 6443
-      VpcId: !Ref VpcId
-
-  SshSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: !Sub "Security group for ${AWS::StackName} servers"
-      SecurityGroupIngress:
         - IpProtocol: tcp
           CidrIp: !Ref SshCidrIp
           ToPort: 22
@@ -81,6 +74,17 @@ Resources:
         - Key: Name
           Value: !Sub "${AWS::StackName}-image-server"
 
+  ProcessingServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub "Security group for ${AWS::StackName} processing server"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          CidrIp: !Ref SshCidrIp
+          ToPort: 22
+          FromPort: 22
+      VpcId: !Ref VpcId
+
   ProcessingServerInstance:
     Type: AWS::EC2::Instance
     Properties:
@@ -94,7 +98,7 @@ Resources:
           DeleteOnTermination: true
           SubnetId: !Select [0, !Ref SubnetIds]
           GroupSet:
-            - !Ref SshSecurityGroup
+            - !Ref ProcessingServerSecurityGroup
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
