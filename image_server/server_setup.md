@@ -1,6 +1,26 @@
 # Deploying and Configuring an ArcGIS Image Server
 This document describes the workflow for deploying and configuring an ArcGIS Server with Image Server to an AWS EC2 instance.
 
+## Server Software Types
+
+To host ArcGIS Image Services, a server must be configured and licensed for two different ArcGIS Server products: 
+1. ArcGIS Server
+2. ArcGIS Image Server extension
+
+The ArcGIS Server is the software that allows feature services to be published. A python interpreter with the arcpy package installed is included in ArcGIS Server installation. The arcpy package is used in programmatic workflows for preparing geospatial content and publishing it to ArcGIS services. The ArcGIS Server licensing also provides access to the arcpy package for any conda environments configured on the server.
+
+The Image Server extension is required for publishing image services. This software provides support for raster mosaics that render on the fly, along with support for time-enabled mosaic datasets. This functionality has been a key component of the services ASF offers. 
+
+### Two-Server Configuration
+
+We use the server environment for two critical components:
+1. Running processing workflows to generate mosaic datasets and publish service definitions
+2. Hosting the image services
+
+For our initial deployment we used a single server for both functions. We found that the performance of the image services suffered during times of intense compute demands in the processing workflows. In some cases, users would encounter an unspecified error when loading the image services in a web map.
+
+To improve reliability on the hosting front, we have transitioned to a stack configuration that includes one EC2 instance running ArcGIS Server (the "processing server") and one EC2 instance running ArcGIS Server with the Image Server extension (the "image server" or hosting server). The processing server is used for running the scripts to generate the mosaic datasets and service definitions, but the service definitions are published to the image server for hosting. 
+
 ## First Time Setup
 
 These steps only need to be run once per AWS account.
