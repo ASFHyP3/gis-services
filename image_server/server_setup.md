@@ -89,6 +89,7 @@ scp ArcGISGISServerAdvanced_ArcGISServer_1097910.prvc ubuntu@ec2-xx-xxx-xx-xx.us
 sudo su arcgis
 cd /home/arcgis/
 git clone https://github.com/ASFHyP3/gis-services/
+cd gis-services
 # check out the `develop` branch if on a test server; check out the `main` branch if on a production server
 # git checkout main
 # git checkout develop
