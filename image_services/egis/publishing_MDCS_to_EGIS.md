@@ -14,7 +14,7 @@ Publishers must add the NASA SIT Portal to their list of portals in ArcGIS. This
 
 **It's easiest to connect to the NASA VPN first before creating the ArcGIS Project you'll be using for publishing, and always connect to the VPN before opening that project going forward when the active portal is set to the SIT environment.**
 
-*The same workflow is used for publishing to the NASA UAT Portal; simply connect to that portal in ArcGIS Pro rather than the NASA SIT Portal.*
+*The same workflow is used for publishing to the NASA UAT Portal; simply connect to the UAT portal in ArcGIS Pro rather than the NASA SIT Portal.*
 
 ## Verify that the Mosaic Dataset paths are correct
 
