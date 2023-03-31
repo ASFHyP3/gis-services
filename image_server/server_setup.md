@@ -74,6 +74,8 @@ Aws s3 –profile hyp3 s3://hyp3-software/ . –recursive –exclude “*” –
 scp ArcGISImageServer_ArcGISServer_1097915.prvc ubuntu@ec2-xx-xxx-xx-xx.us-west-2.compute.amazonaws.com:/home/ubuntu
 scp ArcGISGISServerAdvanced_ArcGISServer_1097910.prvc ubuntu@ec2-xx-xxx-xx-xx.us-west-2.compute.amazonaws.com:/home/ubuntu
 ```
+   * all servers require the ArcGISGISServerAdvanced license, but only the image server used for hosting the services requires the additional ArcGISImageServer license
+
 
 2. SSH to the instance (IP address can be found in the EC2 Instance information under Public IP4)
 
