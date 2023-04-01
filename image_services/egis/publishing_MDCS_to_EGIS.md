@@ -104,8 +104,8 @@ The easiest scenario is illustrated below, but refer to the [Pixel Cache Path Ex
 
 ## Archive the Geodatabase
 
-Once the metadata has been added to the mosaic dataset, it should be zipped and uploaded to our [S3 Bucket](https://asf-gis-services.s3.us-west-2.amazonaws.com/GSSICB/)
+Once the metadata has been added to the mosaic dataset, it should be zipped and uploaded to our [S3 Bucket](https://asf-gis-services.s3.us-west-2.amazonaws.com/GSSICB/ "s3://asf-gis-services").
 
 ## Republish a Service from an Archived Geodatabase
 
-If the service needs to be republished, download the zipped gdb from the S3 bucket, unzip it, and follow the steps above, as necessary. 
+If the service needs to be republished, download the zipped gdb from the GSSICB prefix in the asf-gis-services S3 bucket, unzip it, and follow the steps above, as necessary. 
