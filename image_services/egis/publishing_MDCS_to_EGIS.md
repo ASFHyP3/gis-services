@@ -62,7 +62,7 @@ The easiest scenario is illustrated below, but refer to the [Pixel Cache Path Ex
 >- New path: `C:\Users\hjkristenson\Documents\ImageServer\ImageServices\PixelCache`
 >- Path currently displayed: `C:\Users\hjkristenson\Documents\ImageServer\ `
 >
->If using GSSICB files from the original source computer, there are two scenarios: 
+>If using GSSICB files from the original source computer rather than those archived in s3://asf-gis-services/GSSICB/, there are two scenarios: 
 >1. COH12_VV services use relative paths, so the directory to repair is `C:\Users\hjkristenson\PycharmProjects\hyp3-nasa-disasters`
 >   * You can use any path on your local computer to replace the broken path, but be aware that a folder structure will be generated to next within it to mirror the original directory structure, including subdirectories in the hyp3-nasa-disasters directory, ending with a PixelCache directory
 >2. All of the other GSSICB services use the following path for the pixel cache: `G:\Projects\2209_ImageServices\ImageServices\PixelCache`
