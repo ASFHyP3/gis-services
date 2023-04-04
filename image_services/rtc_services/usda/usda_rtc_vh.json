@@ -1,8 +1,8 @@
 {
   "project_name": "USDA",
   "s3_prefix": "USDA/",
+  "s3_suffix": "_VH.tif",
   "dataset_name": "RTC_VH",
-  "raster_filter": "*_VH.tif",
   "raster_function_templates": [
     "Sentinel1_RTC_Power.rft.xml",
     "Sentinel1_RTC_Amplitude.rft.xml",
