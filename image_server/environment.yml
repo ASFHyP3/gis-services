@@ -4,5 +4,7 @@ channels:
 dependencies:
   - arcgis-server-py3=10.9.1
   - lxml
+  - boto3
+  - gdal
 variables:
   ARCGISHOME: /opt/arcgis/server/
