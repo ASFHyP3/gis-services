@@ -7,6 +7,7 @@ import os
 import subprocess
 import tempfile
 from pathlib import Path
+from typing import List
 
 import arcpy
 import boto3
@@ -15,7 +16,7 @@ from lxml import etree
 from osgeo import gdal, osr
 
 
-def get_rasters(bucket: str, prefix: str, suffix:str) -> list[str]:
+def get_rasters(bucket: str, prefix: str, suffix:str) -> List[str]:
     rasters = []
     s3 = boto3.client('s3')
     paginator = s3.get_paginator('list_objects_v2')
@@ -106,7 +107,7 @@ csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{conf
 output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
 raster_function_template = ''.join([f'{template_directory / template};'
                                     for template in config['raster_function_templates']])
-if config["default_raster_function_template"] != 'None':
+if config['default_raster_function_template'] != 'None':
     default_raster_function_template = str(template_directory / config['default_raster_function_template'])
 else:
     default_raster_function_template = 'None'
