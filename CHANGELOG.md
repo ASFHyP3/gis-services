@@ -6,9 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.0]
 ### Changed
-- Generation of mosaic datasets is now scheduled on a separate EC2 instance from the EC2 instance that hosts the
-  ArcGIS Image Server web application.
-- Service draft creation now copies over the source database to the image server from the publishing server. 
+- `make_rtc_service.py` now maintains a CSV table for adding rasters to the mosaic dataset
 
 ## [0.2.0]
 ### Added
