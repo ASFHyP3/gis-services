@@ -284,7 +284,6 @@ try:
             raster_or_mosaic_layer=mosaic_dataset,
             out_sddraft=service_definition_draft.name,
             service_name=config['service_name'],
-            copy_data_to_server=True,
         )
 
         tree = etree.parse(service_definition_draft.name)
