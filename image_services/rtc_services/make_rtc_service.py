@@ -16,7 +16,7 @@ from lxml import etree
 from osgeo import gdal, osr
 
 
-def get_rasters(bucket: str, prefix: str, suffix:str) -> List[str]:
+def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
     rasters = []
     s3 = boto3.client('s3')
     paginator = s3.get_paginator('list_objects_v2')
@@ -27,7 +27,7 @@ def get_rasters(bucket: str, prefix: str, suffix:str) -> List[str]:
     return rasters
 
 
-def get_pixel_type(data_type:str) -> int:
+def get_pixel_type(data_type: str) -> int:
     if data_type == 'Byte':
         return 3
     if data_type == 'Float32':
@@ -59,7 +59,7 @@ def get_raster_metadata(raster_path: str) -> dict:
     return metadata
 
 
-def update_csv(csv_file: str, bucket: str, prefix: str, suffix:str):
+def update_csv(csv_file: str, bucket: str, prefix: str, suffix: str):
     if os.path.isfile(csv_file):
         with open(csv_file) as f:
             records = [record for record in csv.DictReader(f)]
