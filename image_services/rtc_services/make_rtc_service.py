@@ -45,7 +45,7 @@ def get_raster_metadata(raster_path: str) -> dict:
     info = gdal.Info(raster_path, format='json')
     metadata = {
         'Raster': info['description'],
-        'Name': os.path.basename(info['description']),
+        'Name': Path(info['description']).stem,
         'xMin': info['cornerCoordinates']['lowerLeft'][0],
         'yMin': info['cornerCoordinates']['lowerLeft'][1],
         'xMax': info['cornerCoordinates']['upperRight'][0],
