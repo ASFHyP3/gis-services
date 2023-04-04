@@ -59,7 +59,7 @@ def get_raster_metadata(raster_path: str) -> dict:
     return metadata
 
 
-def update_csv(csv_file: str, bucket: str, prefix: str, suffix: str):
+def update_csv(csv_file: str, rasters: List[str]):
     if os.path.isfile(csv_file):
         with open(csv_file) as f:
             records = [record for record in csv.DictReader(f)]
@@ -67,9 +67,8 @@ def update_csv(csv_file: str, bucket: str, prefix: str, suffix: str):
         records = []
     logging.info(f'Found {len(records)} items in {csv_file}')
 
-    all_rasters = get_rasters(bucket, prefix, suffix)
     existing_rasters = [record['Raster'] for record in records]
-    new_rasters = set(all_rasters) - set(existing_rasters)
+    new_rasters = set(rasters) - set(existing_rasters)
 
     logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
     for raster in new_rasters:
@@ -119,7 +118,8 @@ service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 arcpy.env.parallelProcessingFactor = '75%'
 
 try:
-    update_csv(csv_file, bucket, config['s3_prefix'], config['s3_suffix'])
+    rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
+    update_csv(csv_file, rasters)
 
     logging.info('Creating geodatabase')
     geodatabase = arcpy.management.CreateFileGDB(
