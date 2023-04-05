@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.0]
 ### Changed
 - `make_rtc_service.py` now maintains a CSV table for adding rasters to the mosaic dataset
+- support using mambaforge instead of miniconda3 for python environments
 
 ## [0.2.0]
 ### Added
