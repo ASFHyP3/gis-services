@@ -75,6 +75,7 @@ def update_csv(csv_file: str, rasters: List[str]):
         record = get_raster_metadata(raster)
         records.append(record)
 
+    records = sorted(records, key=lambda x: x['Raster'])
     with open(csv_file, 'w') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=records[0].keys())
         writer.writeheader()
