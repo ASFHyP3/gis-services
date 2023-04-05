@@ -1,8 +1,8 @@
 {
   "project_name": "USDA",
   "s3_prefix": "USDA/",
+  "s3_suffix": "_WM.tif",
   "dataset_name": "WM_OldNoData",
-  "raster_filter": "*_WM.tif",
   "raster_function_templates": [
     "WatermapExtentBlue.rft.xml"
   ],

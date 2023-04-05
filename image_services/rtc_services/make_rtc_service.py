@@ -1,4 +1,5 @@
 import argparse
+import csv
 import datetime
 import json
 import logging
@@ -6,11 +7,83 @@ import os
 import subprocess
 import tempfile
 from pathlib import Path
+from typing import List
 
 import arcpy
+import boto3
 from arcgis.gis.server import Server
 from lxml import etree
+from osgeo import gdal, osr
 
+
+def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
+    rasters = []
+    s3 = boto3.client('s3')
+    paginator = s3.get_paginator('list_objects_v2')
+    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+        for obj in page['Contents']:
+            if obj['Key'].endswith(suffix):
+                rasters.append(f'/vsis3/{bucket}/{obj["Key"]}')
+    return rasters
+
+
+def get_pixel_type(data_type: str) -> int:
+    if data_type == 'Byte':
+        return 3
+    if data_type == 'Float32':
+        return 10
+    raise ValueError(f'Unsupported data type: {data_type}')
+
+
+def get_projection(srs_wkt: str) -> str:
+    srs = osr.SpatialReference()
+    srs.ImportFromWkt(srs_wkt)
+    return srs.GetAttrValue('AUTHORITY', 1)
+
+
+def get_raster_metadata(raster_path: str) -> dict:
+    info = gdal.Info(raster_path, format='json')
+    metadata = {
+        'Raster': info['description'],
+        'Name': Path(info['description']).stem,
+        'xMin': info['cornerCoordinates']['lowerLeft'][0],
+        'yMin': info['cornerCoordinates']['lowerLeft'][1],
+        'xMax': info['cornerCoordinates']['upperRight'][0],
+        'yMax': info['cornerCoordinates']['upperRight'][1],
+        'nRows': info['size'][1],
+        'nCols': info['size'][0],
+        'nBands': len(info['bands']),
+        'PixelType': get_pixel_type(info['bands'][0]['type']),
+        'SRS': get_projection(info['coordinateSystem']['wkt']),
+    }
+    return metadata
+
+
+def update_csv(csv_file: str, rasters: List[str]):
+    if os.path.isfile(csv_file):
+        with open(csv_file) as f:
+            records = [record for record in csv.DictReader(f)]
+    else:
+        records = []
+    logging.info(f'Found {len(records)} items in {csv_file}')
+
+    existing_rasters = [record['Raster'] for record in records]
+    new_rasters = set(rasters) - set(existing_rasters)
+
+    logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
+    for raster in new_rasters:
+        record = get_raster_metadata(raster)
+        records.append(record)
+
+    records = sorted(records, key=lambda x: x['Raster'])
+    with open(csv_file, 'w') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=records[0].keys())
+        writer.writeheader()
+        writer.writerows(records)
+
+
+gdal.UseExceptions()
+gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
@@ -23,20 +96,21 @@ args = parser.parse_args()
 today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
 
 raster_store = '/home/arcgis/raster_store/'
-s3_path = '/vsis3/hyp3-nasa-disasters/'
+bucket = 'hyp3-nasa-disasters'
 overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
 template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
 with open(args.config_file) as f:
     config = json.load(f)
 
+csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
 raster_function_template = ''.join([f'{template_directory / template};'
                                     for template in config['raster_function_templates']])
-if config["default_raster_function_template"] != "None":
-    default_raster_function_template = str(template_directory / config["default_raster_function_template"])
+if config['default_raster_function_template'] != 'None':
+    default_raster_function_template = str(template_directory / config['default_raster_function_template'])
 else:
-    default_raster_function_template = "None"
+    default_raster_function_template = 'None'
 overview_name = f'{output_name}_overview'
 local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
@@ -45,6 +119,9 @@ service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 arcpy.env.parallelProcessingFactor = '75%'
 
 try:
+    rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
+    update_csv(csv_file, rasters)
+
     logging.info('Creating geodatabase')
     geodatabase = arcpy.management.CreateFileGDB(
         out_folder_path=args.working_directory,
@@ -70,9 +147,8 @@ try:
     logging.info(f'Adding source rasters to {mosaic_dataset}')
     arcpy.management.AddRastersToMosaicDataset(
         in_mosaic_dataset=mosaic_dataset,
-        raster_type='Raster Dataset',
-        input_path=f'{s3_path}{config["s3_prefix"]}',
-        filter=config['raster_filter'],
+        raster_type='Table',
+        input_path=csv_file,
     )
 
     logging.info(f'Calculating custom field values in {mosaic_dataset}')
