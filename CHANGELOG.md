@@ -4,11 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1]
+### Changed
+- Updated [documentation for server deployment and configuration](image_server/server_setup.md) to support a two-server configuration
+
 ## [0.3.0]
 ### Changed
-- Generation of mosaic datasets is now scheduled on a separate EC2 instance from the EC2 instance that hosts the
-  ArcGIS Image Server web application.
-- Updated [documentation for server deployment and configuration](image_server/server_setup.md) based on the two-server configuration
+- `make_rtc_service.py` now maintains a CSV table for adding rasters to the mosaic dataset
+- support using mambaforge instead of miniconda3 for python environments
 
 ## [0.2.0]
 ### Added
