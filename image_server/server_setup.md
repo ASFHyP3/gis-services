@@ -11,17 +11,38 @@ The ArcGIS Server is the software that allows feature services to be published. 
 
 The Image Server extension is required for publishing image services. This software provides support for raster mosaics that render on the fly, along with support for time-enabled mosaic datasets. This functionality has been a key component of the services ASF offers. 
 
-### Two-Server Configuration
+### Server Functions and Configurations
 
 We use the server environment for two critical components:
 1. Running processing workflows to generate mosaic datasets and publish service definitions
 2. Hosting the image services
 
-For our initial deployment we used a single server for both functions. We found that the performance of the image services suffered during times of intense compute demands in the processing workflows. In some cases, users would encounter an unspecified error when loading the image services in a web map.
+#### Single-Server Configuration
 
-To improve reliability on the hosting front, we have transitioned to a stack configuration that includes one EC2 instance running ArcGIS Server (the "processing server"), one EC2 instance running ArcGIS Server with the Image Server extension (the "image server" or hosting server), and an AWS Load Balancer. The processing server is used for running the scripts to generate the mosaic datasets and service definitions, but the service definitions are published to the image server for hosting. 
+Our current server configuration uses a single server to perform both of these functions. 
 
-## First Time Setup
+For a single-server configuration, the AWS stack configuration would include:
+1. AWS EC2 instance running ArcGIS Server with the Image Server extension enabled
+2. AWS Load Balancer
+
+#### Two-Server Configuration
+
+Because a heavy processing load can impact the reliability of the service hosted on that same server, it may be advantageous to provision separate servers for processing and hosting. 
+
+A two-server configuration would add another EC2 instance, and partition the two core functions: 
+1. AWS EC2 instance running ArcGIS Server (the "processing server")
+2. AWS EC2 instance running ArcGIS Server with the Image Server extension enabled (the "image server" or hosting server)
+3. AWS Load Balancer
+
+In this two-server configuration, the processing server is used for running the scripts to generate the mosaic datasets and service definitions, but the service definitions are published to the image server for hosting.
+
+When the processing is separated from the hosting, the services must be published from one server to another. When hosting a service, the source mosaic dataset (contained in a file gdb) must be uploaded to the host server. 
+
+The gdb is generated on the processing server, and it is somewhat challenging to move the file to the image server. We have investigated the following approaches: 
+1. Enable the "copy data to server" option in the CreateImageSDDraft command [as set in this version of the code](https://github.com/ASFHyP3/gis-services/blob/7369397cb2666dae43b0f7de3985a5fa747e42a1/image_services/rtc_services/make_rtc_service.py#L212). This copies the data over without any additional code, BUT comes at a time cost. Enabling this option increased the processing time for one of our larger test services from under 2 hours to about 6 hours. 
+2. SCP from one instance to another. This would require including an scp command in the script, and providing an authentication method. One option would be to manually provision a key pair on the sending instance and add its public key to authorized_hosts on the receiving instance. We have not yet tested this approach.
+
+## First Time Server Setup
 
 These steps only need to be run once per AWS account.
 
@@ -45,6 +66,8 @@ These steps only need to be run once per AWS account.
 ## Deploy the stack
 
 CloudFormation template is at https://github.com/ASFHyP3/gis-services/blob/main/image_server/cloudformation.yml and can be deployed either from the command line or the AWS CloudFormation console.
+
+* Note that the current CloudFormation template referenced in this document is for a single-server configuration. To deploy a two-server configuration comprising both a processing and image server, use the template in [this PR](https://github.com/ASFHyP3/gis-services/pull/61).
 
 Check for the correct ImageId, which are different across versions (i.e. different for 10.8.1 vs 10.9.1).
 and choose the appropriate image for the appropriate Ubuntu version.
@@ -121,7 +144,7 @@ export SITE_PASSWORD=<new password for the siteadmin user in the manager app>
 sudo shutdown -r now
 ```
 
-8. Configure the server based on whether it will be a [processing server](#configure-a-processing-server) or an [image server](#configure-the-image-server), as detailed in the next two sections. 
+8. Configure the server based on whether it will be a [processing server](#configure-a-processing-server) or an [image server](#configure-the-image-server), as detailed in the next two sections. **If a single server is being used for both functions, follow the steps in both sections.** 
 
 
 ## Configure a Processing Server
