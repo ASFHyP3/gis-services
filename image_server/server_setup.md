@@ -155,7 +155,7 @@ These steps are only required for an ArcGIS Server that will be running processi
 wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
 bash Mambaforge-Linux-x86_64.sh
 cd /home/arcgis/gis-services/image_server/
-conda env create -f environment.yml
+mamba env create -f environment.yml
 ```
 
 2. Activate the arcpy conda environment and verify that the arcpy package can be imported
