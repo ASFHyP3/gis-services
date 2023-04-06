@@ -44,14 +44,14 @@ These steps only need to be run once per AWS account.
 
 ## Deploy the stack
 
-CloudFormation template is at https://github.com/ASFHyP3/hyp3-nasa-disasters/blob/main/update_image_services/image_server_cloudformation.yml and can be deployed either from the command line or the AWS CloudFormation console.
+CloudFormation template is at https://github.com/ASFHyP3/gis-services/blob/main/image_server/cloudformation.yml and can be deployed either from the command line or the AWS CloudFormation console.
 
 Check for the correct ImageId, which are different across versions (i.e. different for 10.8.1 vs 10.9.1).
 and choose the appropriate image for the appropriate Ubuntu version.
 
 If setting up using the UI, go to CloudFormation and launch a new stack using new resources. Follow the steps below:
 
-1. Upload the [CloudFormation template]()
+1. Upload the [CloudFormation template](cloudformation.yml)
 
 
 2. Specify parameters - some hints are:
