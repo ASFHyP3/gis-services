@@ -127,10 +127,10 @@ sudo shutdown -r now
 ## Configure a Processing Server
 These steps are only required for an ArcGIS Server that will be running processing scripts. See the [next section](#configure-the-image-server) for configuring an image server (used to host the services).
 
-1. Download and run the mini conda installer and create the arcpy conda environment
+1. Download and run the mamba installer (https://mamba.readthedocs.io/en/latest/installation.html) and create the arcpy conda environment
 ```
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-bash Miniconda3-latest-Linux-x86_64.sh
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
+bash Mambaforge-Linux-x86_64.sh
 cd /home/arcgis/gis-services/image_server/
 conda env create -f environment.yml
 ```
