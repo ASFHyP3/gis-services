@@ -72,7 +72,7 @@ A CloudFormation template for this project is at https://github.com/ASFHyP3/gis-
 Check for the correct ImageId, which are different across versions (i.e. different for 10.8.1 vs 10.9.1).
 and choose the appropriate image for the appropriate Ubuntu version.
 
-If setting up using the UI, go to CloudFormation and launch a new stack using new resources. Follow the steps below:
+If setting up in a browser, go to the CloudFormation service in the AWS console and create a new stack using new resources. Follow the steps below:
 
 1. Upload the [CloudFormation template](cloudformation.yml)
 
