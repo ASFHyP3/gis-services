@@ -4,9 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.1]
+## [0.3.2]
 ### Changed
 - Updated [documentation for server deployment and configuration](image_server/server_setup.md) to support a two-server configuration
+
+## [0.3.1]
+### Changed
+- The `AddRastersToMosaicDataset` and `publish_sd` steps of `make_rtc_service.py` are now attempted up to three times
+  to reduce the impact of intermittent errors.
 
 ## [0.3.0]
 ### Changed

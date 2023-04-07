@@ -14,6 +14,7 @@ import boto3
 from arcgis.gis.server import Server
 from lxml import etree
 from osgeo import gdal, osr
+from tenacity import Retrying, before_sleep_log, stop_after_attempt
 
 
 def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
@@ -144,12 +145,15 @@ try:
         ],
     )
 
-    logging.info(f'Adding source rasters to {mosaic_dataset}')
-    arcpy.management.AddRastersToMosaicDataset(
-        in_mosaic_dataset=mosaic_dataset,
-        raster_type='Table',
-        input_path=csv_file,
-    )
+    for attempt in Retrying(stop=stop_after_attempt(3), reraise=True,
+                            before_sleep=before_sleep_log(logging, logging.WARNING)):
+        with attempt:
+            logging.info(f'Adding source rasters to {mosaic_dataset}')
+            arcpy.management.AddRastersToMosaicDataset(
+                in_mosaic_dataset=mosaic_dataset,
+                raster_type='Table',
+                input_path=csv_file,
+            )
 
     logging.info(f'Calculating custom field values in {mosaic_dataset}')
     arcpy.management.CalculateFields(
@@ -300,10 +304,13 @@ try:
 
     with open(args.server_connection_file) as f:
         server_connection = json.load(f)
-    server = Server(**server_connection)
 
-    logging.info(f'Publishing {service_definition}')
-    server.publish_sd(service_definition, folder=config['service_folder'])
+    for attempt in Retrying(stop=stop_after_attempt(3), reraise=True,
+                            before_sleep=before_sleep_log(logging, logging.WARNING)):
+        with attempt:
+            logging.info(f'Publishing {service_definition}')
+            server = Server(**server_connection)
+            server.publish_sd(service_definition, folder=config['service_folder'])
 
 except arcpy.ExecuteError:
     logging.error(arcpy.GetMessages())
