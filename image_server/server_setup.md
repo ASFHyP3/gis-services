@@ -7,7 +7,7 @@ To host ArcGIS Image Services, a server must be configured and licensed for two 
 1. ArcGIS Server
 2. ArcGIS Image Server extension
 
-The ArcGIS Server is the software that allows feature services to be published. A python interpreter with the arcpy package installed is included in ArcGIS Server installation. The arcpy package is used in programmatic workflows for preparing geospatial content and publishing it to ArcGIS services. The ArcGIS Server licensing also provides access to the arcpy package for any conda environments configured on the server.
+ArcGIS Server software supports the publication of geospatial data to feature and map services. A python interpreter including the arcpy package is installed during the ArcGIS Server installation process. The arcpy package is used in programmatic workflows for preparing geospatial content and publishing it to ArcGIS services. Once the ArcGIS Server license is activated, any conda environments configured on the server will also have access to the arcpy package.
 
 The Image Server extension is required for publishing image services. This software provides support for raster mosaics that render on the fly, along with support for time-enabled mosaic datasets. This functionality has been a key component of the services ASF offers. 
 
