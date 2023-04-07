@@ -65,7 +65,7 @@ These steps only need to be run once per AWS account.
 
 ## Deploy the stack
 
-CloudFormation template is at https://github.com/ASFHyP3/gis-services/blob/main/image_server/cloudformation.yml and can be deployed either from the command line or the AWS CloudFormation console.
+A CloudFormation template for this project is at https://github.com/ASFHyP3/gis-services/blob/main/image_server/cloudformation.yml and can be deployed either from the command line or the AWS CloudFormation console.
 
 * Note that the current CloudFormation template referenced in this document is for a single-server configuration. To deploy a two-server configuration comprising both a processing and image server, use the template in [this PR](https://github.com/ASFHyP3/gis-services/pull/61).
 
