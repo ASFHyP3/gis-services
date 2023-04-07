@@ -8,5 +8,6 @@ dependencies:
   - boto3
   - gdal>=2.4.4,<3
   - lxml
+  - tenacity
 variables:
   ARCGISHOME: /opt/arcgis/server/
