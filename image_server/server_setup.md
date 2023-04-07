@@ -7,7 +7,7 @@ To host ArcGIS Image Services, a server must be configured and licensed for two 
 1. ArcGIS Server
 2. ArcGIS Image Server extension
 
-The ArcGIS Server is the software that allows feature services to be published. A python interpreter with the arcpy package installed is included in ArcGIS Server installation. The arcpy package is used in programmatic workflows for preparing geospatial content and publishing it to ArcGIS services. The ArcGIS Server licensing also provides access to the arcpy package for any conda environments configured on the server.
+ArcGIS Server software supports the publication of geospatial data to feature and map services. A python interpreter including the arcpy package is installed during the ArcGIS Server installation process. The arcpy package is used in programmatic workflows for preparing geospatial content and publishing it to ArcGIS services. Once the ArcGIS Server license is activated, any conda environments configured on the server will also have access to the arcpy package.
 
 The Image Server extension is required for publishing image services. This software provides support for raster mosaics that render on the fly, along with support for time-enabled mosaic datasets. This functionality has been a key component of the services ASF offers. 
 
@@ -65,14 +65,14 @@ These steps only need to be run once per AWS account.
 
 ## Deploy the stack
 
-CloudFormation template is at https://github.com/ASFHyP3/gis-services/blob/main/image_server/cloudformation.yml and can be deployed either from the command line or the AWS CloudFormation console.
+A CloudFormation template for this project is at https://github.com/ASFHyP3/gis-services/blob/main/image_server/cloudformation.yml and can be deployed either from the command line or the AWS CloudFormation console.
 
 * Note that the current CloudFormation template referenced in this document is for a single-server configuration. To deploy a two-server configuration comprising both a processing and image server, use the template in [this PR](https://github.com/ASFHyP3/gis-services/pull/61).
 
 Check for the correct ImageId, which are different across versions (i.e. different for 10.8.1 vs 10.9.1).
 and choose the appropriate image for the appropriate Ubuntu version.
 
-If setting up using the UI, go to CloudFormation and launch a new stack using new resources. Follow the steps below:
+If setting up in a browser, go to the CloudFormation service in the AWS console and create a new stack using new resources. Follow the steps below:
 
 1. Upload the [CloudFormation template](cloudformation.yml)
 
