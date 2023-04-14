@@ -12,6 +12,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(mess
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('working_directory')
+parser.add_argument('--server-connection-file', default='/home/arcgis/server_connection.json')
 parser.add_argument('--dataset-name', default='GLO30_HAND', help='Dataset name.')
 parser.add_argument(
     '--rasters-filter',
