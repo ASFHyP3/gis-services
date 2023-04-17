@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.3]
+### Added
+- README.md for `make_hand_service.py`
+
 ## [0.3.2]
 ### Changed
 - Updated [documentation for server deployment and configuration](image_server/server_setup.md) to support a two-server configuration
