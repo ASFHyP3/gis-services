@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.3]
 ### Added
 - README.md for `make_hand_service.py`
+- Service definition overrides for `minInstances` and `maxInstances`for all RTC services
 
 ## [0.3.2]
 ### Changed
