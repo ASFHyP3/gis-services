@@ -1,0 +1,26 @@
+{
+  "project_name": "HKH",
+  "s3_prefix": "HKHwatermaps/",
+  "s3_suffix": "_FM_iterative_PW.tif",
+  "dataset_name": "PW",
+  "raster_function_templates": [
+    "WatermapExtentBlue.rft.xml"
+  ],
+  "default_raster_function_template": "WatermapExtentBlue.rft.xml",
+  "service_folder": "HKH",
+  "service_name": "HKH_Perennial_Water",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "Perennial Water generated over the Hindu Kush Himalayan (HKH) region, processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Perennial Water generated over the Hindu Kush Himalayan (HKH) region, processed by ASF. Pixel values of 1 indicate surface water, NoData is used for non-water pixels.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "Watermap Extent products processed by ASF DAAC HyP3.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
+    "ItemInfo/Title": "HKH PW",
+    "ItemInfo/Credits": "Perennial Water products processed by ASF DAAC HyP3.",
+    "ItemInfo/Description": "Perennial Water generated over the Hindu Kush Himalayan (HKH) region, processed by ASF.",
+    "ItemInfo/Snippet": "Perennial Water generated over the Hindu Kush Himalayan (HKH) region, processed by ASF."
+  }
+}
