@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Code to generate a perennial water service for the HKH region
 ### Changed
 - Adjusted service definition overrides to set the minInstances to 1 and maxInstances to 9 for all services
- 
+
+## [0.3.4]
+### Added
+- code to enable WMS capabilities in service definition files
+
 ## [0.3.3]
 ### Added
 - README.md for `make_hand_service.py`
