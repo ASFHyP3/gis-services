@@ -115,7 +115,7 @@ else:
 overview_name = f'{output_name}_overview'
 local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
-service_definition_draft = os.path.join(args.working_directory, f'{output_name}.sdd')
+service_draft = os.path.join(args.working_directory, f'{output_name}.sdd')
 service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
 arcpy.env.parallelProcessingFactor = '75%'
