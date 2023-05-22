@@ -86,9 +86,11 @@ The easiest scenario is illustrated below, but refer to the [Pixel Cache Path Ex
    2. Set the Server to https://url_to_gis_server/image (this is not the default in the Server dropdown menu, and if this is not changed, there will be a licensing error)
    3. Set the server Folder to GSSICB
    4. Select Everyone and Earthdata GIS under the Share options
+      * **For the production server, the Everyone option is not available to us. Select the Organization option, and contact the EGIS team to request that they share the service publicly.**
 3. Set the options in the Configuration tab
 ![Configuration Settings](images/WMS.PNG)
    1. Check the box next to WMS under the Additional Layers section
+      * **For the production server, this option is not available to us. The WMS option requires that the service be shared publicly, and we are not authorized to share publicly. Once the service has been published, contact the EGIS team to request that they enable the WMS option.**
 4. Click the Analyze button
    1. There is the possibility that a number of errors and warnings will be identified.
 ![Unique Numeric IDs Error](images/UniqueNumericIDs.PNG)
