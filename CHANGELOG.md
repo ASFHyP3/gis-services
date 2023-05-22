@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.5]
+### Added
+- Documentation for publishing services to Earthdata GIS using existing MDCS-generated mosaic datasets
+- Sample metadata for GSSICB services
+- Documentation for adding ASF-published AGOL content to Earthdata GIS Portal
+
 ## [0.3.4]
 ### Added
 - Code to generate a perennial water service for the HKH region
@@ -25,9 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   to reduce the impact of intermittent errors.
 
 ## [0.3.0]
-### Added
-- Documentation for publishing services to Earthdata GIS using existing MDCS-generated mosaic datasets
-- Sample metadata for GSSICB services
 ### Changed
 - `make_rtc_service.py` now maintains a CSV table for adding rasters to the mosaic dataset
 - support using mambaforge instead of miniconda3 for python environments
