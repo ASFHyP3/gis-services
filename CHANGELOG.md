@@ -4,13 +4,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.4]
+### Added
+- Code to generate a perennial water service for the HKH region
+### Changed
+- Adjusted service definition overrides to set the minInstances to 1 and maxInstances to 9 for all services
+ 
+## [0.3.3]
+### Added
+- README.md for `make_hand_service.py`
+- Service definition overrides for `minInstances` and `maxInstances`for all RTC services
+
+## [0.3.2]
+### Changed
+- Updated [documentation for server deployment and configuration](image_server/server_setup.md) to support a two-server configuration
+
+## [0.3.1]
+### Changed
+- The `AddRastersToMosaicDataset` and `publish_sd` steps of `make_rtc_service.py` are now attempted up to three times
+  to reduce the impact of intermittent errors.
+
 ## [0.3.0]
 ### Added
 - Documentation for publishing services to Earthdata GIS using existing MDCS-generated mosaic datasets
 - Sample metadata for GSSICB services
 ### Changed
-- Generation of mosaic datasets is now scheduled on a separate EC2 instance from the EC2 instance that hosts the
-  ArcGIS Image Server web application.
+- `make_rtc_service.py` now maintains a CSV table for adding rasters to the mosaic dataset
+- support using mambaforge instead of miniconda3 for python environments
 
 ## [0.2.0]
 ### Added

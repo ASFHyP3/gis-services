@@ -1,8 +1,8 @@
 {
   "project_name": "USDA",
   "s3_prefix": "USDA/",
+  "s3_suffix": "rgb.tif",
   "dataset_name": "RGB",
-  "raster_filter": "*rgb.tif",
   "raster_function_templates": [
   ],
   "default_raster_function_template": "None",
@@ -13,6 +13,10 @@
     "Configurations/SVCConfiguration/Definition/Description": "RGB Decomposition of Sentinel-1 Radiometric Terrain Corrected (RTC) VV and VH imagery over AOIs in China, Madagascar and Pakistan, processed by ASF.",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Sentinel-1 RGB Decomposition of RTC VV and VH imagery over AOIs in China, Madagascar and Pakistan, processed by ASF. Blue areas have low returns in VV and VH (smooth surfaces such as calm water, but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume scatterers such as vegetation or some types of snow/ice), and red areas have relatively high VV returns and relatively low VH returns (such as urban or sparsely vegetated areas).",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "RGB Decomposition products processed by ASF DAAC HyP3 2022 using GAMMA software. Contains modified Copernicus Sentinel data 2021-2022, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
     "ItemInfo/Title": "USDA RGB",
     "ItemInfo/Credits": "RGB Decomposition products processed by ASF DAAC HyP3 2022 using GAMMA software. Contains modified Copernicus Sentinel data 2021-2022, processed by ESA.",
     "ItemInfo/Description": "Sentinel-1 RGB Decomposition of RTC VV and VH imagery over AOIs in China, Madagascar and Pakistan, processed by ASF. Blue areas have low returns in VV and VH (smooth surfaces such as calm water, but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume scatterers such as vegetation or some types of snow/ice), and red areas have relatively high VV returns and relatively low VH returns (such as urban or sparsely vegetated areas).",

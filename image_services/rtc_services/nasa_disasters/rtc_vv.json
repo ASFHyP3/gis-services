@@ -1,8 +1,8 @@
 {
   "project_name": "RTCservices",
   "s3_prefix": "RTC_services/",
+  "s3_suffix": "_VV.tif",
   "dataset_name": "RTC_VV",
-  "raster_filter": "*_VV.tif",
   "raster_function_templates": [
     "Sentinel1_RTC_Power.rft.xml",
     "Sentinel1_RTC_Amplitude.rft.xml",
@@ -17,6 +17,10 @@
     "Configurations/SVCConfiguration/Definition/Description": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by ASF.",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by ASF. Values for the VV polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "RTC products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
     "ItemInfo/Title": "ASF S1 RTC VV",
     "ItemInfo/Credits": "RTC products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
     "ItemInfo/Description": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by ASF. Values for the VV polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.",
