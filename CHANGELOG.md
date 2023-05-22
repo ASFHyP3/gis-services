@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation for publishing services to Earthdata GIS using existing MDCS-generated mosaic datasets
 - Sample metadata for GSSICB services
 - Documentation for adding ASF-published AGOL content to Earthdata GIS Portal
+- Documentation for using the ArcGIS Assistant to update content (particularly services URLs) in web maps
 
 ## [0.3.4]
 ### Added
