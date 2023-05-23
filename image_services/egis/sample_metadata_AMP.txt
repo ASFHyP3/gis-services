@@ -1,0 +1,15 @@
+Title
+GSSICB Mean {HH} Backscatter {Dec/Jan/Feb}
+
+Tags
+ASF, Alaska Satellite Facility, Synthetic Aperture Radar, SAR, Sentinel-1, Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter, Backscatter, Amplitude, RTC, Radiometric Terrain Correction
+
+Summary (Purpose)
+Global {Winter} ({December/January/February}) mean backscatter amplitude (AMP) values in {HH} polarization from the Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set.
+
+Description (Abstract)
+Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter: mean amplitude of radiometrically terrain-corrected gamma-0 backscatter (AMP) values for {December/January/February} in {HH} polarization. Pixel values in source rasters are stored as digital numbers (DN). Processing templates are included with the service to provide the power and dB values along with the original DN values. The power value is calculated using the formula DN ^ 2 / 199526231, and the dB value is calculated using the formula 20 x log10(DN) - 83.
+The source rasters referenced in this service are available on the Registry of Open Data on AWS: https://registry.opendata.aws/ebd-sentinel-1-global-coherence-backscatter/
+
+Credits
+Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set was accessed on 11 November 2022 from https://registry.opendata.aws/ebd-sentinel-1-global-coherence-backscatter.
