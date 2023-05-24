@@ -261,7 +261,6 @@ try:
         raster_type='Raster Dataset',
         input_path=s3_overview,
         enable_pixel_cache='USE_PIXEL_CACHE',
-        cache_location='/opt/arcgis/server/usr/directories/arcgiscache',
     )
 
     logging.info('Calculating Overview Start and End Dates')
