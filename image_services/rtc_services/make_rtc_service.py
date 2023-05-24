@@ -154,6 +154,7 @@ try:
                 raster_type='Table',
                 input_path=csv_file,
                 enable_pixel_cache='USE_PIXEL_CACHE',
+                cache_location='/opt/arcgis/server/usr/directories/arcgiscache'
             )
 
     logging.info(f'Calculating custom field values in {mosaic_dataset}')
