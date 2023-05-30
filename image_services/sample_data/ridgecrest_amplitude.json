@@ -1,0 +1,25 @@
+{
+  "project_name": "ASF_SampleData",
+  "s3_prefix": "InSAR_GAMMA/Ridgecrest/S1AA_20190704T135158_20190716T135159_VVP012_INT80_G_ueF_3930/",
+  "s3_suffix": "amp.tif",
+  "dataset_name": "Ridgecrest_Amplitude",
+  "raster_function_templates": [
+  ],
+  "default_raster_function_template": "None",
+  "service_folder": "ASF_SampleData",
+  "service_name": "Ridgecrest_Amplitude",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "Amplitude map for a July 4, 2019 acquisition over Ridgecrest, processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Amplitude map for a July 4, 2019 acquisition over Ridgecrest, processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "InSAR products processed by ASF DAAC HyP3 2022 using GAMMA software. Contains modified Copernicus Sentinel data 2019, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
+    "ItemInfo/Title": "Ridgecrest Amplitude",
+    "ItemInfo/Credits": "RGB Decomposition products processed by ASF DAAC HyP3 2022 using GAMMA software. Contains modified Copernicus Sentinel data 2019, processed by ESA.",
+    "ItemInfo/Description": "Amplitude map for a July 4, 2019 acquisition over Ridgecrest, processed by ASF.",
+    "ItemInfo/Snippet": "Amplitude map for a July 4, 2019 acquisition over Ridgecrest, processed by ASF."
+  }
+}
