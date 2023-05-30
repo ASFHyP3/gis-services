@@ -6,7 +6,7 @@
   "raster_function_templates": [
   ],
   "default_raster_function_template": "None",
-  "service_folder": "ASF_SampleData",
+  "service_folder": "hjkristenson",
   "service_name": "Ridgecrest_Amplitude",
   "service_definition_overrides": {
     "Type": "esriServiceDefinitionType_Replacement",
