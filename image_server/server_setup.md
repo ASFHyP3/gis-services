@@ -170,7 +170,7 @@ import arcpy
 3. As the arcgis user, create and edit a server_connection.json file in /home/arcgis/ and populate it with the following information (refer to AWS Secrets Manager for username and password):
 ```
 {
-    "url": "https://name-of-image-server.asf.alaska.edu/arcgis/admin",
+    "url": "https://localhost:6633/arcgis/admin",
     "username": "<username>",
     "password": "<password>"
 }
