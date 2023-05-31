@@ -98,7 +98,7 @@ today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
 
 raster_store = '/home/arcgis/raster_store/'
 bucket = 'hyp3-examples'
-overview_path = '/vsis3/hyp3-examples/overviews'
+overview_path = '/vsis3/hyp3-examples/overviews/'
 template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
 with open(args.config_file) as f:
@@ -239,7 +239,7 @@ try:
     selection = arcpy.management.SelectLayerByAttribute(
         in_layer_or_view=mosaic_dataset,
         selection_type='NEW_SELECTION',
-        where_clause=f"Name = 'hjkristenson{overview_name}'",
+        where_clause=f"Name = '{overview_name}'",
     )
 
     arcpy.management.CalculateFields(
