@@ -1,12 +1,12 @@
 {
   "project_name": "ASF_SampleData",
-  "s3_prefix": "sample-data/",
-  "s3_suffix": "_6E83_VV.tif",
+  "s3_prefix": "RTC_GAMMA/RTC_PixelSpacing/",
+  "s3_suffix": "RTC10_G_gauned_6E83_VV.tif",
   "dataset_name": "RTC_10m",
   "raster_function_templates": [
   ],
   "default_raster_function_template": "None",
-  "service_folder": "hjkristenson",
+  "service_folder": "ASF_SampleData",
   "service_name": "RTC_10m",
   "service_definition_overrides": {
     "Type": "esriServiceDefinitionType_Replacement",

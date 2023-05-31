@@ -97,8 +97,8 @@ args = parser.parse_args()
 today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
 
 raster_store = '/home/arcgis/raster_store/'
-bucket = 'hyp3-nasa-disasters'
-overview_path = '/vsis3/hyp3-nasa-disasters/overviews/hjkristenson'
+bucket = 'hyp3-examples'
+overview_path = '/vsis3/hyp3-examples/overviews'
 template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
 with open(args.config_file) as f:
