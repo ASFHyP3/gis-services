@@ -235,7 +235,13 @@ try:
         input_path=s3_overview,
     )
 
-    logging.info(f'Calculating custom field values for overview record')
+    logging.info('Calculating custom fields for overview record')
+    selection = arcpy.management.SelectLayerByAttribute(
+        in_layer_or_view=mosaic_dataset,
+        selection_type='NEW_SELECTION',
+        where_clause=f"Name = '{overview_name}'",
+    )
+
     arcpy.management.CalculateFields(
         in_table=mosaic_dataset,
         fields=[
