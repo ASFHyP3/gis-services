@@ -4,6 +4,7 @@
   "s3_suffix": "RTC10_G_gauned_6E83_VV.tif",
   "dataset_name": "RTC_10m",
   "raster_function_templates": [
+    "Stretch_2SD_with_DRA.rft.xml"
   ],
   "default_raster_function_template": "None",
   "service_folder": "ASF_SampleData",
