@@ -98,7 +98,7 @@ today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
 
 raster_store = '/home/arcgis/raster_store/'
 bucket = 'hyp3-nasa-disasters'
-overview_path = '/vsis3/hyp3-nasa-disasters/sample-data/overviews/'
+overview_path = '/vsis3/hyp3-nasa-disasters/overviews/hjkristenson'
 template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
 with open(args.config_file) as f:
