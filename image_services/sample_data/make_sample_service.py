@@ -246,6 +246,7 @@ try:
         in_table=selection,
         fields=[
             ['MinPS', '800'],
+            ['Category', '2'],
         ],
     )
     with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
