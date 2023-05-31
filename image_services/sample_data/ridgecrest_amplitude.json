@@ -19,7 +19,7 @@
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
     "ItemInfo/Title": "Ridgecrest Amplitude",
-    "ItemInfo/Credits": "RGB Decomposition products processed by ASF DAAC HyP3 2022 using GAMMA software. Contains modified Copernicus Sentinel data 2019, processed by ESA.",
+    "ItemInfo/Credits": "InSAR products processed by ASF DAAC HyP3 2022 using GAMMA software. Contains modified Copernicus Sentinel data 2019, processed by ESA.",
     "ItemInfo/Description": "Amplitude map for a July 4, 2019 acquisition over Ridgecrest, processed by ASF.",
     "ItemInfo/Snippet": "Amplitude map for a July 4, 2019 acquisition over Ridgecrest, processed by ASF."
   }
