@@ -239,7 +239,7 @@ try:
     selection = arcpy.management.SelectLayerByAttribute(
         in_layer_or_view=mosaic_dataset,
         selection_type='NEW_SELECTION',
-        where_clause=f"Name = '{overview_name}'",
+        where_clause=f"Name = 'hjkristenson{overview_name}'",
     )
 
     arcpy.management.CalculateFields(
