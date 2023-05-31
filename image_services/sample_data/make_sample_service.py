@@ -145,6 +145,14 @@ try:
                 input_path=csv_file,
             )
 
+    logging.info(f'Calculating custom field values in {mosaic_dataset}')
+    arcpy.management.CalculateFields(
+        in_table=mosaic_dataset,
+        fields=[
+            ['MaxPS', '810'],
+        ],
+    )
+
     logging.info(f'Building raster footprints for {mosaic_dataset}')
     arcpy.management.BuildFootprints(
         in_mosaic_dataset=mosaic_dataset,
@@ -211,7 +219,7 @@ try:
         local_overview = os.path.join(temp_dir, local_overview_filename)
 
         logging.info(f'Generating {local_overview}')
-        with arcpy.EnvManager(cellSize=1200):
+        with arcpy.EnvManager(cellSize=800):
             arcpy.management.CopyRaster(
                 in_raster=mosaic_dataset,
                 out_rasterdataset=local_overview,
@@ -227,6 +235,13 @@ try:
         input_path=s3_overview,
     )
 
+    logging.info(f'Calculating custom field values for overview record')
+    arcpy.management.CalculateFields(
+        in_table=mosaic_dataset,
+        fields=[
+            ['MinPS', '800'],
+        ],
+    )
     with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
         logging.info(f'Creating draft service definition {service_definition_draft.name}')
         arcpy.CreateImageSDDraft(
