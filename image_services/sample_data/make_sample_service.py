@@ -197,7 +197,7 @@ try:
         cell_size_tolerance=1.8,
         cell_size=3,
         metadata_level='BASIC',
-        transmission_fields='Name;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;CenterY',
+        transmission_fields='Name;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;CenterY;Tag',
         use_time='DISABLED',
         max_num_of_download_items=50,
         max_num_of_records_returned=2000,
