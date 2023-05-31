@@ -1,6 +1,6 @@
 {
   "project_name": "ASF_SampleData",
-  "s3_prefix": "InSAR_GAMMA/Ridgecrest/S1AA_20190704T135158_20190716T135159_VVP012_INT80_G_ueF_3930/",
+  "s3_prefix": "sample-data/",
   "s3_suffix": "amp.tif",
   "dataset_name": "Ridgecrest_Amplitude",
   "raster_function_templates": [
