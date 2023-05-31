@@ -243,7 +243,7 @@ try:
     )
 
     arcpy.management.CalculateFields(
-        in_table=mosaic_dataset,
+        in_table=selection,
         fields=[
             ['MinPS', '800'],
         ],
