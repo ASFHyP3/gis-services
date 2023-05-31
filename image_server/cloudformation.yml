@@ -163,7 +163,9 @@ Resources:
                 Resource: !Sub "arn:aws:s3:::${Bucket}/*"
               - Effect: Allow
                 Action: s3:PutObject
-                Resource: !Sub "arn:aws:s3:::${Bucket}/${OverviewPrefix}*"
+                Resource:
+                - !Sub "arn:aws:s3:::${Bucket}/${OverviewPrefix}*"
+                - !Sub "arn:aws:s3:::hyp3-examples/${OverviewPrefix}*"
 
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
