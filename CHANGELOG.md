@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.6]
+### Added
+- Resource permission for `hyp3-examples` in `image_server/cloudformaiton.yml`
+### Changed
+- URL to the lastest version for the ESRI UNDM4 patch in `image_server/arcgis_setup.sh`
+- Server setup now suggests a localhost when creating `server_connection.json`
+
 ## [0.3.5]
 ### Added
 - Documentation for publishing services to Earthdata GIS using existing MDCS-generated mosaic datasets
