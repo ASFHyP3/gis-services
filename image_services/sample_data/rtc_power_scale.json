@@ -1,0 +1,26 @@
+{
+  "project_name": "ASF_SampleData",
+  "s3_prefix": "RTC_GAMMA/RTC_Scales/",
+  "s3_suffix": "RTC30_G_gpuned_B94A_VV.tif",
+  "dataset_name": "RTC_PowerScale",
+  "raster_function_templates": [
+    "Stretch_2SD_with_DRA.rft.xml"
+  ],
+  "default_raster_function_template": "None",
+  "service_folder": "ASF_SampleData",
+  "service_name": "RTC_PowerScale",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "Radiometric Terrain Corrected (RTC) product in VV polarization generated in power scale at 30 meter pixel spacing from Sentinel-1 SAR imagery, processed by ASF. Values for the VV polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Radiometric Terrain Corrected (RTC) products in VV polarization generated in power scale at 30 meter pixel spacing from Sentinel-1 SAR imagery, processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2023, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
+    "ItemInfo/Title": "RTC Power Scale",
+    "ItemInfo/Credits": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2023, processed by ESA.",
+    "ItemInfo/Description": "Radiometric Terrain Corrected (RTC) product in VV polarization generated at 30 meter pixel spacing in power scale from Sentinel-1 SAR imagery, processed by ASF. Values for the VV polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.",
+    "ItemInfo/Snippet": "Radiometric Terrain Corrected (RTC) product in VV polarization generated at 30 meter pixel spacing in power scale from Sentinel-1 SAR imagery, processed by ASF."
+  }
+}
