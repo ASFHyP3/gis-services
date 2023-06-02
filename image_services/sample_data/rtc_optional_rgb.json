@@ -1,0 +1,25 @@
+{
+  "project_name": "ASF_SampleData",
+  "s3_prefix": "RTC_GAMMA/RTC_OptionalFiles/",
+  "s3_suffix": "RTC30_G_gauned_A1A2_rgb.tif",
+  "dataset_name": "RTC_Optional_RGBdecomposition",
+  "raster_function_templates": [
+  ],
+  "default_raster_function_template": "None",
+  "service_folder": "ASF_SampleData",
+  "service_name": "RTC_Optional_RGBdecomposition",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "Example of an RGB Decomposition GeoTIFF optionally available for inclusion in an RTC product package processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Example of an RGB Decomposition GeoTIFF optionally available for inclusion in an RTC product package processed by ASF. There is always a low-resolution false-color browse image included in the product package, but you can include this GeoTIFF if you want a full-resolution RGB Decomposition image. This image combines the co- and cross-polarized RTC values to generate a false-color image. In general, blue indicates areas with low backscatter in both co- and cross-polarizations (calm water, dry sand, frozen ground), green indicates high cross-pol values (vegetation or other volume scatterers), and red indicates areas with low cross-pol but relatively high co-pol values (urban areas). A full description of the approach used for generating this particular decomposition is available at https://github.com/ASFHyP3/hyp3-lib/blob/develop/docs/rgb_decomposition.md",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2022, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
+    "ItemInfo/Title": "RTC Optional RGB Decomposition GeoTIFF",
+    "ItemInfo/Credits": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2022, processed by ESA.",
+    "ItemInfo/Description": "Example of an RGB Decomposition GeoTIFF optionally available for inclusion in an RTC product package processed by ASF. There is always a low-resolution false-color browse image included in the product package, but you can include this GeoTIFF if you want a full-resolution RGB Decomposition image. This image combines the co- and cross-polarized RTC values to generate a false-color image. In general, blue indicates areas with low backscatter in both co- and cross-polarizations (calm water, dry sand, frozen ground), green indicates high cross-pol values (vegetation or other volume scatterers), and red indicates areas with low cross-pol but relatively high co-pol values (urban areas). A full description of the approach used for generating this particular decomposition is available at https://github.com/ASFHyP3/hyp3-lib/blob/develop/docs/rgb_decomposition.md",
+    "ItemInfo/Snippet": "Example of an RGB Decomposition GeoTIFF optionally available for inclusion in an RTC product package processed by ASF."
+  }
+}
