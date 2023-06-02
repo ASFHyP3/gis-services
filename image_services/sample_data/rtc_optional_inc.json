@@ -1,0 +1,25 @@
+{
+  "project_name": "ASF_SampleData",
+  "s3_prefix": "RTC_GAMMA/RTC_OptionalFiles/",
+  "s3_suffix": "RTC30_G_gauned_A1A2_inc_map.tif",
+  "dataset_name": "RTC_Optional_IncidenceAngle",
+  "raster_function_templates": [
+  ],
+  "default_raster_function_template": "None",
+  "service_folder": "ASF_SampleData",
+  "service_name": "RTC_Optional_IncidenceAngle",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "Example of an incidence angle file optionally available for inclusion in an RTC product package processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Example of a incidence angle file optionally available for inclusion in an RTC product package. This map records the local incidence angle for each pixel in the RTC image. The local incidence angle is the angle between the incident radar beam and the direction perpendicular to the ground surface, expressed in radians.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2022, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
+    "ItemInfo/Title": "RTC Optional Incidence Angle Map",
+    "ItemInfo/Credits": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2022, processed by ESA.",
+    "ItemInfo/Description": "Example of a incidence angle file optionally available for inclusion in an RTC product package. This map records the local incidence angle for each pixel in the RTC image. The local incidence angle is the angle between the incident radar beam and the direction perpendicular to the ground surface, expressed in radians.",
+    "ItemInfo/Snippet": "Example of a incidence angle file optionally available for inclusion in an RTC product package processed by ASF."
+  }
+}
