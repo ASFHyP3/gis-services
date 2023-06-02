@@ -10,7 +10,7 @@
   "service_name": "RTC_Optional_DEM",
   "service_definition_overrides": {
     "Type": "esriServiceDefinitionType_Replacement",
-    "Configurations/SVCConfiguration/Definition/Description": "Example of a DEM file optionally available for inclusion in an RTC product package. The source DEM is tiled and clipped to provide full coverage of the RTC product, and an ellipsoid correction is applied, which changes the elevation values. The output DEM is resampled as necessary to match the output pixel spacing of the RTC product. It is intended to be used for reference only, not as a stand-alone product.",
+    "Configurations/SVCConfiguration/Definition/Description": "Example of a DEM file optionally available for inclusion in an RTC product package processed by ASF.",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Example of a DEM file optionally available for inclusion in an RTC product package. The source DEM is tiled and clipped to provide full coverage of the RTC product, and an ellipsoid correction is applied, which changes the elevation values. The output DEM is resampled as necessary to match the output pixel spacing of the RTC product. It is intended to be used for reference only, not as a stand-alone product.",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2022, processed by ESA.",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
@@ -20,6 +20,6 @@
     "ItemInfo/Title": "RTC Optional DEM",
     "ItemInfo/Credits": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2022, processed by ESA.",
     "ItemInfo/Description": "Example of a DEM file optionally available for inclusion in an RTC product package. The source DEM is tiled and clipped to provide full coverage of the RTC product, and an ellipsoid correction is applied, which changes the elevation values. The output DEM is resampled as necessary to match the output pixel spacing of the RTC product. It is intended to be used for reference only, not as a stand-alone product.",
-    "ItemInfo/Snippet": "Example of a DEM file optionally available for inclusion in an RTC product package. The source DEM is tiled and clipped to provide full coverage of the RTC product, and an ellipsoid correction is applied, which changes the elevation values. The output DEM is resampled as necessary to match the output pixel spacing of the RTC product. It is intended to be used for reference only, not as a stand-alone product."
+    "ItemInfo/Snippet": "Example of a DEM file optionally available for inclusion in an RTC product package processed by ASF."
   }
 }
