@@ -253,7 +253,7 @@ try:
     )
 
     logging.info('Calculating statistics')
-    arcpy.CalculateStatistics_management(mosaic_dataset)
+    arcpy.CalculateStatistics_management(mosaic_dataset, '5', '5')
 
     with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
         logging.info(f'Creating draft service definition {service_definition_draft.name}')
