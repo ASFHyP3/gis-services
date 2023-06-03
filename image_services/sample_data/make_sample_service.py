@@ -31,6 +31,8 @@ def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
 def get_pixel_type(data_type: str) -> int:
     if data_type == 'Byte':
         return 3
+    if data_type == 'Int16':
+        return 6
     if data_type == 'Float32':
         return 9
     raise ValueError(f'Unsupported data type: {data_type}')
