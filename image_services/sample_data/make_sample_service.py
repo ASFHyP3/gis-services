@@ -251,6 +251,10 @@ try:
             ['Category', '2'],
         ],
     )
+
+    logging.info('Calculating statistics')
+    arcpy.CalculateStatistics_management(mosaic_dataset)
+
     with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
         logging.info(f'Creating draft service definition {service_definition_draft.name}')
         arcpy.CreateImageSDDraft(
