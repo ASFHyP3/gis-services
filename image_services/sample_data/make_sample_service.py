@@ -119,6 +119,8 @@ local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
 service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
+stats_skip_factor = '5'
+
 arcpy.env.parallelProcessingFactor = '75%'
 
 try:
@@ -252,8 +254,8 @@ try:
         ],
     )
 
-    logging.info('Calculating statistics')
-    arcpy.CalculateStatistics_management(mosaic_dataset, '5', '5')
+    logging.info(f'Calculating statistics with a skip factor of {stats_skip_factor}')
+    arcpy.CalculateStatistics_management(mosaic_dataset, stats_skip_factor, stats_skip_factor)
 
     with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
         logging.info(f'Creating draft service definition {service_definition_draft.name}')
