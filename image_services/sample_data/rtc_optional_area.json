@@ -1,0 +1,25 @@
+{
+  "project_name": "ASF_SampleData",
+  "s3_prefix": "RTC_GAMMA/RTC_OptionalFiles/",
+  "s3_suffix": "RTC30_G_gauned_A1A2_area.tif",
+  "dataset_name": "RTC_Optional_ScatteringArea",
+  "raster_function_templates": [
+  ],
+  "default_raster_function_template": "None",
+  "service_folder": "ASF_SampleData",
+  "service_name": "RTC_Optional_ScatteringArea",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "Example of a scattering area map optionally available for inclusion in an RTC product package processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Example of a scattering area map optionally available for inclusion in an RTC product package processed by ASF. This map records the scattering area for each pixel in the RTC image. The scattering area was calculated based on the effectively illuminated gamma-0 terrain surface using a digital elevation model, expressed in square meters.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2022, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
+    "ItemInfo/Title": "RTC Optional Scattering Area Map",
+    "ItemInfo/Credits": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2022, processed by ESA.",
+    "ItemInfo/Description": "Example of a scattering area map optionally available for inclusion in an RTC product package processed by ASF. This map records the scattering area for each pixel in the RTC image. The scattering area was calculated based on the effectively illuminated gamma-0 terrain surface using a digital elevation model, expressed in square meters.",
+    "ItemInfo/Snippet": "Example of a scattering area map optionally available for inclusion in an RTC product package processed by ASF."
+  }
+}
