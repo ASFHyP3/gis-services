@@ -12,7 +12,7 @@
   "service_definition_overrides": {
     "Type": "esriServiceDefinitionType_Replacement",
     "Configurations/SVCConfiguration/Definition/Description": "Radiometric Terrain Corrected (RTC) product in VV polarization with no speckle filter applied, generated in amplitude scale at 30 meter pixel spacing from Sentinel-1 SAR imagery, processed by ASF. Values for the VV polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.",
-    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Radiometric Terrain Corrected (RTC) products in VV polarization with no speckle filter applied, generated in amplitude scale at 30 meter pixel spacing from Sentinel-1 SAR imagery, processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Radiometric Terrain Corrected (RTC) product in VV polarization with no speckle filter applied, generated in amplitude scale at 30 meter pixel spacing from Sentinel-1 SAR imagery, processed by ASF.",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2022, processed by ESA.",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
@@ -20,7 +20,7 @@
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
     "ItemInfo/Title": "RTC No Speckle Filter Applied",
     "ItemInfo/Credits": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2022, processed by ESA.",
-    "ItemInfo/Description": "Radiometric Terrain Corrected (RTC) product in VV polarization with no speckle filter applied, generated at 30 meter pixel spacing in amplitude scale from Sentinel-1 SAR imagery, processed by ASF. Values for the VV polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.",
-    "ItemInfo/Snippet": "Radiometric Terrain Corrected (RTC) product in VV polarization with no speckle filter applied, generated at 30 meter pixel spacing in amplitude scale from Sentinel-1 SAR imagery, processed by ASF."
+    "ItemInfo/Description": "Radiometric Terrain Corrected (RTC) product in VV polarization with no speckle filter applied, generated in amplitude scale at 30 meter pixel spacing from Sentinel-1 SAR imagery, processed by ASF. Values for the VV polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.",
+    "ItemInfo/Snippet": "Radiometric Terrain Corrected (RTC) product in VV polarization with no speckle filter applied, generated in amplitude scale at 30 meter pixel spacing from Sentinel-1 SAR imagery, processed by ASF."
   }
 }
