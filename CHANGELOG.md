@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.4.0]
 ### Added
-- Code and configuration files for generating ASF_SampleData services consistently using a mosaic dataset approach
+- Code and configuration files for generating ASF_SampleData services consistently using a mosaic dataset approach with calculated statistics
 
 ## [0.3.6]
 ### Added
