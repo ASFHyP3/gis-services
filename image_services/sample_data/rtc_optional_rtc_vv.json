@@ -1,0 +1,26 @@
+{
+  "project_name": "ASF_SampleData",
+  "s3_prefix": "RTC_GAMMA/RTC_OptionalFiles/",
+  "s3_suffix": "RTC30_G_gauned_A1A2_VV.tif",
+  "dataset_name": "RTC_Optional_RTC_VV",
+  "raster_function_templates": [
+    "Stretch_2SD_with_DRA.rft.xml"
+  ],
+  "default_raster_function_template": "None",
+  "service_folder": "ASF_SampleData",
+  "service_name": "RTC_Optional_RTC_VV",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "Sample Radiometric Terrain Corrected (RTC) product in VV polarization generated in amplitude scale at 30 meter pixel spacing from Sentinel-1 SAR imagery, processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Sample Radiometric Terrain Corrected (RTC) product in VV polarization generated in amplitude scale at 30 meter pixel spacing from Sentinel-1 SAR imagery, processed by ASF. This product was generated with all optional files included in the product package, for demonstration purposes.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2022, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
+    "ItemInfo/Title": "RTC Optional Files RTC VV",
+    "ItemInfo/Credits": "RTC products processed by ASF DAAC HyP3 2023 using GAMMA software. Contains modified Copernicus Sentinel data 2022, processed by ESA.",
+    "ItemInfo/Description": "Sample Radiometric Terrain Corrected (RTC) product in VV polarization generated in amplitude scale at 30 meter pixel spacing from Sentinel-1 SAR imagery, processed by ASF. This product was generated with all optional files included in the product package, for demonstration purposes.",
+    "ItemInfo/Snippet": "Sample Radiometric Terrain Corrected (RTC) product in VV polarization generated in amplitude scale at 30 meter pixel spacing from Sentinel-1 SAR imagery, processed by ASF."
+  }
+}

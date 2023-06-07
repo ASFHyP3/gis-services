@@ -1,0 +1,25 @@
+{
+  "project_name": "ASF_SampleData",
+  "s3_prefix": "InSAR_GAMMA/Ridgecrest/S1AA_20190704T135158_20190716T135159_VVP012_INT80_G_ueF_3930/",
+  "s3_suffix": "VVP012_INT80_G_ueF_3930_unw_phase.tif",
+  "dataset_name": "Ridgecrest_Unwrapped_12day",
+  "raster_function_templates": [
+  ],
+  "default_raster_function_template": "None",
+  "service_folder": "ASF_SampleData",
+  "service_name": "Ridgecrest_Unwrapped_12day",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "Unwrapped 12-day interferogram of the Ridgecrest earthquake sequence in July 2019.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Unwrapped 12-day interferogram of the Ridgecrest earthquake sequence in July 2019.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "InSAR products processed by ASF DAAC HyP3 2022 using GAMMA software. Contains modified Copernicus Sentinel data 2019, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
+    "ItemInfo/Title": "Ridgecrest Unwrapped 12 Day Intererogram",
+    "ItemInfo/Credits": "InSAR products processed by ASF DAAC HyP3 2022 using GAMMA software. Contains modified Copernicus Sentinel data 2019, processed by ESA.",
+    "ItemInfo/Description": "Unwrapped 12-day interferogram of the Ridgecrest earthquake sequence in July 2019.",
+    "ItemInfo/Snippet": "Unwrapped 12-day interferogram of the Ridgecrest earthquake sequence in July 2019."
+  }
+}
