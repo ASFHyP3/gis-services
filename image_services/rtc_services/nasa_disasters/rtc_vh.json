@@ -20,7 +20,7 @@
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='idleTimeout']/Value": "3600",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
-    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='usageInstances']/Value": "1200",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='usageTimeout']/Value": "1200",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='waitTimeout']/Value": "120",
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='IdleTimeout']/Value": "3600",
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='keepAliveInterval']/Value": "600",
