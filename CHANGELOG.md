@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.4.1]
 ### Added
-- Parameters in `nasa-disasters` services to update service timeouts and repair cycle interval
+- Parameters in `nasa_disasters` services to set custom service timeouts and repair cycle interval
 
 ## [0.4.0]
 ### Added
