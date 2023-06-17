@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.4.2]
 ### Added
 - Processing script and configuration files to support image services for PDC
+- Permissions for image server to write overviews to `s3://hyp3-pdc-data/`
 
 ## [0.4.1]
 ### Added
