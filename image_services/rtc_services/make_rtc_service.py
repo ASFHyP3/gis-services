@@ -284,6 +284,9 @@ try:
         ],
     )
 
+    logging.info(f'Building multidimensional info for {mosaic_dataset}')
+    arcpy.md.BuildMultidimensionalInfo(mosaic_dataset, 'ProductName', 'StartDate')
+
     with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
         logging.info(f'Creating draft service definition {service_definition_draft.name}')
         arcpy.CreateImageSDDraft(
