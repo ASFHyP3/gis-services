@@ -116,7 +116,6 @@ overview_name = f'{output_name}_overview'
 local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
 service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
-product_name = f'{config["service_name"]}'
 
 arcpy.env.parallelProcessingFactor = '75%'
 
@@ -171,7 +170,7 @@ try:
                         '+ !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
             ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{config["s3_prefix"]}" '
                             f'+ !Name! + ".tif"'],
-            ['ProductName', product_name],
+            ['ProductName', f'{config["service_name"]}'],
         ],
     )
 
