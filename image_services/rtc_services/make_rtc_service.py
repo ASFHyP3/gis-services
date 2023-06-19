@@ -170,7 +170,7 @@ try:
                         '+ !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
             ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{config["s3_prefix"]}" '
                             f'+ !Name! + ".tif"'],
-            ['ProductName', config["service_name"]],
+            ['ProductName', f'"{config["service_name"]}"'],
         ],
     )
 
