@@ -214,7 +214,7 @@ try:
         order_field='StartDate',
         order_base='1/1/2050 12:00:00 AM',
         sorting_order='Ascending',
-        mosaic_operator='FIRST',
+        mosaic_operator='LAST',
         blend_width=10,
         view_point_x=300,
         view_point_y=300,
