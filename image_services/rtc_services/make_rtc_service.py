@@ -117,6 +117,8 @@ local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
 service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
+stats_skip_factor = '10'
+
 arcpy.env.parallelProcessingFactor = '75%'
 
 try:
@@ -283,6 +285,9 @@ try:
             ['EndDate', f'"{overview_end_date}"'],
         ],
     )
+
+    logging.info(f'Calculating statistics with a skip factor of {stats_skip_factor}')
+    arcpy.CalculateStatistics_management(mosaic_dataset, stats_skip_factor, stats_skip_factor)
 
     logging.info(f'Building multidimensional info for {mosaic_dataset}')
     arcpy.md.BuildMultidimensionalInfo(mosaic_dataset, 'ProductName', 'StartDate')
