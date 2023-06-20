@@ -117,7 +117,7 @@ local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
 service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
-stats_skip_factor = '10'
+stats_skip_factor = '1000'
 
 arcpy.env.parallelProcessingFactor = '75%'
 
