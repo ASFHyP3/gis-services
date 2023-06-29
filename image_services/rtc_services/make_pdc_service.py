@@ -123,31 +123,33 @@ try:
     rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
     update_csv(csv_file, rasters)
 
-    logging.info('Creating geodatabase')
-    geodatabase = arcpy.management.CreateFileGDB(
-        out_folder_path=args.working_directory,
-        out_name=f'{output_name}.gdb',
-    )
-    logging.info('Creating mosaic dataset')
-    mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
-        in_workspace=geodatabase,
-        in_mosaicdataset_name=config['dataset_name'],
-        coordinate_system=3857,
-    ))
-
-    logging.info(f'Adding fields to {mosaic_dataset}')
-    arcpy.management.AddFields(
-        in_table=mosaic_dataset,
-        field_description=[
-            ['StartDate', 'DATE'],
-            ['EndDate', 'DATE'],
-            ['DownloadURL', 'TEXT'],
-        ],
-    )
-
     for attempt in Retrying(stop=stop_after_attempt(3), reraise=True,
                             before_sleep=before_sleep_log(logging, logging.WARNING)):
         with attempt:
+
+            logging.info('Creating geodatabase')
+            geodatabase = arcpy.management.CreateFileGDB(
+                out_folder_path=args.working_directory,
+                out_name=f'{output_name}.gdb',
+            )
+
+            logging.info('Creating mosaic dataset')
+            mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
+                in_workspace=geodatabase,
+                in_mosaicdataset_name=config['dataset_name'],
+                coordinate_system=3857,
+            ))
+
+            logging.info(f'Adding fields to {mosaic_dataset}')
+            arcpy.management.AddFields(
+                in_table=mosaic_dataset,
+                field_description=[
+                    ['StartDate', 'DATE'],
+                    ['EndDate', 'DATE'],
+                    ['DownloadURL', 'TEXT'],
+                ],
+            )
+
             logging.info(f'Adding source rasters to {mosaic_dataset}')
             arcpy.management.AddRastersToMosaicDataset(
                 in_mosaic_dataset=mosaic_dataset,
