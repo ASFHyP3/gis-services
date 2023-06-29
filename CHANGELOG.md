@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.4.3]
+### Changed
+- Refactored the addRasters retry loop in the make_pdc_service.py script to avoid duplicate entries in the mosaic dataset attribute table
+
 ## [0.4.2]
 ### Added
 - Processing script and configuration files to support image services for PDC
