@@ -14,7 +14,7 @@ import boto3
 from arcgis.gis.server import Server
 from lxml import etree
 from osgeo import gdal, osr
-from tenacity import Retrying, before_sleep_log, stop_after_attempt
+from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
 
 def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
@@ -123,7 +123,7 @@ try:
     rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
     update_csv(csv_file, rasters)
 
-    for attempt in Retrying(stop=stop_after_attempt(3), reraise=True,
+    for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
                             before_sleep=before_sleep_log(logging, logging.WARNING)):
         with attempt:
 
