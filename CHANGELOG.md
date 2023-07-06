@@ -4,16 +4,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.5]
+
+## [0.4.4]
 ### Added
 - code to enable WMS capabilities in service definition files
+
+## [0.4.3]
+### Changed
+- Refactored the addRasters retry loop in the make_pdc_service.py script to avoid duplicate entries in the mosaic dataset attribute table
+
+## [0.4.2]
+### Added
+- Processing script and configuration files to support image services for PDC
+- IAM permissions for image server to manage mosaic datasets for `s3://hyp3-pdc-data/`
+
+## [0.4.1]
+### Added
+- Parameters in `nasa_disasters` services to set custom service timeouts and repair cycle interval
+
+## [0.4.0]
+### Added
+- Code and configuration files for generating ASF_SampleData services consistently using a mosaic dataset approach with calculated statistics
+
+## [0.3.6]
+### Added
+- Resource permission for `hyp3-examples` in `image_server/cloudformation.yml`
+### Changed
+- URL to the lastest version for the ESRI UNDM4 patch in `image_server/arcgis_setup.sh`
+- Server setup now suggests a localhost when creating `server_connection.json`
+
+## [0.3.5]
+### Added
+- Documentation for publishing services to Earthdata GIS using existing MDCS-generated mosaic datasets
+- Sample metadata for GSSICB services
+- Documentation for adding ASF-published AGOL content to Earthdata GIS Portal
+- Documentation for using the ArcGIS Assistant to update content (particularly services URLs) in web maps
 
 ## [0.3.4]
 ### Added
 - Code to generate a perennial water service for the HKH region
 ### Changed
 - Adjusted service definition overrides to set the minInstances to 1 and maxInstances to 9 for all services
-
+ 
 ## [0.3.3]
 ### Added
 - README.md for `make_hand_service.py`

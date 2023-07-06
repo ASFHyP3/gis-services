@@ -31,6 +31,8 @@ def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
 def get_pixel_type(data_type: str) -> int:
     if data_type == 'Byte':
         return 3
+    if data_type == 'Int16':
+        return 6
     if data_type == 'Float32':
         return 9
     raise ValueError(f'Unsupported data type: {data_type}')
@@ -97,8 +99,8 @@ args = parser.parse_args()
 today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
 
 raster_store = '/home/arcgis/raster_store/'
-bucket = 'hyp3-nasa-disasters'
-overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
+bucket = 'hyp3-examples'
+overview_path = '/vsis3/hyp3-examples/overviews/'
 template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
 with open(args.config_file) as f:
@@ -117,39 +119,29 @@ local_overview_filename = f'{overview_name}.crf'
 s3_overview = f'{overview_path}{overview_name}.crf'
 service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
+stats_skip_factor = '5'
+
 arcpy.env.parallelProcessingFactor = '75%'
 
 try:
     rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
     update_csv(csv_file, rasters)
 
+    logging.info('Creating geodatabase')
+    geodatabase = arcpy.management.CreateFileGDB(
+        out_folder_path=args.working_directory,
+        out_name=f'{output_name}.gdb',
+    )
+    logging.info('Creating mosaic dataset')
+    mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
+        in_workspace=geodatabase,
+        in_mosaicdataset_name=config['dataset_name'],
+        coordinate_system=3857,
+    ))
+
     for attempt in Retrying(stop=stop_after_attempt(3), reraise=True,
                             before_sleep=before_sleep_log(logging, logging.WARNING)):
         with attempt:
-
-            logging.info('Creating geodatabase')
-            geodatabase = arcpy.management.CreateFileGDB(
-                out_folder_path=args.working_directory,
-                out_name=f'{output_name}.gdb',
-            )
-
-            logging.info('Creating mosaic dataset')
-            mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
-                in_workspace=geodatabase,
-                in_mosaicdataset_name=config['dataset_name'],
-                coordinate_system=3857,
-            ))
-
-            logging.info(f'Adding fields to {mosaic_dataset}')
-            arcpy.management.AddFields(
-                in_table=mosaic_dataset,
-                field_description=[
-                    ['StartDate', 'DATE'],
-                    ['EndDate', 'DATE'],
-                    ['DownloadURL', 'TEXT'],
-                ],
-            )
-
             logging.info(f'Adding source rasters to {mosaic_dataset}')
             arcpy.management.AddRastersToMosaicDataset(
                 in_mosaic_dataset=mosaic_dataset,
@@ -161,17 +153,7 @@ try:
     arcpy.management.CalculateFields(
         in_table=mosaic_dataset,
         fields=[
-            ['GroupName', '!Name![:46]'],
-            ['Tag', '!Name!.split("_")[8]'],
-            ['MaxPS', '1610'],
-            ['StartDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" '
-                          '+ !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" '
-                          '+ !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
-            ['EndDate', '!Name!.split("_")[2][4:6] + "/" + !Name!.split("_")[2][6:8] + "/" '
-                        '+ !Name!.split("_")[2][:4] + " " + !Name!.split("_")[2][9:11] + ":" '
-                        '+ !Name!.split("_")[2][11:13] + ":" + !Name!.split("_")[2][13:15]'],
-            ['DownloadURL', f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{config["s3_prefix"]}" '
-                            f'+ !Name! + ".tif"'],
+            ['MaxPS', '810'],
         ],
     )
 
@@ -209,9 +191,7 @@ try:
         allowed_mensuration_capabilities='BASIC',
         default_mensuration_capabilities='BASIC',
         allowed_mosaic_methods='Center;NorthWest;Nadir;LockRaster;ByAttribute;Seamline;None',
-        default_mosaic_method='ByAttribute',
-        order_field='StartDate',
-        order_base='1/1/2050 12:00:00 AM',
+        default_mosaic_method='Center',
         sorting_order='Ascending',
         mosaic_operator='FIRST',
         blend_width=10,
@@ -221,11 +201,8 @@ try:
         cell_size_tolerance=1.8,
         cell_size=3,
         metadata_level='BASIC',
-        transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;CenterY;'
-                            'Tag;ProductName;GroupName;DownloadURL',
-        use_time='ENABLED',
-        start_time_field='StartDate',
-        end_time_field='EndDate',
+        transmission_fields='Name;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;CenterY;Tag',
+        use_time='DISABLED',
         max_num_of_download_items=50,
         max_num_of_records_returned=2000,
         processing_templates=f'{raster_function_template}None',
@@ -246,7 +223,7 @@ try:
         local_overview = os.path.join(temp_dir, local_overview_filename)
 
         logging.info(f'Generating {local_overview}')
-        with arcpy.EnvManager(cellSize=1200):
+        with arcpy.EnvManager(cellSize=800):
             arcpy.management.CopyRaster(
                 in_raster=mosaic_dataset,
                 out_rasterdataset=local_overview,
@@ -262,11 +239,6 @@ try:
         input_path=s3_overview,
     )
 
-    logging.info('Calculating Overview Start and End Dates')
-    start_dates = [row[1] for row in arcpy.da.SearchCursor(mosaic_dataset, ['Tag', 'StartDate']) if row[0] != 'Dataset']
-    overview_start_date = min(start_dates).replace(microsecond=0) + datetime.timedelta(hours=-8)
-    overview_end_date = max(start_dates).replace(microsecond=0) + datetime.timedelta(hours=8)
-
     logging.info('Calculating custom fields for overview record')
     selection = arcpy.management.SelectLayerByAttribute(
         in_layer_or_view=mosaic_dataset,
@@ -277,13 +249,13 @@ try:
     arcpy.management.CalculateFields(
         in_table=selection,
         fields=[
-            ['MinPS', '1600'],
+            ['MinPS', '800'],
             ['Category', '2'],
-            ['GroupName', '"Mosaic Overview"'],
-            ['StartDate', f'"{overview_start_date}"'],
-            ['EndDate', f'"{overview_end_date}"'],
         ],
     )
+
+    logging.info(f'Calculating statistics with a skip factor of {stats_skip_factor}')
+    arcpy.CalculateStatistics_management(mosaic_dataset, stats_skip_factor, stats_skip_factor)
 
     with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
         logging.info(f'Creating draft service definition {service_definition_draft.name}')

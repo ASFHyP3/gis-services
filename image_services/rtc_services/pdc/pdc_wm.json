@@ -1,0 +1,27 @@
+{
+  "project_name": "PDC",
+  "s3_prefix": "PDC/",
+  "s3_suffix": "_WM.tif",
+  "dataset_name": "WM",
+  "raster_function_templates": [
+    "WatermapExtentBlueOnly.rft.xml",
+    "WatermapExtentWhiteandBlue.rft.xml"
+  ],
+  "default_raster_function_template": "WatermapExtentBlueOnly.rft.xml",
+  "service_folder": "PDC",
+  "service_name": "HydroSAR_WM_PDC",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "Watermap Extent products generated from Sentinel-1 SAR imagery for PDC areas of interest, processed by ASF using the HydroSAR Hydro30 workflow.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Watermap Extent products generated from Sentinel-1 SAR imagery for PDC areas of interest, processed by ASF using the HydroSAR Hydro30 workflow. Pixel values of 1 indicate surface water, 0 is used for non-water pixels. Refer to https://ntrs.nasa.gov/citations/20210020271 for more information.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "Watermap Extent products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
+    "ItemInfo/Title": "HydroSAR Watermap Extent",
+    "ItemInfo/Credits": "Watermap Extent products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "ItemInfo/Description": "Watermap Extent products generated from Sentinel-1 SAR imagery for PDC areas of interest, processed by ASF using the HydroSAR Hydro30 workflow. Pixel values of 1 indicate surface water, 0 is used for non-water pixels. Refer to https://ntrs.nasa.gov/citations/20210020271 for more information.",
+    "ItemInfo/Snippet": "Watermap Extent products generated from Sentinel-1 SAR imagery for PDC areas of interest, processed by ASF using the HydroSAR Hydro30 workflow."
+  }
+}
