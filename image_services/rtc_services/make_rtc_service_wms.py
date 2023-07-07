@@ -298,6 +298,10 @@ try:
         tree.find(key).text = value
     tree.write(service_draft)
 
+    sub_el_extensions = tree.find("Configurations/SVCConfiguration/Definition/Extensions")
+    sub_el_svcextension = etree.SubElement(sub_el_extensions, 'SVCExtension', type='typens:SVCExtension')
+    etree.SubElement(sub_el_svcextension, 'Enabled')
+
     logging.info(f'Creating service definition {service_definition}')
     arcpy.server.StageService(
         in_service_definition_draft=service_draft,
