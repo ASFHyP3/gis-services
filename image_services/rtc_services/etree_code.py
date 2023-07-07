@@ -23,13 +23,21 @@ for sub_el in svc_exts:
         etree.SubElement(sub_el_path, 'PropertyArray', type='typens:ArrayOfPropertySetProperty')
         print(f'nsmap={sub_el[2]}')
 
-sub_el_info_props = tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/Info/PropertyArray")
-for i in range(2):
-    etree.SubElement(sub_el_info_props, 'PropertySetProperty', type='typens:PropertySetProperty')
+sub_props = tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/Info/PropertyArray")
+for el in [('WebEnabled', 'true'),
+           ('WebCapabilities', 'GetCapabilities,GetMap,GetFeatureInfo,GetStyles,GetLegendGraphic,GetSchemaExtension')]:
+    add_prop = etree.SubElement(sub_props, 'PropertySetProperty', type='typens:PropertySetProperty')
+    key = etree.SubElement(add_prop, 'Key')
+    key.text = el[0]
+    value = etree.SubElement(add_prop, 'Value', type='xs:string')
+    value.text = el[1]
 
-sub_el_props_props = tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/Props/PropertyArray")
+sub_props = tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/Props/PropertyArray")
 for i in range(21):
-    etree.SubElement(sub_el_props_props, 'PropertySetProperty', type='typens:PropertySetProperty')
+    add_prop = etree.SubElement(sub_props, 'PropertySetProperty', type='typens:PropertySetProperty')
+    etree.SubElement(sub_props, 'PropertySetProperty', type='typens:PropertySetProperty')
+    etree.SubElement(add_prop, 'Key')
+    etree.SubElement(add_prop, 'Value', type='xs:string')
 
 # It might be easier to just use the Element Maker to construct this whole section, then insert it into the sddraft
 # after it's been amended as currently done. But maybe it wouldn't be easier.
