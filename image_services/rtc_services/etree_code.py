@@ -37,12 +37,12 @@ for el in [('WebEnabled', 'true'),
     value = etree.SubElement(add_prop, 'Value', type='xs:string')
     value.text = el[1]
 
-sub_props = tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/Props/PropertyArray")
-for el in range(21):
-    add_prop = etree.SubElement(sub_props, 'PropertySetProperty', type='typens:PropertySetProperty')
-    etree.SubElement(sub_props, 'PropertySetProperty', type='typens:PropertySetProperty')
-    etree.SubElement(add_prop, 'Key')
-    etree.SubElement(add_prop, 'Value', type='xs:string')
+# sub_props = tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/Props/PropertyArray")
+# for el in range(21):
+#     add_prop = etree.SubElement(sub_props, 'PropertySetProperty', type='typens:PropertySetProperty')
+#     etree.SubElement(sub_props, 'PropertySetProperty', type='typens:PropertySetProperty')
+#     etree.SubElement(add_prop, 'Key')
+#     etree.SubElement(add_prop, 'Value', type='xs:string')
 
 tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/TypeName").text = 'WMSServer'
 

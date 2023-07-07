@@ -33,11 +33,11 @@ overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
 template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
 
-service_definition = '/home/arcgis/hjkristenson/gis-services/image_services/rtc_services/usda/USDA_WM_OldNoData_230706_2146.sd'
+service_definition = '/home/arcgis/hjkristenson/gis-services/image_services/rtc_services/usda/USDA_RTC_VV_230707_0039.sd'
 
 logging.info(f'Creating service definition {service_definition}')
 arcpy.server.StageService(
-    in_service_definition_draft='/home/arcgis/hjkristenson/gis-services/image_services/rtc_services/usda/USDA_WM_OldNoData_230706_2146.sddraft',
+    in_service_definition_draft='/home/arcgis/hjkristenson/gis-services/image_services/rtc_services/usda/USDA_RTC_VV_230707_0039.sddraft',
     out_service_definition=service_definition,
 )
 
