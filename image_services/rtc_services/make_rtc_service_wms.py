@@ -298,21 +298,21 @@ try:
         tree.find(key).text = value
     tree.write(service_draft)
 
-    # logging.info(f'Creating service definition {service_definition}')
-    # arcpy.server.StageService(
-    #     in_service_definition_draft=service_draft,
-    #     out_service_definition=service_definition,
-    # )
-    #
-    # with open(args.server_connection_file) as f:
-    #     server_connection = json.load(f)
-    #
-    # for attempt in Retrying(stop=stop_after_attempt(3), reraise=True,
-    #                         before_sleep=before_sleep_log(logging, logging.WARNING)):
-    #     with attempt:
-    #         logging.info(f'Publishing {service_definition}')
-    #         server = Server(**server_connection)
-    #         server.publish_sd(service_definition, folder=config['service_folder'])
+    logging.info(f'Creating service definition {service_definition}')
+    arcpy.server.StageService(
+        in_service_definition_draft=service_draft,
+        out_service_definition=service_definition,
+    )
+
+    with open(args.server_connection_file) as f:
+        server_connection = json.load(f)
+
+    for attempt in Retrying(stop=stop_after_attempt(3), reraise=True,
+                            before_sleep=before_sleep_log(logging, logging.WARNING)):
+        with attempt:
+            logging.info(f'Publishing {service_definition}')
+            server = Server(**server_connection)
+            server.publish_sd(service_definition, folder=config['service_folder'])
 
 except arcpy.ExecuteError:
     logging.error(arcpy.GetMessages())
