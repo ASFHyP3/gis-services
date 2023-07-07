@@ -24,8 +24,12 @@ for sub_el in svc_exts:
         print(f'nsmap={sub_el[2]}')
 
 sub_el_info_props = tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/Info/PropertyArray")
-etree.SubElement(sub_el_info_props, 'PropertySetProperty', type='typens:PropertySetProperty')
+for i in range(2):
+    etree.SubElement(sub_el_info_props, 'PropertySetProperty', type='typens:PropertySetProperty')
 
+sub_el_props_props = tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/Props/PropertyArray")
+for i in range(21):
+    etree.SubElement(sub_el_props_props, 'PropertySetProperty', type='typens:PropertySetProperty')
 
 # It might be easier to just use the Element Maker to construct this whole section, then insert it into the sddraft
 # after it's been amended as currently done. But maybe it wouldn't be easier.
