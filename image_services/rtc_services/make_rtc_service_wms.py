@@ -293,6 +293,7 @@ try:
         service_name=config['service_name'],
     )
 
+    logging.info(f'Enabling WMS in {service_draft}')
     tree = etree.parse(service_draft)
     extensions = tree.find("/Configurations/SVCConfiguration/Definition/Extensions")
     xsi_type = etree.QName("http://www.w3.org/2001/XMLSchema-instance", "type")
@@ -306,12 +307,14 @@ try:
             etree.SubElement(svc_extension, sub_el[0], sub_el[1])
             sub_el_path = tree.find(f"/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/{sub_el[0]}")
             etree.SubElement(sub_el_path, 'PropertyArray', {xsi_type: 'typens:ArrayOfPropertySetProperty'})
+    logging.info(f'Enabling WMS in {service_draft}')
     tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/Enabled").text = 'true'
     sub_props = tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/Info/PropertyArray")
     for el in [('WebEnabled', 'true'),
                ('WebCapabilities',
                 'GetCapabilities,GetMap,GetFeatureInfo,GetStyles,GetLegendGraphic,GetSchemaExtension')]:
         add_prop = etree.SubElement(sub_props, 'PropertySetProperty', {xsi_type: 'typens:PropertySetProperty'})
+        logging.info(f'Adding {el} to {service_draft}')
         key = etree.SubElement(add_prop, 'Key')
         key.text = el[0]
         value = etree.SubElement(add_prop, 'Value', {xsi_type: 'xs:string'})
@@ -332,19 +335,23 @@ try:
                          'Contains modified Copernicus Sentinel data, processed by ESA."')
                         ]
     for el in element_contents:
+        logging.info(f'Adding {el} to {service_draft} and populating values')
         add_prop = etree.SubElement(sub_props, 'PropertySetProperty', {xsi_type: 'typens:PropertySetProperty'})
         key = etree.SubElement(add_prop, 'Key')
         key.text = el[0]
         value = etree.SubElement(add_prop, 'Value', {xsi_type: 'xs:string'})
         value.text = el[1]
     for el in ['title', 'abstract']:
+        logging.info(f'Adding {el} to {service_draft}')
         add_prop = etree.SubElement(sub_props, 'PropertySetProperty', {xsi_type: 'typens:PropertySetProperty'})
         key = etree.SubElement(add_prop, 'Key')
         key.text = el
         etree.SubElement(add_prop, 'Value', {xsi_type: 'xs:string'})
     tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/TypeName").text = 'WMSServer'
+    logging.info(f'Adding WMS TypeName to {service_draft}')
     tree.write(service_draft)
 
+    logging.info(f'Editing service definition overrides for {service_draft}')
     tree = etree.parse(service_draft)
     for key, value in config['service_definition_overrides'].items():
         tree.find(key).text = value
