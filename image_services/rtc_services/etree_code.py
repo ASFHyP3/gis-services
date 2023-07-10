@@ -1,13 +1,4 @@
-import argparse
-import json
 from lxml import etree
-
-parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('config_file')
-args = parser.parse_args()
-
-with open(args.config_file) as f:
-    config = json.load(f)
 
 service_draft = r'C:\Users\hjkristenson\PycharmProjects\gis-services\image_services\rtc_services\USDA_RTC_VV_230707_0039.sddraft'
 service_draft_out = r'C:\Users\hjkristenson\PycharmProjects\gis-services\image_services\rtc_services\USDA_RTC_VV_test.sddraft'
@@ -65,12 +56,11 @@ for el in element_contents:
     value = etree.SubElement(add_prop, 'Value', {xsi_type: 'xs:string'})
     value.text = el[1]
 
-for el in [('title', 'service_name'), ('abstract', 'wms_abstract')]:
+for el in ['title', 'abstract']:
     add_prop = etree.SubElement(sub_props, 'PropertySetProperty', {xsi_type: 'typens:PropertySetProperty'})
     key = etree.SubElement(add_prop, 'Key')
-    key.text = el[0]
-    value = etree.SubElement(add_prop, 'Value', {xsi_type: 'xs:string'})
-    value.text = f'{config[el[1]]}'
+    key.text = el
+    etree.SubElement(add_prop, 'Value', {xsi_type: 'xs:string'})
 
 tree.find("/Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/TypeName").text = 'WMSServer'
 
