@@ -24,6 +24,8 @@
     "ItemInfo/Title": "ASF Sentinel 1 RTC VV",
     "ItemInfo/Credits": "RTC products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
     "ItemInfo/Description": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery for PDC areas of interest, processed by ASF. Values for the VV (cross-polarized) polarization are generally driven by volume scattering, with more complex volume scatterers (such as dense vegetation) returning higher backscatter values. Surface water generally appears very dark, as it is predominantly a surface scatterer; most returns remain in the primary polarization.",
-    "ItemInfo/Snippet": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery for PDC areas of interest, processed by ASF."
+    "ItemInfo/Snippet": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery for PDC areas of interest, processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/Props/PropertyArray/PropertySetProperty[Key='title']/Value": "ASF_S1_RTC_VV_PDC_WMS",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension/Props/PropertyArray/PropertySetProperty[Key='abstract']/Value": "WMS service for Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery for PDC areas of interest, processed by ASF."
   }
 }
