@@ -354,6 +354,7 @@ try:
     logging.info(f'Editing service definition overrides for {service_draft}')
     tree = etree.parse(service_draft)
     for k, v in config['service_definition_overrides'].items():
+        logging.info(f'Replacing value of {k} in {service_draft}')
         tree.find(k).text = v
     tree.write(service_draft)
 
