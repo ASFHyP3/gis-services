@@ -353,7 +353,6 @@ try:
     logging.info(f'Editing service definition overrides for {service_draft}')
     tree = etree.parse(service_draft)
     for key, value in config['service_definition_overrides'].items():
-        logging.info(f'Replacing value of {key} in {service_draft}')
         tree.find(key).text = value
     tree.write(service_draft)
 
