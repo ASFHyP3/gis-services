@@ -2,7 +2,7 @@
   "project_name": "USDA",
   "s3_prefix": "USDA/",
   "s3_suffix": "rgb.tif",
-  "dataset_name": "RGB",
+  "dataset_name": "RGB_WMS",
   "raster_function_templates": [
   ],
   "default_raster_function_template": "None",
