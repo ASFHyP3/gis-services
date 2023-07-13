@@ -24,6 +24,8 @@
     "ItemInfo/Title": "USDA RTC VH",
     "ItemInfo/Credits": "RTC products processed by ASF DAAC HyP3 2022 using GAMMA software. Contains modified Copernicus Sentinel data 2021-2022, processed by ESA.",
     "ItemInfo/Description": "Radiometric Terrain Corrected (RTC) products in VH polarization over AOIs in China, Madagascar and Pakistan, generated from Sentinel-1 SAR imagery, processed by ASF. Values for the VH (cross-polarized) polarization are generally driven by volume scattering, with more complex volume scatterers (such as dense vegetation) returning higher backscatter values. Surface water generally appears very dark, as it is predominantly a surface scatterer; most returns remain in the primary polarization.",
-    "ItemInfo/Snippet": "Radiometric Terrain Corrected (RTC) products in VH polarization over AOIs in China, Madagascar and Pakistan, generated from Sentinel-1 SAR imagery, processed by ASF."
+    "ItemInfo/Snippet": "Radiometric Terrain Corrected (RTC) products in VH polarization over AOIs in China, Madagascar and Pakistan, generated from Sentinel-1 SAR imagery, processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='title']/Value": "USDA_RTC_VH_WMS",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='abstract']/Value": "WMS service for Radiometric Terrain Corrected (RTC) products in VH polarization over AOIs in China, Madagascar and Pakistan, generated from Sentinel-1 SAR imagery, processed by ASF."
   }
 }

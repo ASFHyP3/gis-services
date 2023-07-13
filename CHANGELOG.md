@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [0.5.0]
+### Added
+- code to enable WMS capabilities in service definition files
+- Processing script and configuration files to support image services for PDC
+- IAM permissions for image server to manage mosaic datasets for `s3://hyp3-pdc-data/`
+
+### Changed
+- Refactored the addRasters retry loop in the make_pdc_service.py script to avoid duplicate entries in the mosaic dataset attribute table
+
 ## [0.4.1]
 ### Added
 - Parameters in `nasa_disasters` services to set custom service timeouts and repair cycle interval

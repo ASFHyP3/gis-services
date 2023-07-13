@@ -14,7 +14,7 @@ import boto3
 from arcgis.gis.server import Server
 from lxml import etree
 from osgeo import gdal, osr
-from tenacity import Retrying, before_sleep_log, stop_after_attempt
+from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
 
 def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
@@ -137,28 +137,22 @@ parser.add_argument('--working-directory', default=os.getcwd())
 parser.add_argument('config_file')
 args = parser.parse_args()
 
-today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
-
 raster_store = '/home/arcgis/raster_store/'
-bucket = 'hyp3-nasa-disasters'
-overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
+bucket = 'hyp3-pdc-data'
+overview_path = '/vsis3/hyp3-pdc-data/overviews/'
 template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
 with open(args.config_file) as f:
     config = json.load(f)
 
 csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
-output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
+
 raster_function_template = ''.join([f'{template_directory / template};'
                                     for template in config['raster_function_templates']])
 if config['default_raster_function_template'] != 'None':
     default_raster_function_template = str(template_directory / config['default_raster_function_template'])
 else:
     default_raster_function_template = 'None'
-overview_name = f'{output_name}_overview'
-local_overview_filename = f'{overview_name}.crf'
-s3_overview = f'{overview_path}{overview_name}.crf'
-service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
 arcpy.env.parallelProcessingFactor = '75%'
 
@@ -166,9 +160,15 @@ try:
     rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
     update_csv(csv_file, rasters)
 
-    for attempt in Retrying(stop=stop_after_attempt(3), reraise=True,
+    for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
                             before_sleep=before_sleep_log(logging, logging.WARNING)):
         with attempt:
+            today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
+            output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
+            overview_name = f'{output_name}_overview'
+            local_overview_filename = f'{overview_name}.crf'
+            s3_overview = f'{overview_path}{overview_name}.crf'
+            service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
             logging.info('Creating geodatabase')
             geodatabase = arcpy.management.CreateFileGDB(
