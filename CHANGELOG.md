@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - code to enable WMS capabilities in service definition files
 - Processing script and configuration files to support image services for PDC
 - IAM permissions for image server to manage mosaic datasets for `s3://hyp3-pdc-data/`
-- 
+
 ### Changed
 - Refactored the addRasters retry loop in the make_pdc_service.py script to avoid duplicate entries in the mosaic dataset attribute table
 
