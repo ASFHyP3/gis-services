@@ -24,7 +24,7 @@
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='UsageTimeout']/Value": "1200",
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='WaitTimeout']/Value": "120",
-    "ItemInfo/Title": "ASF S1 RGB",
+    "ItemInfo/Title": "HKH RGB",
     "ItemInfo/Credits": "RGB Decomposition products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
     "ItemInfo/Description": "Sentinel-1 RGB Decomposition of RTC VV and VH imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF. Blue areas have low returns in VV and VH (smooth surfaces such as calm water, but also frozen/crusted soil or dry sand), green areas have high returns in VH (volume scatterers such as vegetation or some types of snow/ice), and red areas have relatively high VV returns and relatively low VH returns (such as urban or sparsely vegetated areas).",
     "ItemInfo/Snippet": "RGB Decomposition of Sentinel-1 Radiometric Terrain Corrected (RTC) VV and VH imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF.",

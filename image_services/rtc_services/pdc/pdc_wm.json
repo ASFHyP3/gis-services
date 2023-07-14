@@ -26,7 +26,7 @@
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='UsageTimeout']/Value": "1200",
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='WaitTimeout']/Value": "120",
-    "ItemInfo/Title": "ASF S1 WM",
+    "ItemInfo/Title": "HydroSAR Watermap Extent",
     "ItemInfo/Credits": "Watermap Extent products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
     "ItemInfo/Description": "Watermap Extent products generated from Sentinel-1 SAR imagery for PDC areas of interest, processed by ASF using the HydroSAR Hydro30 workflow. Pixel values of 1 indicate surface water, 0 is used for non-water pixels. Refer to https://ntrs.nasa.gov/citations/20210020271 for more information.",
     "ItemInfo/Snippet": "Watermap Extent products generated from Sentinel-1 SAR imagery for PDC areas of interest, processed by ASF using the HydroSAR Hydro30 workflow.",
