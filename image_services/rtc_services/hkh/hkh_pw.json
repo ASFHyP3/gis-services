@@ -21,6 +21,8 @@
     "ItemInfo/Title": "HKH PW",
     "ItemInfo/Credits": "Perennial Water products processed by ASF DAAC HyP3.",
     "ItemInfo/Description": "Perennial Water generated over the Hindu Kush Himalayan (HKH) region, processed by ASF.",
-    "ItemInfo/Snippet": "Perennial Water generated over the Hindu Kush Himalayan (HKH) region, processed by ASF."
+    "ItemInfo/Snippet": "Perennial Water generated over the Hindu Kush Himalayan (HKH) region, processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='title']/Value": "HKH_Perennial_Water_WMS",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='abstract']/Value": "Perennial Water generated over the Hindu Kush Himalayan (HKH) region, processed by ASF."
   }
 }

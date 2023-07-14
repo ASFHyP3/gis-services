@@ -22,6 +22,8 @@
     "ItemInfo/Title": "HKH WM",
     "ItemInfo/Credits": "Watermap Extent products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
     "ItemInfo/Description": "Watermap Extent products generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF using the HydroSAR Hydro30 workflow. Pixel values of 1 indicate surface water, 0 is used for non-water pixels. Refer to https://ntrs.nasa.gov/citations/20210020271 for more information.",
-    "ItemInfo/Snippet": "Watermap Extent products generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF using the HydroSAR Hydro30 workflow."
+    "ItemInfo/Snippet": "Watermap Extent products generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF using the HydroSAR Hydro30 workflow.",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='title']/Value": "HKH_Watermap_Extent_WMS",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='abstract']/Value": "Watermap Extent products generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF using the HydroSAR Hydro30 workflow."
   }
 }
