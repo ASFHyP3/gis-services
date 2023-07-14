@@ -17,13 +17,22 @@
     "Configurations/SVCConfiguration/Definition/Description": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF.",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF. Values for the VV (cross-polarized) polarization are generally driven by volume scattering, with more complex volume scatterers (such as dense vegetation) returning higher backscatter values. Surface water generally appears very dark, as it is predominantly a surface scatterer; most returns remain in the primary polarization.",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "RTC products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='idleTimeout']/Value": "3600",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
     "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='usageTimeout']/Value": "1200",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='waitTimeout']/Value": "120",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='IdleTimeout']/Value": "3600",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='keepAliveInterval']/Value": "600",
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
     "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
-    "ItemInfo/Title": "HKH RTC VV",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='UsageTimeout']/Value": "1200",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='WaitTimeout']/Value": "120",
+    "ItemInfo/Title": "ASF S1 RTC VV",
     "ItemInfo/Credits": "RTC products processed by ASF DAAC HyP3 using GAMMA software. Contains modified Copernicus Sentinel data, processed by ESA.",
     "ItemInfo/Description": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF. Values for the VV (cross-polarized) polarization are generally driven by volume scattering, with more complex volume scatterers (such as dense vegetation) returning higher backscatter values. Surface water generally appears very dark, as it is predominantly a surface scatterer; most returns remain in the primary polarization.",
-    "ItemInfo/Snippet": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF."
+    "ItemInfo/Snippet": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF.",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='title']/Value": "HKH_RTC_VV_WMS",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='abstract']/Value": "Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery over the Hindu Kush Himalayan (HKH) region, processed by ASF."
   }
 }
