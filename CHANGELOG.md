@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.5.1]
+### Changed
+- Refactored the addRasters retry loop in the make_rtc_service.py and make_sample_service.py scripts to avoid duplicate entries in the mosaic dataset attribute table
+- Updated HKH config files to include WMS metadata
+- Updated HKH and PDC config files to increase time-out settings
+
 ## [0.5.0]
 ### Added
 - code to enable WMS capabilities in service definition files
