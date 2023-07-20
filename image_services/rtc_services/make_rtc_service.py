@@ -61,7 +61,7 @@ def get_raster_metadata(raster_path: str) -> dict:
 
 
 def check_number_mosaic_entries(number_rasters, dataset):
-    if number_rasters == arcpy.managementGetCount(dataset):
+    if int(number_rasters) == int(arcpy.managementGetCount(dataset)):
         logging.info('Number of entries in mosaic datasat match number of entries in s3')
         return
     else:
