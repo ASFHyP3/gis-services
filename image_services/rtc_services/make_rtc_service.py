@@ -60,6 +60,14 @@ def get_raster_metadata(raster_path: str) -> dict:
     return metadata
 
 
+def check_number_mosaic_entries(number_rasters, dataset):
+    if number_rasters == arcpy.managementGetCount(dataset):
+        logging.info('Number of entries in mosaic datasat match number of entries in s3')
+        return
+    else:
+        raise ValueError('Mismatch between number of rasters in s3 and entries in mosaic dataset')
+
+
 def update_csv(csv_file: str, rasters: List[str]):
     if os.path.isfile(csv_file):
         with open(csv_file) as f:
@@ -274,6 +282,8 @@ try:
         processing_templates=f'{raster_function_template}None',
         default_processing_template=default_raster_function_template,
     )
+
+    check_number_mosaic_entries(len(rasters), mosaic_dataset)
 
     logging.info('Calculating cell size ranges')
     arcpy.management.CalculateCellSizeRanges(
