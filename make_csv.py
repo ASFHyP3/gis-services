@@ -113,13 +113,14 @@ def main():
     tifs_files = sorted(glob.glob(f'{args.tifs_dir}/*.txt'), reverse=True)
     assert len(tifs_files) == 8
 
+    os.mkdir('csvs')
+
     for tifs_file in tifs_files:
         with open(tifs_file) as f:
             keys = f.read().strip('\n').split('\n')
 
         rasters = [f'/vsis3/sentinel-1-global-coherence-earthbigdata/{key}' for key in keys]
 
-        os.mkdir('csvs')
         csv_path = f'csvs/{tifs_file.removesuffix(".txt") + ".csv"}'
 
         make_csv(csv_path, rasters)
