@@ -6,6 +6,8 @@ from pathlib import Path
 
 from osgeo import osr, gdal
 
+gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
+
 SEASONS = {
     'summer': {
         'SeasonCode': 'JJA',
