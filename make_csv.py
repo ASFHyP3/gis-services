@@ -109,7 +109,8 @@ def main():
     parser.add_argument('tifs_dir')
     args = parser.parse_args()
 
-    tifs_files = glob.glob(f'{args.tifs_dir}/*.txt')
+    # sort in reverse because we want to generate csv for winter_vv_COH06 first
+    tifs_files = sorted(glob.glob(f'{args.tifs_dir}/*.txt'), reverse=True)
     assert len(tifs_files) == 8
 
     for tifs_file in tifs_files:
