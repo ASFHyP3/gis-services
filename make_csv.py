@@ -123,7 +123,8 @@ def main():
 
         rasters = [f'/vsis3/sentinel-1-global-coherence-earthbigdata/{key}' for key in keys]
 
-        csv_path = f'csvs/{tifs_file.removesuffix(".txt") + ".csv"}'
+        csv_filename = os.path.basename(tifs_file).removesuffix('.txt') + '.csv'
+        csv_path = f'csvs/{csv_filename}'
 
         make_csv(csv_path, rasters)
 
