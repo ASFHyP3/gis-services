@@ -291,11 +291,7 @@ try:
         fields=[
             ['MinPS', '900'],
             ['Category', '2'],
-            ['GroupName', '"Mosaic Overview"'],
-            ['StartDate', f'"{config["start_date"]}"'],
-            ['EndDate', f'"{config["end_date"]}"'],
-            # ['Season', f'"{config["season"]}"'],
-            # ['Polarization', f'"{config["polarization"]}"'],
+            ['GroupName', '"Mosaic Overview"']
         ],
     )
 

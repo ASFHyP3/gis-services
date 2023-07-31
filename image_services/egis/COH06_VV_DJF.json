@@ -7,10 +7,5 @@
     "ScaledCoherence.rft.xml",
     "UnscaledCoherence.rft.xml"
   ],
-  "default_raster_function_template": "ScaledCoherence.rft.xml",
-  "start_date": "12/01/2019",
-  "end_date": "02/29/2020",
-  "product_type": "COH06",
-  "season": "December/January/February",
-  "polarization": "VV"
+  "default_raster_function_template": "ScaledCoherence.rft.xml"
 }
