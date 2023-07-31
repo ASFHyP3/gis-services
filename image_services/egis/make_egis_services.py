@@ -13,6 +13,33 @@ import arcpy
 # import boto3
 from osgeo import gdal, osr
 
+SEASONS = {
+    'summer': {
+        'SeasonCode': 'JJA',
+        'Season': 'June/July/August',
+        'StartDate': '06/01/2020',
+        'EndDate': '08/31/2020',
+    },
+    'fall': {
+        'SeasonCode': 'SON',
+        'Season': 'September/October/November',
+        'StartDate': '09/01/2020',
+        'EndDate': '11/30/2020',
+    },
+    'winter': {
+        'SeasonCode': 'DJF',
+        'Season': 'December/January/February',
+        'StartDate': '12/01/2019',
+        'EndDate': '02/29/2020',
+    },
+    'spring': {
+        'SeasonCode': 'MAM',
+        'Season': 'March/April/May',
+        'StartDate': '03/01/2020',
+        'EndDate': '05/31/2020',
+    }
+}
+
 
 def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
     rasters = []
@@ -40,10 +67,19 @@ def get_projection(srs_wkt: str) -> str:
 
 
 def get_raster_metadata(raster_path: str) -> dict:
+    assert raster_path.startswith('/vsis3/sentinel-1-global-coherence-earthbigdata/')
+    key = raster_path.removeprefix('/vsis3/sentinel-1-global-coherence-earthbigdata/')
+    download_url = f'https://sentinel-1-global-coherence-earthbigdata.s3.us-west-2.amazonaws.com/{key}'
+
+    name = Path(raster_path).stem
+    tile, season, polarization, product_type = name.split('_')
+    polarization = polarization.upper()
+    tag = f'{product_type}_{polarization}_{SEASONS[season]["SeasonCode"]}'
+
     info = gdal.Info(raster_path, format='json')
-    metadata = {
-        'Raster': info['description'],
-        'Name': Path(info['description']).stem,
+    return {
+        'Raster': raster_path,
+        'Name': name,
         'xMin': info['cornerCoordinates']['lowerLeft'][0],
         'yMin': info['cornerCoordinates']['lowerLeft'][1],
         'xMax': info['cornerCoordinates']['upperRight'][0],
@@ -53,8 +89,17 @@ def get_raster_metadata(raster_path: str) -> dict:
         'nBands': len(info['bands']),
         'PixelType': get_pixel_type(info['bands'][0]['type']),
         'SRS': get_projection(info['coordinateSystem']['wkt']),
+        'Tag': tag,
+        'GroupName': tag,
+        'StartDate': SEASONS[season]['StartDate'],
+        'EndDate': SEASONS[season]['EndDate'],
+        'ProductType': product_type,
+        'Season': SEASONS[season]['Season'],
+        'Polarization': polarization,
+        'Tile': tile,
+        'DownloadURL': download_url,
+        'URLDisplay': name,
     }
-    return metadata
 
 
 def update_csv(csv_file: str, rasters: List[str]):
