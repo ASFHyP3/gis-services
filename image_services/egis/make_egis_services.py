@@ -186,14 +186,6 @@ try:
         input_path=csv_file,
     )
 
-    logging.info(f'Calculating custom field values in {mosaic_dataset}')
-    arcpy.management.CalculateFields(
-        in_table=mosaic_dataset,
-        fields=[
-            ['MaxPS', '910'],
-        ],
-    )
-
     logging.info(f'Building raster footprints for {mosaic_dataset}')
     arcpy.management.BuildFootprints(
         in_mosaic_dataset=mosaic_dataset,
