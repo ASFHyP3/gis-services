@@ -99,6 +99,7 @@ def get_raster_metadata(raster_path: str) -> dict:
         'Tile': tile,
         'DownloadURL': download_url,
         'URLDisplay': name,
+        'MaxPS': '910',
     }
 
 
