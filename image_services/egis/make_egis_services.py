@@ -126,6 +126,65 @@ def update_csv(csv_file: str, rasters: List[str]):
         writer.writeheader()
         writer.writerows(records)
 
+def calculate_fields(mosaic_dataset):
+    # This function adds custom fields to the mosaic dataset and populates the values for the source rasters.
+
+    try:
+        arcpy.management.AddFields(
+            in_table=mosaic_dataset,
+            field_description=[
+                ['StartDate', 'DATE'],
+                ['EndDate', 'DATE'],
+                ['Season', 'TEXT'],
+                ['Polarization', 'TEXT'],
+                ['Tile', 'TEXT'],
+                ['Dataset_ID', 'TEXT'],
+                ['DownloadURL', 'TEXT'],
+                ['URLDisplay', 'TEXT']
+            ],
+        )
+    except:
+        logging.info('No New Fields Added')
+
+    ds = mosaic_dataset
+    ds_cursor = arcpy.da.UpdateCursor(ds, ["Name", "ProductType", "Season", "Polarization", "Tile", "Dataset_ID",
+                                           "Tag", "MaxPS", "StartDate", "EndDate", "GroupName", "DownloadURL",
+                                           "URLDisplay"])
+    if ds_cursor is not None:
+        for row in ds_cursor:
+            try:
+                NameField = row[0]
+                ProductTypeField = NameField.split("_")[3]
+                SeasonName = NameField.split("_")[1]
+                StartDateField = SEASONS[SeasonName]['StartDate'],
+                EndDateField = SEASONS[SeasonName]['EndDate'],
+                SeasonField = SEASONS[SeasonName]['Season'],
+                SeasonCode = SEASONS[SeasonName]['SeasonCode']
+                PolarizationField = str(NameField.split("_")[2]).upper()
+                TileField = NameField.split("_")[0]
+                DatasetIDField = ProductTypeField + '_' + PolarizationField + '_' + SeasonCode
+                TagField = DatasetIDField
+                MaxPSField = 910
+                GroupNameField = DatasetIDField
+                DownloadURLField = r'https://sentinel-1-global-coherence-earthbigdata.s3.us-west-' \
+                                   r'2.amazonaws.com/data/tiles/{}/{}.tif'.format(TileField, NameField)
+                row[1] = ProductTypeField
+                row[2] = SeasonField
+                row[3] = PolarizationField
+                row[4] = TileField
+                row[5] = DatasetIDField
+                row[6] = TagField
+                row[7] = MaxPSField
+                row[8] = StartDateField
+                row[9] = EndDateField
+                row[10] = GroupNameField
+                row[11] = DownloadURLField
+                row[12] = NameField
+                ds_cursor.updateRow(row)
+            except Exception as exp:
+                print(str(exp))
+        del ds_cursor
+
 
 gdal.UseExceptions()
 gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
@@ -280,12 +339,16 @@ try:
         where_clause=f"Name = '{overview_name}'",
     )
 
+    calculate_fields(selection)
     arcpy.management.CalculateFields(
         in_table=selection,
         fields=[
             ['MinPS', '900'],
+            ['MaxPS', '144000'],
+            ['LowPS', '900'],
+            ['HighPS', '144000'],
             ['Category', '2'],
-            ['GroupName', '"Mosaic Overview"']
+            ['GroupName', '"Mosaic Overview"'],
         ],
     )
 
