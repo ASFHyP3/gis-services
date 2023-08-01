@@ -10,8 +10,9 @@ from pathlib import Path
 from typing import List
 
 import arcpy
-# import boto3
+import boto3
 from osgeo import gdal, osr
+
 
 SEASONS = {
     'summer': {
@@ -43,7 +44,7 @@ SEASONS = {
 
 def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
     rasters = []
-    # s3 = boto3.client('s3')
+    s3 = boto3.client('s3')
     paginator = s3.get_paginator('list_objects_v2')
     for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
         for obj in page['Contents']:
@@ -119,8 +120,8 @@ def update_csv(csv_file: str, rasters: List[str]):
         records.append(record)
 
     records = sorted(records, key=lambda x: x['Raster'])
-    with open(csv_file, 'w') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=records[0].keys())
+    with open(csv_file, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=records[0].keys(), lineterminator=os.linesep)
         writer.writeheader()
         writer.writerows(records)
 
@@ -135,7 +136,7 @@ parser.add_argument('--working-directory', default=os.getcwd())
 parser.add_argument('config_file')
 args = parser.parse_args()
 
-# bucket = 'hyp3-nasa-disasters'
+bucket = 'sentinel-1-global-coherence-earthbigdata'
 overview_path = '/vsis3/asf-gis-services/public/GSSICB/'
 template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
@@ -153,8 +154,8 @@ else:
 
 arcpy.env.parallelProcessingFactor = '75%'
 
-# rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-# update_csv(csv_file, rasters)
+rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
+update_csv(csv_file, rasters)
 
 today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
 output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
