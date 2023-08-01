@@ -100,6 +100,7 @@ def get_raster_metadata(raster_path: str) -> dict:
         'Tile': tile,
         'DownloadURL': download_url,
         'URLDisplay': name,
+        'MaxPS': '910',
     }
 
 
@@ -184,14 +185,6 @@ try:
         in_mosaic_dataset=mosaic_dataset,
         raster_type='Table',
         input_path=csv_file,
-    )
-
-    logging.info(f'Calculating custom field values in {mosaic_dataset}')
-    arcpy.management.CalculateFields(
-        in_table=mosaic_dataset,
-        fields=[
-            ['MaxPS', '910'],
-        ],
     )
 
     logging.info(f'Building raster footprints for {mosaic_dataset}')
