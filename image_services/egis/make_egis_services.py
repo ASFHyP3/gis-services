@@ -5,7 +5,6 @@ import json
 import logging
 import os
 import subprocess
-import tempfile
 from pathlib import Path
 from typing import List
 
@@ -13,6 +12,8 @@ import arcpy
 import boto3
 from osgeo import gdal, osr
 
+gdal.UseExceptions()
+gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
 SEASONS = {
     'summer': {
@@ -127,168 +128,202 @@ def update_csv(csv_file: str, rasters: List[str]):
         writer.writerows(records)
 
 
-gdal.UseExceptions()
-gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
+def add_overviews(mosaic_dataset, local_path):
+    # This function adds CRF overviews to the mosaic dataset and calculates custom attribute values
+    print('Calculating field values for overview record')
+    ds = os.path.join(local_path, mosaic_dataset)
+    ds_cursor = arcpy.da.UpdateCursor(ds, ["Tag", "MinPS", "Category", "StartDate", "EndDate", "GroupName",
+                                           "Name", "ProductType", "Season", "Polarization", "Tile", "DownloadURL",
+                                           "URLDisplay"])
+    if ds_cursor is not None:
+        print('Updating Overview Field Values')
+        for row in ds_cursor:
+            try:
+                NameOvField = row[6]
+                ProdTypeOvField = NameOvField.split("_")[1]
+                SeasonOvCode = NameOvField.split("_")[3]
+                if SeasonOvCode == 'DJF':
+                    SeasonOvField = 'December/January/February'
+                elif SeasonOvCode == 'MAM':
+                    SeasonOvField = 'March/April/May'
+                elif SeasonOvCode == 'JJA':
+                    SeasonOvField = 'June/July/August'
+                elif SeasonOvCode == 'SON':
+                    SeasonOvField = 'September/October/November'
+                else:
+                    SeasonOvField = 'unknown'
+                PolOvField = NameOvField.split("_")[2]
+                TileOvField = 'Zoom in further to see specific tile information'
+                DLOvField = 'Zoom in further to access download link'
+                if row[0] == 'Dataset':
+                    row[1] = 900
+                    row[2] = 2
+                    row[3] = '12/01/2019'
+                    row[4] = '11/30/2020'
+                    row[5] = "Mosaic Overview"
+                    row[7] = ProdTypeOvField
+                    row[8] = SeasonOvField
+                    row[9] = PolOvField
+                    row[10] = TileOvField
+                    row[11] = DLOvField
+                    row[12] = DLOvField
+                    ds_cursor.updateRow(row)
+                    print("Overview fields updated")
+            except Exception as exp:
+                print(str(exp))
+        del ds_cursor
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
-parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--working-directory', default=os.getcwd())
-parser.add_argument('config_file')
-args = parser.parse_args()
+def main():
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
-bucket = 'sentinel-1-global-coherence-earthbigdata'
-overview_path = '/vsis3/asf-gis-services/public/GSSICB/'
-template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--working-directory', default=os.getcwd())
+    parser.add_argument('config_file')
+    args = parser.parse_args()
 
-with open(args.config_file) as f:
-    config = json.load(f)
+    bucket = 'sentinel-1-global-coherence-earthbigdata'
+    overview_path = '/vsis3/asf-gis-services/public/GSSICB/'
+    template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
-csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
+    with open(args.config_file) as f:
+        config = json.load(f)
 
-raster_function_template = ''.join([f'{template_directory / template};'
-                                    for template in config['raster_function_templates']])
-if config['default_raster_function_template'] != 'None':
-    default_raster_function_template = str(template_directory / config['default_raster_function_template'])
-else:
-    default_raster_function_template = 'None'
+    csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
-arcpy.env.parallelProcessingFactor = '75%'
+    raster_function_template = ''.join([f'{template_directory / template};'
+                                        for template in config['raster_function_templates']])
+    if config['default_raster_function_template'] != 'None':
+        default_raster_function_template = str(template_directory / config['default_raster_function_template'])
+    else:
+        default_raster_function_template = 'None'
 
-rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-update_csv(csv_file, rasters)
+    arcpy.env.parallelProcessingFactor = '75%'
 
-today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
-output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
-overview_name = f'{output_name}_overview'
-local_overview_filename = f'{overview_name}.crf'
-s3_overview = f'{overview_path}{overview_name}.crf'
-service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
+    rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
+    update_csv(csv_file, rasters)
 
-try:
+    today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
+    output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
+    overview_name = f'{output_name}_overview'
+    local_overview_filename = f'{overview_name}.crf'
+    s3_overview = f'{overview_path}{overview_name}.crf'
+    service_definition = os.path.join(args.working_directory, f'{output_name}.sd')  # FIXME not used; can we delete?
 
-    logging.info('Creating geodatabase')
-    geodatabase = arcpy.management.CreateFileGDB(
-        out_folder_path=args.working_directory,
-        out_name=f'{output_name}.gdb',
-    )
-
-    logging.info('Creating mosaic dataset')
-    mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
-        in_workspace=geodatabase,
-        in_mosaicdataset_name=config['dataset_name'],
-        coordinate_system=3857,
-    ))
-
-    logging.info(f'Adding source rasters to {mosaic_dataset}')
-    arcpy.management.AddRastersToMosaicDataset(
-        in_mosaic_dataset=mosaic_dataset,
-        raster_type='Table',
-        input_path=csv_file,
-    )
-
-    logging.info(f'Building raster footprints for {mosaic_dataset}')
-    arcpy.management.BuildFootprints(
-        in_mosaic_dataset=mosaic_dataset,
-        reset_footprint='NONE',
-        min_data_value=0,
-        max_data_value=4294967295,
-        approx_num_vertices=12,
-        update_boundary='UPDATE_BOUNDARY',
-    )
-
-    logging.info(f'Building {mosaic_dataset} dataset boundary')
-    arcpy.management.BuildBoundary(
-        in_mosaic_dataset=mosaic_dataset,
-        append_to_existing='OVERWRITE',
-        simplification_method='NONE',
-    )
-
-    logging.info(f'Setting properties for {mosaic_dataset}')
-    arcpy.management.SetMosaicDatasetProperties(
-        in_mosaic_dataset=mosaic_dataset,
-        rows_maximum_imagesize=5000,
-        columns_maximum_imagesize=5000,
-        allowed_compressions='JPEG;NONE;LZ77',
-        default_compression_type='JPEG',
-        JPEG_quality=80,
-        resampling_type='NEAREST',
-        LERC_Tolerance=0.01,
-        clip_to_footprints='CLIP',
-        clip_to_boundary='CLIP',
-        color_correction='NOT_APPLY',
-        footprints_may_contain_nodata='FOOTPRINTS_MAY_CONTAIN_NODATA',
-        allowed_mensuration_capabilities='BASIC',
-        default_mensuration_capabilities='BASIC',
-        allowed_mosaic_methods='Center;NorthWest;Nadir;LockRaster;ByAttribute;Seamline;None',
-        default_mosaic_method='ByAttribute',
-        order_field='StartDate',
-        order_base='1/1/2050 12:00:00 AM',
-        sorting_order='Ascending',
-        mosaic_operator='FIRST',
-        blend_width=10,
-        view_point_x=300,
-        view_point_y=300,
-        max_num_per_mosaic=50,
-        cell_size_tolerance=1.8,
-        cell_size=3,
-        metadata_level='BASIC',
-        transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;CenterY;'
-                            'Tag;GroupName;StartDate;EndDate;ProductType;Season;Polarization;Tile;DownloadURL;URLDisplay',
-        use_time='ENABLED',
-        start_time_field='StartDate',
-        end_time_field='EndDate',
-        max_num_of_download_items=50,
-        max_num_of_records_returned=2000,
-        processing_templates=f'{raster_function_template}None',
-        default_processing_template=default_raster_function_template,
-    )
-
-    logging.info('Calculating cell size ranges')
-    arcpy.management.CalculateCellSizeRanges(
-        in_mosaic_dataset=mosaic_dataset,
-        do_compute_min='NO_MIN_CELL_SIZES',
-        do_compute_max='NO_MAX_CELL_SIZES',
-        max_range_factor=10,
-        cell_size_tolerance_factor=0.8,
-        update_missing_only='UPDATE_ALL',
-    )
-
-    local_overview = os.path.join(os.getcwd(), local_overview_filename)
-
-    logging.info(f'Generating {local_overview}')
-    with arcpy.EnvManager(cellSize=900):
-        arcpy.management.CopyRaster(
-            in_raster=mosaic_dataset,
-            out_rasterdataset=local_overview,
+    try:
+        logging.info('Creating geodatabase')
+        geodatabase = arcpy.management.CreateFileGDB(
+            out_folder_path=args.working_directory,
+            out_name=f'{output_name}.gdb',
         )
 
-    logging.info(f'Moving CRF to {s3_overview}')
-    subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
+        logging.info('Creating mosaic dataset')
+        mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
+            in_workspace=geodatabase,
+            in_mosaicdataset_name=config['dataset_name'],
+            coordinate_system=3857,
+        ))
 
-    logging.info('Adding overview to mosaic dataset')
-    arcpy.management.AddRastersToMosaicDataset(
-        in_mosaic_dataset=mosaic_dataset,
-        raster_type='Raster Dataset',
-        input_path=s3_overview,
-    )
+        logging.info(f'Adding source rasters to {mosaic_dataset}')
+        arcpy.management.AddRastersToMosaicDataset(
+            in_mosaic_dataset=mosaic_dataset,
+            raster_type='Table',
+            input_path=csv_file,
+        )
 
-    logging.info('Calculating custom fields for overview record')
-    selection = arcpy.management.SelectLayerByAttribute(
-        in_layer_or_view=mosaic_dataset,
-        selection_type='NEW_SELECTION',
-        where_clause=f"Name = '{overview_name}'",
-    )
+        logging.info(f'Building raster footprints for {mosaic_dataset}')
+        arcpy.management.BuildFootprints(
+            in_mosaic_dataset=mosaic_dataset,
+            reset_footprint='NONE',
+            min_data_value=0,
+            max_data_value=4294967295,
+            approx_num_vertices=12,
+            update_boundary='UPDATE_BOUNDARY',
+        )
 
-    arcpy.management.CalculateFields(
-        in_table=selection,
-        fields=[
-            ['MinPS', '900'],
-            ['Category', '2'],
-            ['GroupName', '"Mosaic Overview"']
-        ],
-    )
+        logging.info(f'Building {mosaic_dataset} dataset boundary')
+        arcpy.management.BuildBoundary(
+            in_mosaic_dataset=mosaic_dataset,
+            append_to_existing='OVERWRITE',
+            simplification_method='NONE',
+        )
 
-except arcpy.ExecuteError:
-    logging.error(arcpy.GetMessages())
-    raise
+        logging.info(f'Setting properties for {mosaic_dataset}')
+        arcpy.management.SetMosaicDatasetProperties(
+            in_mosaic_dataset=mosaic_dataset,
+            rows_maximum_imagesize=5000,
+            columns_maximum_imagesize=5000,
+            allowed_compressions='JPEG;NONE;LZ77',
+            default_compression_type='JPEG',
+            JPEG_quality=80,
+            resampling_type='NEAREST',
+            LERC_Tolerance=0.01,
+            clip_to_footprints='CLIP',
+            clip_to_boundary='CLIP',
+            color_correction='NOT_APPLY',
+            footprints_may_contain_nodata='FOOTPRINTS_MAY_CONTAIN_NODATA',
+            allowed_mensuration_capabilities='BASIC',
+            default_mensuration_capabilities='BASIC',
+            allowed_mosaic_methods='Center;NorthWest;Nadir;LockRaster;ByAttribute;Seamline;None',
+            default_mosaic_method='ByAttribute',
+            order_field='StartDate',
+            order_base='1/1/2050 12:00:00 AM',
+            sorting_order='Ascending',
+            mosaic_operator='FIRST',
+            blend_width=10,
+            view_point_x=300,
+            view_point_y=300,
+            max_num_per_mosaic=50,
+            cell_size_tolerance=1.8,
+            cell_size=3,
+            metadata_level='BASIC',
+            transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;'
+                                'CenterY;Tag;GroupName;StartDate;EndDate;ProductType;Season;Polarization;Tile;'
+                                'DownloadURL;URLDisplay',
+            use_time='ENABLED',
+            start_time_field='StartDate',
+            end_time_field='EndDate',
+            max_num_of_download_items=50,
+            max_num_of_records_returned=2000,
+            processing_templates=f'{raster_function_template}None',
+            default_processing_template=default_raster_function_template,
+        )
+
+        logging.info('Calculating cell size ranges')
+        arcpy.management.CalculateCellSizeRanges(
+            in_mosaic_dataset=mosaic_dataset,
+            do_compute_min='NO_MIN_CELL_SIZES',
+            do_compute_max='NO_MAX_CELL_SIZES',
+            max_range_factor=10,
+            cell_size_tolerance_factor=0.8,
+            update_missing_only='UPDATE_ALL',
+        )
+
+        local_overview = os.path.join(os.getcwd(), local_overview_filename)
+
+        logging.info(f'Generating {local_overview}')
+        with arcpy.EnvManager(cellSize=900):
+            arcpy.management.CopyRaster(
+                in_raster=mosaic_dataset,
+                out_rasterdataset=local_overview,
+            )
+
+        logging.info(f'Moving CRF to {s3_overview}')
+        subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
+
+        logging.info('Adding overview to mosaic dataset')
+        arcpy.management.AddRastersToMosaicDataset(
+            in_mosaic_dataset=mosaic_dataset,
+            raster_type='Raster Dataset',
+            input_path=s3_overview,
+        )
+
+        add_overviews(mosaic_dataset, args.working_directory)
+
+    except arcpy.ExecuteError:
+        logging.error(arcpy.GetMessages())
+        raise
+
+
+if __name__ == '__main__':
+    main()
