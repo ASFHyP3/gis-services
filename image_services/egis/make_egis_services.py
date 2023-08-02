@@ -126,61 +126,48 @@ def update_csv(csv_file: str, rasters: List[str]):
         writer.writeheader()
         writer.writerows(records)
 
-def calculate_fields(mosaic_dataset):
-    # This function adds custom fields to the mosaic dataset and populates the values for the source rasters.
 
-    try:
-        arcpy.management.AddFields(
-            in_table=mosaic_dataset,
-            field_description=[
-                ['StartDate', 'DATE'],
-                ['EndDate', 'DATE'],
-                ['Season', 'TEXT'],
-                ['Polarization', 'TEXT'],
-                ['Tile', 'TEXT'],
-                ['Dataset_ID', 'TEXT'],
-                ['DownloadURL', 'TEXT'],
-                ['URLDisplay', 'TEXT']
-            ],
-        )
-    except:
-        logging.info('No New Fields Added')
-
-    ds = mosaic_dataset
-    ds_cursor = arcpy.da.UpdateCursor(ds, ["Name", "ProductType", "Season", "Polarization", "Tile", "Dataset_ID",
-                                           "Tag", "MaxPS", "StartDate", "EndDate", "GroupName", "DownloadURL",
+def add_overviews(mosaic_dataset, local_path):
+    # This function adds CRF overviews to the mosaic dataset and calculates custom attribute values
+    print('Calculating field values for overview record')
+    ds = os.path.join(local_path, mosaic_dataset)
+    ds_cursor = arcpy.da.UpdateCursor(ds, ["Tag", "MinPS", "Category", "StartDate", "EndDate", "GroupName",
+                                           "Name", "ProductType", "Season", "Polarization", "Tile", "DownloadURL",
                                            "URLDisplay"])
     if ds_cursor is not None:
+        print('Updating Overview Field Values')
         for row in ds_cursor:
             try:
-                NameField = row[0]
-                ProductTypeField = NameField.split("_")[3]
-                SeasonName = NameField.split("_")[1]
-                StartDateField = SEASONS[SeasonName]['StartDate'],
-                EndDateField = SEASONS[SeasonName]['EndDate'],
-                SeasonField = SEASONS[SeasonName]['Season'],
-                SeasonCode = SEASONS[SeasonName]['SeasonCode']
-                PolarizationField = str(NameField.split("_")[2]).upper()
-                TileField = NameField.split("_")[0]
-                DatasetIDField = ProductTypeField + '_' + PolarizationField + '_' + SeasonCode
-                TagField = DatasetIDField
-                MaxPSField = 910
-                GroupNameField = DatasetIDField
-                DownloadURLField = r'https://sentinel-1-global-coherence-earthbigdata.s3.us-west-' \
-                                   r'2.amazonaws.com/data/tiles/{}/{}.tif'.format(TileField, NameField)
-                row[1] = ProductTypeField
-                row[2] = SeasonField
-                row[3] = PolarizationField
-                row[4] = TileField
-                row[5] = DatasetIDField
-                row[6] = TagField
-                row[7] = MaxPSField
-                row[8] = StartDateField
-                row[9] = EndDateField
-                row[10] = GroupNameField
-                row[11] = DownloadURLField
-                row[12] = NameField
-                ds_cursor.updateRow(row)
+                NameOvField = row[6]
+                ProdTypeOvField = NameOvField.split("_")[1]
+                SeasonOvCode = NameOvField.split("_")[3]
+                if SeasonOvCode == 'DJF':
+                    SeasonOvField = 'December/January/February'
+                elif SeasonOvCode == 'MAM':
+                    SeasonOvField = 'March/April/May'
+                elif SeasonOvCode == 'JJA':
+                    SeasonOvField = 'June/July/August'
+                elif SeasonOvCode == 'SON':
+                    SeasonOvField = 'September/October/November'
+                else:
+                    SeasonOvField = 'unknown'
+                PolOvField = NameOvField.split("_")[2]
+                TileOvField = 'Zoom in further to see specific tile information'
+                DLOvField = 'Zoom in further to access download link'
+                if row[0] == 'Dataset':
+                    row[1] = 900
+                    row[2] = 2
+                    row[3] = '12/01/2019'
+                    row[4] = '11/30/2020'
+                    row[5] = "Mosaic Overview"
+                    row[7] = ProdTypeOvField
+                    row[8] = SeasonOvField
+                    row[9] = PolOvField
+                    row[10] = TileOvField
+                    row[11] = DLOvField
+                    row[12] = DLOvField
+                    ds_cursor.updateRow(row)
+                    print("Overview fields updated")
             except Exception as exp:
                 print(str(exp))
         del ds_cursor
@@ -332,25 +319,7 @@ try:
         input_path=s3_overview,
     )
 
-    logging.info('Calculating custom fields for overview record')
-    selection = arcpy.management.SelectLayerByAttribute(
-        in_layer_or_view=mosaic_dataset,
-        selection_type='NEW_SELECTION',
-        where_clause=f"Name = '{overview_name}'",
-    )
-
-    calculate_fields(selection)
-    arcpy.management.CalculateFields(
-        in_table=selection,
-        fields=[
-            ['MinPS', '900'],
-            ['MaxPS', '144000'],
-            ['LowPS', '900'],
-            ['HighPS', '144000'],
-            ['Category', '2'],
-            ['GroupName', '"Mosaic Overview"'],
-        ],
-    )
+    add_overviews(mosaic_dataset, args.working_directory)
 
 except arcpy.ExecuteError:
     logging.error(arcpy.GetMessages())
