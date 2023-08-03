@@ -138,20 +138,21 @@ def add_overviews(mosaic_dataset, local_path):
     if ds_cursor is not None:
         print('Updating Overview Field Values')
         for row in ds_cursor:
-            try:
-                NameOvField = row[6]
-                ProdTypeOvField = NameOvField.split("_")[1]
-                SeasonOvCode = NameOvField.split("_")[3]
-
+            if row[0] == 'Dataset':
                 try:
-                    season = next(season for season in SEASONS if SEASONS[season]['SeasonCode'] == SeasonOvCode)
-                except StopIteration:
-                    raise ValueError(f'Season code {SeasonOvCode} not recognized')
+                    NameOvField = row[6]
+                    ProdTypeOvField = NameOvField.split("_")[1]
+                    SeasonOvCode = NameOvField.split("_")[3]
 
-                PolOvField = NameOvField.split("_")[2]
-                TileOvField = 'Zoom in further to see specific tile information'
-                DLOvField = 'Zoom in further to access download link'
-                if row[0] == 'Dataset':
+                    try:
+                        season = next(season for season in SEASONS if SEASONS[season]['SeasonCode'] == SeasonOvCode)
+                    except StopIteration:
+                        raise ValueError(f'Season code {SeasonOvCode} not recognized')
+
+                    PolOvField = NameOvField.split("_")[2]
+                    TileOvField = 'Zoom in further to see specific tile information'
+                    DLOvField = 'Zoom in further to access download link'
+
                     row[1] = 900
                     row[2] = 2
                     row[3] = SEASONS[season]['StartDate']
@@ -165,8 +166,8 @@ def add_overviews(mosaic_dataset, local_path):
                     row[12] = DLOvField
                     ds_cursor.updateRow(row)
                     print("Overview fields updated")
-            except Exception as exp:
-                print(str(exp))
+                except Exception as exp:
+                    print(str(exp))
         del ds_cursor
 
 
