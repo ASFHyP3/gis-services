@@ -128,7 +128,7 @@ def update_csv(csv_file: str, rasters: List[str]):
 
 
 def add_overviews(mosaic_dataset, local_path):
-    # This function adds CRF overviews to the mosaic dataset and calculates custom attribute values
+    # This function calculates custom attribute values for the overview record
     print('Calculating field values for overview record')
     ds = os.path.join(local_path, mosaic_dataset)
     ds_cursor = arcpy.da.UpdateCursor(ds, ["Tag", "MinPS", "Category", "StartDate", "EndDate", "GroupName",
