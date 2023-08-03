@@ -127,7 +127,7 @@ def update_csv(csv_file: str, rasters: List[str]):
         writer.writerows(records)
 
 
-def add_overviews(mosaic_dataset, local_path):
+def calculate_overview_fields(mosaic_dataset, local_path):
     # This function calculates custom attribute values for the overview record
     print('Calculating field values for overview record')
     ds = os.path.join(local_path, mosaic_dataset)
@@ -319,7 +319,7 @@ def main():
             input_path=s3_overview,
         )
 
-        add_overviews(mosaic_dataset, args.working_directory)
+        calculate_overview_fields(mosaic_dataset, args.working_directory)
 
     except arcpy.ExecuteError:
         logging.error(arcpy.GetMessages())
