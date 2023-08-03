@@ -142,27 +142,23 @@ def add_overviews(mosaic_dataset, local_path):
                 NameOvField = row[6]
                 ProdTypeOvField = NameOvField.split("_")[1]
                 SeasonOvCode = NameOvField.split("_")[3]
-                if SeasonOvCode == 'DJF':
-                    SeasonOvField = 'December/January/February'
-                elif SeasonOvCode == 'MAM':
-                    SeasonOvField = 'March/April/May'
-                elif SeasonOvCode == 'JJA':
-                    SeasonOvField = 'June/July/August'
-                elif SeasonOvCode == 'SON':
-                    SeasonOvField = 'September/October/November'
-                else:
-                    SeasonOvField = 'unknown'
+
+                try:
+                    season = next(season for season in SEASONS if SEASONS[season]['SeasonCode'] == SeasonOvCode)
+                except StopIteration:
+                    raise ValueError(f'Season code {SeasonOvCode} not recognized')
+
                 PolOvField = NameOvField.split("_")[2]
                 TileOvField = 'Zoom in further to see specific tile information'
                 DLOvField = 'Zoom in further to access download link'
                 if row[0] == 'Dataset':
                     row[1] = 900
                     row[2] = 2
-                    row[3] = '12/01/2019'
-                    row[4] = '11/30/2020'
+                    row[3] = SEASONS[season]['StartDate']
+                    row[4] = SEASONS[season]['EndDate']
                     row[5] = "Mosaic Overview"
                     row[7] = ProdTypeOvField
-                    row[8] = SeasonOvField
+                    row[8] = SEASONS[season]['Season']
                     row[9] = PolOvField
                     row[10] = TileOvField
                     row[11] = DLOvField
