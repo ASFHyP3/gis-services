@@ -101,7 +101,6 @@ def get_raster_metadata(raster_path: str) -> dict:
         'Tile': tile,
         'DownloadURL': download_url,
         'URLDisplay': name,
-        'MaxPS': '910',
     }
 
 
@@ -296,6 +295,14 @@ def main():
             max_range_factor=10,
             cell_size_tolerance_factor=0.8,
             update_missing_only='UPDATE_ALL',
+        )
+
+        logging.info(f'Calculating custom field values in {mosaic_dataset}')
+        arcpy.management.CalculateFields(
+            in_table=mosaic_dataset,
+            fields=[
+                ['MaxPS', '910'],
+            ],
         )
 
         local_overview = os.path.join(os.getcwd(), local_overview_filename)
