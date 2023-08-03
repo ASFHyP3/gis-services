@@ -138,33 +138,30 @@ def calculate_overview_fields(mosaic_dataset, local_path):
         print('Updating Overview Field Values')
         for row in ds_cursor:
             if row[0] == 'Dataset':
+                _, ProdTypeOvField, PolOvField, SeasonOvCode, _, _, _ = row[6].split('_')
+
                 try:
-                    _, ProdTypeOvField, PolOvField, SeasonOvCode, _, _, _ = row[6].split('_')
+                    season = next(season for season in SEASONS if SEASONS[season]['SeasonCode'] == SeasonOvCode)
+                except StopIteration:
+                    raise ValueError(f'Season code {SeasonOvCode} not recognized')
 
-                    try:
-                        season = next(season for season in SEASONS if SEASONS[season]['SeasonCode'] == SeasonOvCode)
-                    except StopIteration:
-                        raise ValueError(f'Season code {SeasonOvCode} not recognized')
+                TileOvField = 'Zoom in further to see specific tile information'
+                DLOvField = 'Zoom in further to access download link'
 
-                    TileOvField = 'Zoom in further to see specific tile information'
-                    DLOvField = 'Zoom in further to access download link'
+                row[1] = 900
+                row[2] = 2
+                row[3] = SEASONS[season]['StartDate']
+                row[4] = SEASONS[season]['EndDate']
+                row[5] = 'Mosaic Overview'
+                row[7] = ProdTypeOvField
+                row[8] = SEASONS[season]['Season']
+                row[9] = PolOvField
+                row[10] = TileOvField
+                row[11] = DLOvField
+                row[12] = DLOvField
 
-                    row[1] = 900
-                    row[2] = 2
-                    row[3] = SEASONS[season]['StartDate']
-                    row[4] = SEASONS[season]['EndDate']
-                    row[5] = 'Mosaic Overview'
-                    row[7] = ProdTypeOvField
-                    row[8] = SEASONS[season]['Season']
-                    row[9] = PolOvField
-                    row[10] = TileOvField
-                    row[11] = DLOvField
-                    row[12] = DLOvField
-
-                    ds_cursor.updateRow(row)
-                    print('Overview fields updated')
-                except Exception as exp:
-                    print(str(exp))
+                ds_cursor.updateRow(row)
+                print('Overview fields updated')
         del ds_cursor
 
 
