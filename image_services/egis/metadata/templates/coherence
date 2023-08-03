@@ -1,9 +1,9 @@
 Fields:
-interval = 06
-polarization = VV
-months_abbreviated = Dec/Jan/Feb
-season = Winter
-months_full = December/January/February
+interval = '06'
+polarization = 'VV'
+months_abbreviated = 'Dec/Jan/Feb'
+season = 'Winter'
+months_full = 'December/January/February'
 
 Title:
 GSSICB {interval}-day Median {polarization} Coherence {months_abbreviated}
