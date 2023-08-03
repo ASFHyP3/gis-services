@@ -101,7 +101,6 @@ def get_raster_metadata(raster_path: str) -> dict:
         'Tile': tile,
         'DownloadURL': download_url,
         'URLDisplay': name,
-        'MaxPS': '910',
     }
 
 
@@ -129,7 +128,7 @@ def update_csv(csv_file: str, rasters: List[str]):
 
 
 def add_overviews(mosaic_dataset, local_path):
-    # This function adds CRF overviews to the mosaic dataset and calculates custom attribute values
+    # This function calculates custom attribute values for the overview record
     print('Calculating field values for overview record')
     ds = os.path.join(local_path, mosaic_dataset)
     ds_cursor = arcpy.da.UpdateCursor(ds, ["Tag", "MinPS", "Category", "StartDate", "EndDate", "GroupName",
@@ -293,6 +292,14 @@ def main():
             max_range_factor=10,
             cell_size_tolerance_factor=0.8,
             update_missing_only='UPDATE_ALL',
+        )
+
+        logging.info(f'Calculating custom field values in {mosaic_dataset}')
+        arcpy.management.CalculateFields(
+            in_table=mosaic_dataset,
+            fields=[
+                ['MaxPS', '910'],
+            ],
         )
 
         local_overview = os.path.join(os.getcwd(), local_overview_filename)
