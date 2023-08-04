@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0]
 ### Added
-- Scripts to generate GSSICB Coherence Image Services
+- Scripts to generate GSSICB Coherence image services
+- Scripts to generate customized metadata content for GSSICB image services
 
 ## [0.5.2]
 ### Changed
