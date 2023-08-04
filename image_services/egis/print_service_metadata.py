@@ -11,7 +11,7 @@ SEASONS = {
     },
     'SON': {
         'Season': 'Fall',
-        'SeasonAbbrev': 'Sept/Oct/Nov',
+        'SeasonAbbrev': 'Sep/Oct/Nov',
         'SeasonFull': 'September/October/November',
     },
     'DJF': {
