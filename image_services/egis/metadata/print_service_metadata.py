@@ -29,7 +29,7 @@ SEASONS = {
 
 def get_environment() -> Environment:
     env = Environment(
-        loader=PackageLoader('metadata', 'templates'),
+        loader=PackageLoader('templates', ''),
         autoescape=select_autoescape(['html.j2', 'xml.j2']),
         undefined=StrictUndefined,
         trim_blocks=True,
