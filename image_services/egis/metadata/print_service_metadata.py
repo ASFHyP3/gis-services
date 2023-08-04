@@ -53,10 +53,12 @@ def main():
     parser.add_argument('config_file', help='Configuration file from which resources are imported')
     args = parser.parse_args()
 
-    interval, polarization, season = json.load(open(args.config_file))['dataset_name'].split('_')
+    dataset_name = json.load(open(args.config_file))['dataset_name']
+    data_type, polarization, season = dataset_name.split('_')
 
     fields = {
-        'interval': interval,
+        'data_type': data_type,
+        'interval': int(data_type[-2:]),
         'polarization': polarization,
         'months_abbreviated': SEASONS[season]['SeasonAbbrev'],
         'season': SEASONS[season]['Season'],
@@ -64,12 +66,13 @@ def main():
     }
 
     output_text = render_template(args.template, fields)
-    print(args.output)
     if args.output:
-        with open(args.output, 'w') as f:
-            f.write(output_text)
+        output_file = args.output
     else:
-        print(output_text)
+        output_file = f'service_metadata/{dataset_name}_metadata.txt'
+
+    with open(output_file, 'w') as f:
+        f.write(output_text)
 
 
 if __name__ == '__main__':
