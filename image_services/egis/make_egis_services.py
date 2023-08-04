@@ -152,7 +152,7 @@ def calculate_overview_fields(mosaic_dataset, local_path):
                 row[2] = 2
                 row[3] = SEASONS[season]['StartDate']
                 row[4] = SEASONS[season]['EndDate']
-                row[5] = 'Mosaic Overview'
+                row[5] = f'{ProdTypeOvField}_{PolOvField}_{SeasonOvCode} Mosaic Overview'
                 row[7] = ProdTypeOvField
                 row[8] = SEASONS[season]['Season']
                 row[9] = PolOvField
