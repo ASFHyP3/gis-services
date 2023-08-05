@@ -7,5 +7,5 @@
     "ScaledCoherence.rft.xml",
     "UnscaledCoherence.rft.xml"
   ],
-  "default_raster_function_template": "ScaledCoherence.rft.xml"
+  "default_raster_function_template": "UnscaledCoherence.rft.xml"
 }
