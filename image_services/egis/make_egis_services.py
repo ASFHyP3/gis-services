@@ -271,7 +271,7 @@ def main():
             transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;'
                                 'CenterY;Tag;GroupName;StartDate;EndDate;ProductType;Season;Polarization;Tile;'
                                 'DownloadURL;URLDisplay',
-            use_time='ENABLED',
+            use_time='DISABLED',
             start_time_field='StartDate',
             end_time_field='EndDate',
             max_num_of_download_items=50,
