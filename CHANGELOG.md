@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.1]
 ### Added
-- Config files and service metadata files for all COH06 services
 
 ## [0.6.0]
 ### Added
