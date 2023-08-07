@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Scripts to generate GSSICB Coherence image services
 - Scripts to generate customized metadata content for GSSICB coherence image services
+- Config files and service metadata files for all COH06 services
 
 ## [0.5.2]
 ### Changed
