@@ -5,10 +5,10 @@ Tags:
 ASF, Alaska Satellite Facility, Synthetic Aperture Radar, SAR, Sentinel-1, Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter, Coherence
 
 Summary:
-Global Summer (June/July/August) median 6-day interferometric coherence (COH06) in VV polarization from the Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set.
+Global summer (June/July/August) median 6-day interferometric coherence (COH06) in VV polarization from the Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set.
 
 Description:
-Global Summer (June/July/August) median 6-day interferometric coherence (COH06) in VV polarization from the Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set. Pixel values in source rasters are the coherence value (ranging from 0 to 1) multiplied by 100. A processing template is included with the service to provide the standard coherence values (0 to 1) along with the original source raster values.
+Global summer (June/July/August) median 6-day interferometric coherence (COH06) in VV polarization from the Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set. Pixel values in source rasters are the coherence value (ranging from 0 to 1) multiplied by 100. A processing template is included with the service to provide the standard coherence values (0 to 1) along with the original source raster values.
 The source rasters referenced in this service are available on the Registry of Open Data on AWS: https://registry.opendata.aws/ebd-sentinel-1-global-coherence-backscatter/
 
 Credits:

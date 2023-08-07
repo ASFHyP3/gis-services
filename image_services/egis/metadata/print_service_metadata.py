@@ -5,22 +5,22 @@ from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescap
 
 SEASONS = {
     'JJA': {
-        'Season': 'Summer',
+        'Season': 'summer',
         'SeasonAbbrev': 'Jun/Jul/Aug',
         'SeasonFull': 'June/July/August',
     },
     'SON': {
-        'Season': 'Fall',
+        'Season': 'fall',
         'SeasonAbbrev': 'Sep/Oct/Nov',
         'SeasonFull': 'September/October/November',
     },
     'DJF': {
-        'Season': 'Winter',
+        'Season': 'winter',
         'SeasonAbbrev': 'Dec/Jan/Feb',
         'SeasonFull': 'December/January/February',
     },
     'MAM': {
-        'Season': 'Spring',
+        'Season': 'spring',
         'SeasonAbbrev': 'Mar/Apr/May',
         'SeasonFull': 'March/April/May',
     }
