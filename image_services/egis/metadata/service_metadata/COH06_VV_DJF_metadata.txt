@@ -1,5 +1,5 @@
 Title:
-GSSICB 6-day Median VV Coherence Dec/Jan/Feb
+GSSICB Median 6-day VV Coherence Dec/Jan/Feb
 
 Tags:
 ASF, Alaska Satellite Facility, Synthetic Aperture Radar, SAR, Sentinel-1, Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter, Coherence
