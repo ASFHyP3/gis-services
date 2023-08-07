@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Config files and service metadata files for all COH06 services
 
 ### Changed
-- IAM permissions for image server to read from any s3 bucket.
+- IAM permissions for image server to read from any s3 bucket
 
 ## [0.5.1]
 ### Changed
