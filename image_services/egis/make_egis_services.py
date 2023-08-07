@@ -148,6 +148,7 @@ def calculate_overview_fields(mosaic_dataset, local_path):
                 TileOvField = 'Zoom in further to see specific tile information'
                 DLOvField = 'Zoom in further to access download link'
 
+                row[0] = f'{ProdTypeOvField}_{PolOvField}_{SeasonOvCode}_Overview'
                 row[1] = 900
                 row[2] = 2
                 row[3] = SEASONS[season]['StartDate']
@@ -270,7 +271,7 @@ def main():
             transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;'
                                 'CenterY;Tag;GroupName;StartDate;EndDate;ProductType;Season;Polarization;Tile;'
                                 'DownloadURL;URLDisplay',
-            use_time='ENABLED',
+            use_time='DISABLED',
             start_time_field='StartDate',
             end_time_field='EndDate',
             max_num_of_download_items=50,
