@@ -1,0 +1,11 @@
+{
+  "project_name": "GSSICB",
+  "s3_prefix": "data/tiles",
+  "s3_suffix": "_fall_vv_COH06.tif",
+  "dataset_name": "COH06_VV_SON",
+  "raster_function_templates": [
+    "ScaledCoherence.rft.xml",
+    "UnscaledCoherence.rft.xml"
+  ],
+  "default_raster_function_template": "UnscaledCoherence.rft.xml"
+}

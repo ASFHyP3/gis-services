@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.6.0]
+### Added
+- Scripts to generate GSSICB Coherence image services
+- Scripts to generate customized metadata content for GSSICB coherence image services
+- Config files and service metadata files for all COH06 services
+
+### Changed
+- IAM permissions for image server to read from any s3 bucket
+
 ## [0.5.1]
 ### Changed
 - Refactored the addRasters retry loop in the make_rtc_service.py and make_sample_service.py scripts to avoid duplicate entries in the mosaic dataset attribute table

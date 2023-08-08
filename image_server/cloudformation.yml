@@ -156,17 +156,13 @@ Resources:
                 - s3:ListBucket
                 - s3:GetBucketAcl
                 Resource:
-                - !Sub "arn:aws:s3:::${Bucket}"
-                - arn:aws:s3:::hyp3-examples
-                - arn:aws:s3:::hyp3-pdc-data
+                - arn:aws:s3:::*
               - Effect: Allow
                 Action:
                 - s3:GetObject
                 - s3:GetObjectVersion
                 Resource:
-                - !Sub "arn:aws:s3:::${Bucket}/*"
-                - arn:aws:s3:::hyp3-examples/*
-                - arn:aws:s3:::hyp3-pdc-data/*
+                - arn:aws:s3:::*/*
               - Effect: Allow
                 Action: s3:PutObject
                 Resource:
