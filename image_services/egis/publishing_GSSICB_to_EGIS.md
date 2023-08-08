@@ -36,6 +36,20 @@ It outputs a text file to the `gis-services\image_services\egis\metadata\service
 2. Populate the Title, Tags, Summary, Description and Credits sections and click the Save button at the top of the window
    * Use the appropriate metadata texfile in the `gis-services\image_services\egis\metadata\service_metadata` directory to copy and paste the content for each section.
 
+## Connect to a NASA ArcGIS Portal
+Publishers must add the appropriate NASA Portal(s) to their list of portals in ArcGIS. This only needs to be done once, then the portal(s) will be available in all ArcGIS Pro projects going forward.
+
+*The same workflow is used for publishing to the NASA SIT, UAT, and Production Portals. You will need to add a separate connection for each of these portals before you can publish to it.*
+
+1. Open a project in ArcGIS Pro using the Map template
+2. Click the Project menu and click on the Portals section
+3. Click the Add Portal button
+4. Enter the URL to the desired NASA portal, with /portal at the end (i.e. https://url_to_gis_server/portal/)
+5. Click OK
+6. Click on the options button for the portal, and choose to sign in. You will need to be on the VPN to work with this portal, including signing in.
+
+**It's easiest to connect to the NASA VPN first before creating the ArcGIS Project you'll be using for publishing, and connect to the VPN before opening an ArcGIS Pro project where the active portal is set to the SIT environment.** If you open the project before you are connected to the NASA VPN, you will need to sign in to the portal with your credentials once you connect to the VPN.
+
 ## Publish the Mosaic Dataset as an Image Service
 
 1. Right-click the mosaic dataset in the Catalog pane and select Share As Web Layer
