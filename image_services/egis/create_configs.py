@@ -1,4 +1,3 @@
-import argparse
 import json
 
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
