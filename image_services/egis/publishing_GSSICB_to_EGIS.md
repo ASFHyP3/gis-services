@@ -6,6 +6,8 @@ This workflow publishes services from the Global Seasonal Sentinel-1 Interferome
 
 The `make_egis_services.py` script is run programmatically on a computer with access to the arcpy python package. It generates a csv file listing all the datasets in the GSSICB AWS S3 bucket for a specified data type, then uses that csv file to build a mosaic dataset. 
 
+**There is no need to be on the NASA VPN for this process, and it's better *not* to be if possible. The script takes much longer to run, and is more likely to encounter breaks in the connection when on the NASA VPN.**
+
 You will need to use a terminal with access to a python environment that has both `arcpy` and `boto3` packages installed. The `arcpy` package is available through the conda environment installed with ArcGIS Pro, but that environment cannot have additional packages installed. One way to create a conda environment with both `arcpy` and `boto3` installed is to clone the `arcgispro-py3` conda environment, then conda install `boto3` to the clone environment.
 
 The `make_egis_services.py` script requires a configuration file as input. Config files are kept in the `gis-services\image_services\egis\config` directory.
