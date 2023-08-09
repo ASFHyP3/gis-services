@@ -32,11 +32,24 @@ python print_service_metadata.py ..\config\COH06_VV_DJF.json
 It outputs a text file to the `gis-services\image_services\egis\metadata\service_metadata` directory. The sections of this text file can be copied and pasted into the metadata for the mosaic dataset in the next step.
 
 ## Edit the Metadata for the Mosaic Dataset
+Open ArcGIS Pro, and use the Catalog pane to navigate to the mosaic dataset.
 
 1. Right-click the mosaic dataset in the Catalog pane, and select Edit Metadata
+   - Make sure that you select the mosaic dataset itself, and not the gdb containing the mosaic dataset.
 ![Edit Metadata Figure](images/EditMetadata.PNG)
-2. Populate the Title, Tags, Summary, Description and Credits sections and click the Save button at the top of the window
+2. Populate the Title, Tags, Summary, Description and Credits sections
    * Use the appropriate metadata texfile in the `gis-services\image_services\egis\metadata\service_metadata` directory to copy and paste the content for each section.
+3. Click the Save button under the Metadata tab in the menu ribbon
+
+## Validate the mosaic dataset
+Once the mosaic dataset metadata has been edited, it is a good idea to take a quick look at the mosaic dataset itself in a map to ensure that it was generated correctly. 
+
+1. Highlight the mosaic dataset in the catalog pane and drag it into an empty map
+2. Consider examining the following:
+   - Zoom to the full extent of the service to ensure that the overviews display as expected
+   - Zoom in to the level of the source rasters to ensure that they display as expected
+   - Check the attribute table to make sure that it includes the expected number of records, and that the fields are correctly populated 
+     - either sort ascending on the name field or scroll to the bottom of the table to examine the record for the overviews
 
 ## Connect to a NASA ArcGIS Portal
 Publishers must add the appropriate NASA Portal(s) to their list of portals in ArcGIS. This only needs to be done once, then the portal(s) will be available in all ArcGIS Pro projects going forward.
@@ -56,7 +69,13 @@ Publishers must add the appropriate NASA Portal(s) to their list of portals in A
 
 1. Right-click the mosaic dataset in the Catalog pane and select Share As Web Layer
 ![Share As Web Layer](images/ShareAsWebLayer.PNG)
-2. Set the options in the General tab
+2. Verify the metadata entries in the General tab
+![Share As Web Layer Dialog Metadata](images/ShareAsWebLayerDialogMetadata.PNG)
+   1. The Name field should be automatically populated with the Title that was entered in the mosaic dataset metadata (i.e. `GSSICB_Median_6_day_VV_Coherence_Dec_Jan_Feb`).
+      - **If this field displays the name of the mosaic dataset rather than the name defined in the metadata, there is a problem with the way ArcGIS Pro is interacting with the NASA EGIS Portal. Do not publish the service if the service name field is not populated correctly automatically.**
+      - If the name field is incorrect, click on the portal information in the top right corner of ArcGIS Pro, and sign out of the portal. Sign back in to the appropriate portal, and try again. It may also help to refresh the directory containing the gdb in the catalog pane and save the project before signing out/in. In some cases, it may help to restart your computer, but in general, it seems to be a stale portal sign-in that causes this problem.
+   2. Verify that the summary matches the summary entered in the mosaic dataset metadata.
+3. Set the options in the General tab
 ![Share As Web Layer Dialog](images/ShareAsWebLayerDialog.PNG)
    1. Set the Portal Folder to GSSICB
    2. Set the Server to https://url_to_gis_server/image (the `/image` option is not the default in the Server dropdown menu, and if this is not changed, there will be a licensing error)
