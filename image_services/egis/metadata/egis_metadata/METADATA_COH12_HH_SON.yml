@@ -1,0 +1,88 @@
+name: GSSICB_COH12_HH_SON
+concept_id: None
+collection: None
+data_provider: ASF
+
+doi: https://doi.org/10.5067/8W33RRS6S2RV
+cmr: None
+
+egis:
+  id: None
+  phase: None
+  priority: None
+
+service:
+  type: image
+  ogc: None
+
+deployment:
+  sit:
+    status: False
+    notes: None
+    data: None
+  uat:
+    status: False
+    notes: None
+    data: None
+  prd:
+    status: False
+    notes: None
+    data: None
+
+update:
+  live: False
+  period: None
+
+time:
+  start: 2020-09-01
+  end: 2020-11-30
+  level: Seasonal
+  range: Sep 2020 to Nov 2020
+  standard: UTC
+
+spatial:
+  extent: Global
+  projection: WGS84
+  resolution: 3 arcsecond pixel spacing
+
+eula:
+  type: False
+  notes: None
+
+portal:
+  name: Global fall season Sentinel-1 interferometric 12 day coherence in HH polarization
+  summary: Global fall (September/October/November) median COH12 (12-day coherence) in HH polarization from the Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set (https://asf.alaska.edu/datasets/derived/global-seasonal-sentinel-1-interferometric-coherence-and-backscatter-dataset/)
+  description: |
+    <div></div><div><br/></div><div><b>Time Interval: </b>Seasonal</div><div><b>Time Extent: </b>2020-09-01 to 2020-11-30</div><div><b>Time Standard: </b>Coordinated Universal Time (UTC)</div><div><b>Grid Size: </b>3 arcsecond pixel spacing</div><div><b>Projection: </b>WGS84</div><div><b>Extent: </b>Global<br /></div><div><b>Source:</b>Alaska Satellite Facility (ASF)</div><div><br/></div><div><div><b>Data Sources:</b></div><div><ul> <li>https://doi.org/10.5067/8W33RRS6S2RV</li></ul></div></div><div><div><b>Data Parameters:</b></div><div>For questions or issues please email: <a href="mailto:uso@asf.alaska.edu" target="_blank">uso@asf.alaska.edu</a></div></div>
+  terms_of_use: |
+    <div><font color="#000000"><b><a href="https://www.earthdata.nasa.gov/data-and-information-policy">NASA Earth Science Data and Information Policy</a></b></font></div><div><br/></div><div><font color="#000000"><b>Data Use: </b>When the data products are used in a publication, we request the following acknowledgment be included: <i>&quot;These data were obtained from the Alaska Satellite Facility (ASF).&quot;</i></font></div><div><br/></div><div><font color="#000000"><b>Acknowledgements: </b>This service is provided by <a href="https://gis.earthdata.nasa.gov">Earthdata GIS (EGIS)</a> supported by <a href="https://www.earthdata.nasa.gov/">Earth Observing System Data and Information System (EOSDIS)</a>. We would like to acknowledge the science teams which have provided input and validation throughout service creation process.</font></div>
+  tags:
+    - Synthetic Aperture Radar
+    - SAR
+    - Coherence
+    - Sentinel-1
+    - Alaska Satellite Facility
+    - ASF
+  credits: ASF DAAC
+
+capabilities:
+  use_cases:
+    - identifies areas suitable for InSAR (interferometric SAR) analysis
+    - indicates areas with seasonally dynamic surface characteristics
+  analytical:
+    - compare seasonal differences
+    - explore global extent
+
+poc:
+  science_team:
+    name: Earth Big Data LLC
+    title: None
+    email: info@earthbigdata.com
+  service_maintainer:
+    name: Heidi Kristenson
+    title: Senior GIS Specialist
+    email: hjkristenson@alaska.edu
+
+help:
+    name: Alaska Satellite Facility
+    email: uso@asf.alaska.edu
