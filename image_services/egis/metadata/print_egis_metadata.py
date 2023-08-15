@@ -5,7 +5,7 @@ SEASONS = {
         'Season': 'summer',
         'SeasonFull': 'June/July/August',
         'start_date': '2020-06-01',
-        'end_date':  '2020-08-31',
+        'end_date': '2020-08-31',
         'date_range': 'Jun 2020 to Aug 2020'
     },
     'SON': {
@@ -57,14 +57,14 @@ for interval in intervals:
     for polarization in polarizations:
         for season in SEASONS:
             fields = {'season_code': season,
-                    'interval': interval,
-                    'polarization': polarization,
-                    'season': SEASONS[season]['Season'],
-                    'start_date': SEASONS[season]['start_date'],
-                    'end_date': SEASONS[season]['end_date'],
-                    'date_range': SEASONS[season]['date_range'],
-                    'months':  SEASONS[season]['SeasonFull']
-                    }
+                      'interval': interval,
+                      'polarization': polarization,
+                      'season': SEASONS[season]['Season'],
+                      'start_date': SEASONS[season]['start_date'],
+                      'end_date': SEASONS[season]['end_date'],
+                      'date_range': SEASONS[season]['date_range'],
+                      'months': SEASONS[season]['SeasonFull']
+                      }
 
             output_text = render_template('egis_template.yaml.j2', fields)
             with open(f'egis_metadata/METADATA_COH{interval}_{polarization}_{season}.yml', 'w') as f:
