@@ -69,9 +69,9 @@ def get_projection(srs_wkt: str) -> str:
 
 
 def get_raster_metadata(raster_path: str) -> dict:
-    assert raster_path.startswith('/vsis3/sentinel-1-global-coherence-earthbigdata/')
-    key = raster_path.removeprefix('/vsis3/sentinel-1-global-coherence-earthbigdata/')
-    download_url = f'https://sentinel-1-global-coherence-earthbigdata.s3.us-west-2.amazonaws.com/{key}'
+    assert raster_path.startswith('/vsis3/asf-ngap2w-p-s1-global-coherence/')
+    key = raster_path.removeprefix('/vsis3/asf-ngap2w-p-s1-global-coherence/')
+    download_url = f'https://asf-ngap2w-p-s1-global-coherence.s3.us-west-2.amazonaws.com/{key}'
 
     name = Path(raster_path).stem
     tile, season, polarization, product_type = name.split('_')
