@@ -74,7 +74,7 @@ The easiest scenario is illustrated below, but refer to the [Pixel Cache Path Ex
 1. Right-click the mosaic dataset in the Catalog pane, and select Edit Metadata
 ![Edit Metadata Figure](images/EditMetadata.PNG)
 2. Populate the Title, Tags, Summary, Description and Credits sections and click the Save button at the top of the window
-   * Refer to the sample metadata files for the [COH12](sample_metadata_COH12.txt) and [AMP](sample_metadata_AMP.txt) datasets for content
+   * Refer to the sample metadata files for the [COH12](../metadata/sample_metadata_COH12.txt) and [AMP](../metadata/sample_metadata_AMP.txt) datasets for content
 
 ## Publish the Mosaic Dataset as an Image Service
 

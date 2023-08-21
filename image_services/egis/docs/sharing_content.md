@@ -10,12 +10,12 @@ The same process can be used for any of the Earthdata GIS environments (SIT, UAT
 4. Click the New Item button
 5. Click the Application button in the New Item dialog window
 
-![New Item Dialog](./images/add-item-to-portal.png)
+![New Item Dialog](images/add-item-to-portal.png)
 
 6. Select the Web Mapping option and paste the URL to the item into the URL field 
    * Use this same option for adding a StoryMap URL
 
-![New Item URL](./images/new-item-url.png)
+![New Item URL](images/new-item-url.png)
 
 7. Enter a name for the item, along with a description and tags, then click the Next button. 
    * You can use the same name/description/tags that was used when publishing the item originally, or adjust it as desired to be more tailored to the NASA Earthdata GIS users
