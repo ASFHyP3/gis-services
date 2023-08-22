@@ -174,7 +174,7 @@ def main():
     parser.add_argument('config_file')
     args = parser.parse_args()
 
-    bucket = 'sentinel-1-global-coherence-earthbigdata'
+    bucket = 'asf-ngap2w-p-s1-global-coherence'
     overview_path = '/vsis3/asf-gis-services/public/GSSICB/'
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
