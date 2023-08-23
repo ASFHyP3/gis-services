@@ -72,7 +72,6 @@ We use formatted text for displaying the information in pop-ups in our webmaps. 
 4. Click on the **Fields list** box to expand it, and click the **Select fields** link
 5. Click the **Select All** button, then click the **Deselect All** button that replaces it, then click the **Done** button at the bottom of the fields window once all of the fields have been deselected
    ![Deselect fields](images/egis-deselect-fields.PNG)
-
    - in ArcGIS Online, it is possible to click the three dots on the right side of the Fields list box and delete that component from the Pop-up contents entirely, but that functionality does not appear to be enabled for web maps published in the EGIS Portal
    - deselecting all of the fields is a workaround for the Portal interface that provides the same outcome, but in a less convenient way
 6. Click the **Add Content** button at the bottom of the Pop-up window and select **Text** from the list
