@@ -148,6 +148,16 @@ For reference, this is a sample of the source code used for the COH06 services:
     <span style="font-size:medium;">The&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://registry.opendata.aws/ebd-sentinel-1-global-coherence-backscatter/"><span style="font-size:medium;">Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set</span></a><span style="font-size:medium;">&nbsp;was developed by&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://earthbigdata.com/"><span style="font-size:medium;">Earth Big Data LLC</span></a><span style="font-size:medium;">&nbsp;and&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://www.gamma-rs.ch/"><span style="font-size:medium;">Gamma Remote Sensing AG</span></a><span style="font-size:medium;">, under contract for&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://jpl.nasa.gov/"><span style="font-size:medium;">NASA's Jet Propulsion Laboratory</span></a><span style="font-size:medium;">.</span>
 </p>
 ```
-12. Zoom to a global extent, then save the map
+12. Zoom to a global extent, then save the map. This will set the default extent for the map.
    
 ## Share a Web Map
+
+When you create a new map, it is shared only with the owner, so only those logging in with the ASF_Publisher credentials will be able to see or edit the map. 
+
+When the map is ready to be shared with the world, the sharing setting will need to be updated. 
+
+1. Click the **Share map** icon in the left menu panel
+   ![Map Sharing](images/egis-share-map.png)
+2. Select the **Organization** option from the list and click the Save button
+   ![Map Sharing Dialog](images/egis-share-dialog.PNG)
+   - Note that the option to share publicly is not available in the production EGIS portal. Once the map has been shared to the Organization level, contact the EGIS team and request to start the approval process. Once the map has been determined to be suitable for publishing, the EGIS team will set the sharing level to Everyone.
