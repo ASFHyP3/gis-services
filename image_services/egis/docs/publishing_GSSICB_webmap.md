@@ -65,8 +65,6 @@ In most cases, the properties for numeric fields will need to be edited to displ
 
 We use formatted text for displaying the information in pop-ups in our webmaps. This allows us to customize the display and provide more guidance and supporting information than simply displaying the list of fields and their values.
 
-Pop-up content can be easily copied from one layer and pasted to another, as the formatted text reference fields that are consistent from one service of a given type to another.
-
 1. Click on a layer in the Layers pane to highlight it with a blue line along the left edge
    ![Pop-ups](images/egis-popups.png)
 2. Click on the **Pop-ups** icon in the panel along the far right of the browser window to open the settings pane
@@ -80,22 +78,65 @@ Pop-up content can be easily copied from one layer and pasted to another, as the
 6. Click the **Add Content** button at the bottom of the Pop-up window and select **Text** from the list
    ![Add Pop-up Content](images/egis-add-content.png)
 7. Populate the text window with the desired formatted information to display in the pop-up
-   1. Content can be copied from another layer, even if it's in another map, but only copy-paste within the same map viewer interface (Map Viewer Classic or the new standard Map Viewer)
-   2. To copy pop-up content from a layer that has already been configured for pop-ups:
-      1. In the **Layers** pane, select the layer with a configured pop-up and click on the **Pop-ups** icon in the right pane (if necessary)
-      2. Click on the **Text** box in the Pop-ups window to expand it
-      3. Click on the grey cell of formatted text to open it
-      ![Copy Pop-up](images/egis-copy-popup.png)
-      4. Click the **Source** icon
-      ![Pop-up Source](images/egis-source.png)
-      5. Select and copy the code, then click the **Cancel** button 
-         - In ArcGIS Online, content copied and pasted from the text of another pop-up will retain its formatting (including weblinks), making it very easy to populate the pop-up for a new layer, but in the EGIS Portal you need to use the source code in order to retain the hyperlinks when you copy the content from one pop-up template to another.
-      6. Click on the layer that you want to populate (and click on the Pop-ups icon if necessary)
-      7. Click on the **Text** box in the Pop-ups window and click the **Click here to add text** box
-      8. Click the **Source** icon
-      9. Paste the source code from the other pop-up
-      10. Click the **Source** button again, then click the **OK** button
-      ![Paste Source Code](images/egis-paste-source.png)
+   - In ArcGIS Online, content can easily be copied from another layer, even if it's in another map, as long as both maps use the same map viewer interface (Map Viewer Classic or the new standard Map Viewer). 
+   - This copy-paste approach can be used in the EGIS Portal, but **ONLY** if the content is being copied from pop-ups in a map generated in AGOL rather than the portal, and you'll need to access the source code rather than opening the text content block and copying the formatted text. 
+   1. Copy the desired content
+      - ***Copy Option 1:*** Copy pop-up content from a layer in an AGOL-generated web map that has already been configured for pop-ups:
+         1. In the **Layers** pane, select the layer with a configured pop-up and click on the **Pop-ups** icon in the right pane (if necessary)
+         2. Click on the **Text** box in the Pop-ups window to expand it
+         3. Click on the grey cell of formatted text to open it
+         ![Copy Pop-up](images/egis-copy-popup.png)
+         4. Click the **Source** icon
+         ![Pop-up Source](images/egis-source.png)
+         5. Select and copy the code, then click the **Cancel** button 
+            - In ArcGIS Online, content copied and pasted from the text of another pop-up will retain its formatting (including weblinks), making it very easy to populate the pop-up for a new layer, but when pasting into the EGIS Portal you need to use the source code in order to retain the hyperlinks when you copy the content from one pop-up template to another.
+      - ***Copy Option 2:*** Use the following source code for COH06. Amend it as appropriate for the specific service, then copy it for use:
+         ```commandline
+         <p>
+           <span style="font-size:large;">{Name}</span>&nbsp;
+           <br>
+           <span style="font-size:large;">---&nbsp;</span>&nbsp;
+           <br>
+           <span style="font-size:medium;">Median 6-day Coherence: {Raster.ServicePixelValue.Unscaled Coherence}</span>&nbsp;
+           <br>
+           <span style="font-size:medium;">Scaled Coherence: {Raster.ServicePixelValue.Scaled Coherence}</span>&nbsp;
+           <br>
+           <span style="font-size:small;"><i>(source rasters are scaled to an integer by multiplying the median coherence by 100 - this reduces the file size for storage)</i></span>&nbsp;
+           <br>
+           <span style="font-size:medium;">---&nbsp;</span>&nbsp;
+           <br>
+           <span style="font-size:medium;">Product Type: {ProductType}</span>&nbsp;
+           <br>
+           <span style="font-size:medium;">Season: {Season}</span>&nbsp;
+           <br>
+           <span style="font-size:medium;">Polarization: {Polarization}</span>&nbsp;
+           <br>
+           <span style="font-size:medium;">Tile: {Tile}</span>&nbsp;
+           <br>
+           <span style="font-size:medium;">---&nbsp;</span>&nbsp;
+           <br>
+           <span style="font-size:medium;">Download URL:&nbsp;</span>&nbsp;
+           <br>
+           <a href="{DownloadURL}" target="_blank"><span style="font-size:medium;">{URLDisplay}</span></a><span style="font-size:medium;">&nbsp;</span>&nbsp;
+           <br>
+           <span style="font-size:medium;">---</span>&nbsp;
+           <br>
+           <span style="font-size:medium;">This dataset is generated from Sentinel-1 acquisitions for the year ranging from December 1, 2019 to November 20, 2020.&nbsp;</span>&nbsp;
+           <br>
+           <a target="_blank" rel="noopener noreferrer" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1"><span style="font-size:medium;">Sentinel-1</span></a><span style="font-size:medium;">&nbsp;is a C-band SAR mission developed by ESA. This dataset contains&nbsp;modified Copernicus Sentinel data 2019-2020, processed by ESA.</span>&nbsp;
+           <br>
+           <span style="font-size:medium;">---</span>&nbsp;
+           <br>
+           <span style="font-size:medium;">The&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://registry.opendata.aws/ebd-sentinel-1-global-coherence-backscatter/"><span style="font-size:medium;">Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set</span></a><span style="font-size:medium;">&nbsp;was developed by&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://earthbigdata.com/"><span style="font-size:medium;">Earth Big Data LLC</span></a><span style="font-size:medium;">&nbsp;and&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://www.gamma-rs.ch/"><span style="font-size:medium;">Gamma Remote Sensing AG</span></a><span style="font-size:medium;">, under contract for&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://jpl.nasa.gov/"><span style="font-size:medium;">NASA's Jet Propulsion Laboratory</span></a><span style="font-size:medium;">.</span>
+         </p>
+         ```
+   2. Paste content into the **Text** component of the layer to be configured
+      1. Click on the layer to be configured (and click on the Pop-ups icon if necessary)
+      2. Click on the **Text** box in the Pop-ups window and click the **Click here to add text** box
+      3. Click the **Source** icon
+      4. Paste the source code from the other pop-up
+      5. Click the **Source** button again, then click the **OK** button
+         ![Paste Source Code](images/egis-paste-source.png)
 8. Click on the handle of the **Text** component and drag it above the **Fields list** component
    ![Order Pop-up](images/egis-move-text.png)
 9. Save the map
@@ -108,46 +149,6 @@ Pop-up content can be easily copied from one layer and pasted to another, as the
        - If the unscaled coherence values are 0 or 1 (and the scaled coherence is anything other than 0 or 100), it indicates that the numeric settings for significant digits were not successfully applied. Refer to the [Set Field Properties section](#set-field-properties) for more information.
          ![Check SigDigs](images/egis-popup-check-bad.png)
 
-For reference, this is a sample of the source code used for the COH06 services: 
-```commandline
-<p>
-    <span style="font-size:large;">{Name}</span>&nbsp;
-    <br>
-    <span style="font-size:large;">---&nbsp;</span>&nbsp;
-    <br>
-    <span style="font-size:medium;">Median 6-day Coherence: {Raster.ServicePixelValue.Unscaled Coherence}</span>&nbsp;
-    <br>
-    <span style="font-size:medium;">Scaled Coherence: {Raster.ServicePixelValue.Scaled Coherence}</span>&nbsp;
-    <br>
-    <span style="font-size:small;"><i>(source rasters are scaled to an integer by multiplying the median coherence by 100 - this reduces the file size for storage)</i></span>&nbsp;
-    <br>
-    <span style="font-size:medium;">---&nbsp;</span>&nbsp;
-    <br>
-    <span style="font-size:medium;">Product Type: {ProductType}</span>&nbsp;
-    <br>
-    <span style="font-size:medium;">Season: {Season}</span>&nbsp;
-    <br>
-    <span style="font-size:medium;">Polarization: {Polarization}</span>&nbsp;
-    <br>
-    <span style="font-size:medium;">Tile: {Tile}</span>&nbsp;
-    <br>
-    <span style="font-size:medium;">---&nbsp;</span>&nbsp;
-    <br>
-    <span style="font-size:medium;">Download URL:&nbsp;</span>&nbsp;
-    <br>
-    <a href="{DownloadURL}" target="_blank"><span style="font-size:medium;">{URLDisplay}</span></a><span style="font-size:medium;">&nbsp;</span>&nbsp;
-    <br>
-    <span style="font-size:medium;">---</span>&nbsp;
-    <br>
-    <span style="font-size:medium;">This dataset is generated from Sentinel-1 acquisitions for the year ranging from December 1, 2019 to November 20, 2020.&nbsp;</span>&nbsp;
-    <br>
-    <a target="_blank" rel="noopener noreferrer" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1"><span style="font-size:medium;">Sentinel-1</span></a><span style="font-size:medium;">&nbsp;is a C-band SAR mission developed by ESA. This dataset contains&nbsp;modified Copernicus Sentinel data 2019-2020, processed by ESA.</span>&nbsp;
-    <br>
-    <span style="font-size:medium;">---</span>&nbsp;
-    <br>
-    <span style="font-size:medium;">The&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://registry.opendata.aws/ebd-sentinel-1-global-coherence-backscatter/"><span style="font-size:medium;">Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set</span></a><span style="font-size:medium;">&nbsp;was developed by&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://earthbigdata.com/"><span style="font-size:medium;">Earth Big Data LLC</span></a><span style="font-size:medium;">&nbsp;and&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://www.gamma-rs.ch/"><span style="font-size:medium;">Gamma Remote Sensing AG</span></a><span style="font-size:medium;">, under contract for&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://jpl.nasa.gov/"><span style="font-size:medium;">NASA's Jet Propulsion Laboratory</span></a><span style="font-size:medium;">.</span>
-</p>
-```
 12. Zoom to a global extent, then save the map. This will set the default extent for the map.
    
 ## Share a Web Map
