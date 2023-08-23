@@ -55,7 +55,7 @@ In most cases, the properties for numeric fields will need to be edited to displ
 
 1. Click on a layer once so that it is highlighted with a blue line along the left edge
    ![Set Decimal Places](images/egis-significant-digits.png)
-2. Click on the **Fields** icon in the panel along the far right of the browser screen, and select the field that requires the settings to be changed
+2. Click on the **Fields** icon in the panel along the far right of the browser window, and select the field that requires the settings to be changed
    - for GSSICB services, only the Unscaled Coherence field will need to be adjusted
 3. Use the dropdown menu under **Significant digits** to set the desired number of decimal places to be displayed
    - for GSSICB services, the Unscaled Coherence field should be set to display 2 decimal places
@@ -63,9 +63,51 @@ In most cases, the properties for numeric fields will need to be edited to displ
 
 ### Format Pop-Ups
 
+We use formatted text for displaying the information in pop-ups in our webmaps. This allows us to customize the display and provide more guidance and supporting information than simply displaying the list of fields and their values.
+
+Pop-up content can be easily copied from one layer and pasted to another, as the formatted text reference fields that are consistent from one service of a given type to another.
+
+1. Click on a layer in the Layers pane to highlight it with a blue line along the left edge
+   ![Pop-ups](images/egis-popups.png)
+2. Click on the **Pop-ups** icon in the panel along the far right of the browser window to open the settings pane
+3. Click on the dropdown arrow on the right side of the **Title** box, and change the contents of the Title field to {GroupName}
+4. Click on the **Fields list** box to expand it, and click the **Select fields** link
+5. Click the **Select All** button, then click the **Deselect All** button that replaces it, then click the **Done** button at the bottom of the fields window once all of the fields have been deselected
+   ![Deselect fields](images/egis-deselect-fields.PNG)
+
+   - in ArcGIS Online, it is possible to click the three dots on the right side of the Fields list box and delete that component from the Pop-up contents entirely, but that functionality does not appear to be enabled for web maps published in the EGIS Portal
+   - deselecting all of the fields is a workaround for the Portal interface that provides the same outcome, but in a less convenient way
+6. Click the **Add Content** button at the bottom of the Pop-up window and select **Text** from the list
+   ![Add Pop-up Content](images/egis-add-content.png)
+7. Populate the text window with the desired formatted information to display in the pop-up
+   1. Content can be copied from another layer, even if it's in another map, but only copy-paste within the same map viewer interface (Map Viewer Classic or the new standard Map Viewer)
+   2. To copy pop-up content from a layer that has already been configured for pop-ups:
+      1. In the **Layers** pane, select the layer with a configured pop-up and click on the **Pop-ups** icon in the right pane (if necessary)
+      2. Click on the **Text** box in the Pop-ups window to expand it
+      3. Click on the grey cell of formatted text to open it
+      ![Copy Pop-up](images/egis-copy-popup.png)
+      4. Click the **Source** icon
+      ![Pop-up Source](images/egis-source.png)
+      5. Select and copy the code, then click the **Cancel** button 
+         - In ArcGIS Online, content copied and pasted from the text of another pop-up will retain its formatting (including weblinks), making it very easy to populate the pop-up for a new layer, but in the EGIS Portal you need to use the source code in order to retain the hyperlinks when you copy the content from one pop-up template to another.
+      6. Click on the layer that you want to populate (and click on the Pop-ups icon if necessary)
+      7. Click on the **Text** box in the Pop-ups window and click the **Click here to add text** box
+      8. Click the **Source** icon
+      9. Paste the source code from the other pop-up
+
+      10. Click the **Source** button again, then click the **OK** button
+      ![Paste Source Code](images/egis-paste-source.png)
+8. Click on the handle of the **Text** component and drag it above the **Fields list** component
+   ![Order Pop-up](images/egis-move-text.png)
+9. Save the map
+10. Repeat this process for all of the layers in the map
+11. Once all of the pop-ups are configured, check the performance of the pop-ups
+    1. set all of the layers to be visible
+    2. zoom in far enough to access the source rasters and click on a pixel
+    3. scroll through the pop-ups to make sure they all display the correct content, including pixel values and hyperlinks
+    ![Check Pop-ups](images/egis-popup-check.png)
+       - If the unscaled coherence values are 0 or 1 (and the scaled coherence is anything other than 0 or 100), it indicates that the numeric settings for significant digits were not successfully applied. Refer to the [Set Field Properties section](#set-field-properties) for more information.
+         ![Check SigDigs](images/egis-popup-check-bad.png)
+12. Zoom to a global extent, then save the map
    
-
-
-
-
 ## Share a Web Map
