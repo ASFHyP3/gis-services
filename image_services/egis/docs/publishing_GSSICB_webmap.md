@@ -68,7 +68,9 @@ We use formatted text for displaying the information in pop-ups in our webmaps. 
 1. Click on a layer in the Layers pane to highlight it with a blue line along the left edge
    ![Pop-ups](images/egis-popups.png)
 2. Click on the **Pop-ups** icon in the panel along the far right of the browser window to open the settings pane
-3. Click on the dropdown arrow on the right side of the **Title** box, and change the contents of the Title field to {GroupName}
+3. Click on the dropdown arrow on the right side of the **Title** box, and replace the contents of the Title field with code to display the contents of the **GroupName** attribute field (as shown in the above illustration)
+   1. The GroupName field can be typed in directly: `{GroupName}`
+   2. You can click the **{ }** icon to select the GroupName field from the list
 4. Click on the **Fields list** box to expand it, and click the **Select fields** link
 5. Click the **Select All** button, then click the **Deselect All** button that replaces it, then click the **Done** button at the bottom of the fields window once all of the fields have been deselected
    ![Deselect fields](images/egis-deselect-fields.PNG)
