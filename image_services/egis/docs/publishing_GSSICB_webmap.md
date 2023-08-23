@@ -94,7 +94,6 @@ Pop-up content can be easily copied from one layer and pasted to another, as the
       7. Click on the **Text** box in the Pop-ups window and click the **Click here to add text** box
       8. Click the **Source** icon
       9. Paste the source code from the other pop-up
-
       10. Click the **Source** button again, then click the **OK** button
       ![Paste Source Code](images/egis-paste-source.png)
 8. Click on the handle of the **Text** component and drag it above the **Fields list** component
@@ -108,6 +107,47 @@ Pop-up content can be easily copied from one layer and pasted to another, as the
     ![Check Pop-ups](images/egis-popup-check.png)
        - If the unscaled coherence values are 0 or 1 (and the scaled coherence is anything other than 0 or 100), it indicates that the numeric settings for significant digits were not successfully applied. Refer to the [Set Field Properties section](#set-field-properties) for more information.
          ![Check SigDigs](images/egis-popup-check-bad.png)
+
+For reference, this is a sample of the source code used for the COH06 services: 
+```commandline
+<p>
+    <span style="font-size:large;">{Name}</span>&nbsp;
+    <br>
+    <span style="font-size:large;">---&nbsp;</span>&nbsp;
+    <br>
+    <span style="font-size:medium;">Median 6-day Coherence: {Raster.ServicePixelValue.Unscaled Coherence}</span>&nbsp;
+    <br>
+    <span style="font-size:medium;">Scaled Coherence: {Raster.ServicePixelValue.Scaled Coherence}</span>&nbsp;
+    <br>
+    <span style="font-size:small;"><i>(source rasters are scaled to an integer by multiplying the median coherence by 100 - this reduces the file size for storage)</i></span>&nbsp;
+    <br>
+    <span style="font-size:medium;">---&nbsp;</span>&nbsp;
+    <br>
+    <span style="font-size:medium;">Product Type: {ProductType}</span>&nbsp;
+    <br>
+    <span style="font-size:medium;">Season: {Season}</span>&nbsp;
+    <br>
+    <span style="font-size:medium;">Polarization: {Polarization}</span>&nbsp;
+    <br>
+    <span style="font-size:medium;">Tile: {Tile}</span>&nbsp;
+    <br>
+    <span style="font-size:medium;">---&nbsp;</span>&nbsp;
+    <br>
+    <span style="font-size:medium;">Download URL:&nbsp;</span>&nbsp;
+    <br>
+    <a href="{DownloadURL}" target="_blank"><span style="font-size:medium;">{URLDisplay}</span></a><span style="font-size:medium;">&nbsp;</span>&nbsp;
+    <br>
+    <span style="font-size:medium;">---</span>&nbsp;
+    <br>
+    <span style="font-size:medium;">This dataset is generated from Sentinel-1 acquisitions for the year ranging from December 1, 2019 to November 20, 2020.&nbsp;</span>&nbsp;
+    <br>
+    <a target="_blank" rel="noopener noreferrer" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1"><span style="font-size:medium;">Sentinel-1</span></a><span style="font-size:medium;">&nbsp;is a C-band SAR mission developed by ESA. This dataset contains&nbsp;modified Copernicus Sentinel data 2019-2020, processed by ESA.</span>&nbsp;
+    <br>
+    <span style="font-size:medium;">---</span>&nbsp;
+    <br>
+    <span style="font-size:medium;">The&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://registry.opendata.aws/ebd-sentinel-1-global-coherence-backscatter/"><span style="font-size:medium;">Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set</span></a><span style="font-size:medium;">&nbsp;was developed by&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://earthbigdata.com/"><span style="font-size:medium;">Earth Big Data LLC</span></a><span style="font-size:medium;">&nbsp;and&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://www.gamma-rs.ch/"><span style="font-size:medium;">Gamma Remote Sensing AG</span></a><span style="font-size:medium;">, under contract for&nbsp;</span><a target="_blank" rel="noopener noreferrer" href="https://jpl.nasa.gov/"><span style="font-size:medium;">NASA's Jet Propulsion Laboratory</span></a><span style="font-size:medium;">.</span>
+</p>
+```
 12. Zoom to a global extent, then save the map
    
 ## Share a Web Map
