@@ -1,0 +1,24 @@
+{
+  "GSSICB_COH06_HH_DJF_Scaled": {
+    "name": "GSSICB_Median_6_day_HH_Coherence_Dec_Jan_Feb_Scaled",
+    "definition": "Global winter (December/January/February) median 6-day interferometric coherence (COH06) in HH polarization from the Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set. The source rasters have been scaled to an integer (values ranging from 0 to 100) by multiplying the coherence values by 100.",
+    "units": "DN",
+    "units_name": "Coherence*100",
+    "units_html": "Coherence*100",
+    "units_min": 0,
+    "units_max": 100,
+    "units_digits": 0,
+    "data_type": "8bit_integer"
+  },
+  "GSSICB_COH06_HH_DJF_Unscaled": {
+    "name": "GSSICB_Median_6_day_HH_Coherence_Dec_Jan_Feb_Unscaled",
+    "definition": "Global winter (December/January/February) median 6-day interferometric coherence (COH06) in HH polarization from the Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set. The default raster function template for this image service converts the scaled source raster values to the normal range of coherence values (0 to 1) by dividing the pixel values of the source rasters by 100.",
+    "units": "DN",
+    "units_name": "Coherence",
+    "units_html": "Coherence",
+    "units_min": 0,
+    "units_max": 1,
+    "units_digits": 2,
+    "data_type": "8bit_integer"
+  }
+}
