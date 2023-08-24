@@ -1,4 +1,4 @@
-name: GSSICB_COH{{ interval }}_{{ polarization }}_{{ season_code }}
+name: GSSICB Median {{ interval }}-day {{ polarization }} Coherence {{ months_abbreviated }}
 concept_id: None
 collection: None
 data_provider: ASF
@@ -50,8 +50,8 @@ eula:
   notes: None
 
 portal:
-  name: Global {{ season }} season Sentinel-1 interferometric {{ interval }} day coherence in {{ polarization }} polarization
-  summary: Global {{ season }} ({{ months }}) median COH{{ interval }} ({{ interval }}-day coherence) in {{ polarization }} polarization from the Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set (https://asf.alaska.edu/datasets/derived/global-seasonal-sentinel-1-interferometric-coherence-and-backscatter-dataset/)
+  name: GSSICB Median {{ interval }}-day {{ polarization }} Coherence {{ months_abbreviated }}
+  summary: Global {{ season }} ({{ months_full }}) median {{ interval }}-day interferometric coherence ({{ data_type }}) in {{ polarization }} polarization from the Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set.
   description: |
     <div></div><div><br/></div><div><b>Time Interval: </b>Seasonal</div><div><b>Time Extent: </b>{{ start_date }} to {{ end_date }}</div><div><b>Time Standard: </b>Coordinated Universal Time (UTC)</div><div><b>Grid Size: </b>3 arcsecond pixel spacing</div><div><b>Projection: </b>WGS84</div><div><b>Extent: </b>Global<br /></div><div><b>Source:</b>Alaska Satellite Facility (ASF)</div><div><br/></div><div><div><b>Data Sources:</b></div><div><ul> <li>https://doi.org/10.5067/8W33RRS6S2RV</li></ul></div></div><div><div><b>Data Parameters:</b></div><div>For questions or issues please email: <a href="mailto:uso@asf.alaska.edu" target="_blank">uso@asf.alaska.edu</a></div></div>
   terms_of_use: |
@@ -63,7 +63,7 @@ portal:
     - Sentinel-1
     - Alaska Satellite Facility
     - ASF
-  credits: ASF DAAC
+  credits: Global Seasonal Sentinel-1 Interferometric Coherence and Backscatter Data Set was accessed on 11 November 2022 from https://registry.opendata.aws/ebd-sentinel-1-global-coherence-backscatter.
 
 capabilities:
   use_cases:
@@ -75,7 +75,7 @@ capabilities:
 
 poc:
   science_team:
-    name: Earth Big Data LLC
+    name: Earth Big Data LLC for JPL
     title: None
     email: info@earthbigdata.com
   service_maintainer:
