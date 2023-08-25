@@ -158,10 +158,11 @@ Before sharing the map, edit the item description in the EGIS portal to provide 
 
 1. Log in to the [EGIS Portal](https://gis.earthdata.nasa.gov/portal/home/) using the ASF_Publisher credentials
 2. Search for the web map in the **Content** tab and click the link to open the Item Description for the web map
+3. Click the **Edit** link for the **Description** section
    ![Edit Item Description](images/egis-edit-item-description.png)
-3. Enter a description of the map and its contents, then click the **Save** button
+4. Enter a description of the map and its contents, then click the **Save** button
    ![Edit Map Description](images/egis-map-description.PNG)
-4. Scroll down the Item Description page to the **Credits** section at the bottom of the right panel, and click the **Edit** button
+5. Scroll down the Item Description page to the **Credits** section at the bottom of the right panel, and click the **Edit** button
    ![Edit Credits](images/egis-credits.png)
 6. Enter `Alaska Satellite Facility` in the credits section. We might eventually want to add a reference to the GSSICB dataset credits, but those credits are reflected in the services themselves, so for now, we'll just go with a credit for the entity creating the map itself.
 
