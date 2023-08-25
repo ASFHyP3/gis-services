@@ -19,7 +19,7 @@ SEASONS = {
         'Season': 'winter',
         'SeasonFull': 'December/January/February',
         'start_date': '2019-12-01',
-        'end_date': '2020-11-30',
+        'end_date': '2020-02-29',
         'date_range': 'Dec 2019 to Feb 2020'
     },
     'MAM': {
