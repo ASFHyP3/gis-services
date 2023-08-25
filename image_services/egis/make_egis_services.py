@@ -68,9 +68,13 @@ def get_projection(srs_wkt: str) -> str:
     return srs.GetAttrValue('AUTHORITY', 1)
 
 
+def remove_prefix(raster_path, prefix):
+    return raster_path[len(prefix):]
+
+
 def get_raster_metadata(raster_path: str) -> dict:
     assert raster_path.startswith('/vsis3/asf-ngap2w-p-s1-global-coherence/')
-    key = raster_path.removeprefix('/vsis3/asf-ngap2w-p-s1-global-coherence/')
+    key = remove_prefix(raster_path, '/vsis3/asf-ngap2w-p-s1-global-coherence/')
     download_url = f'https://asf-ngap2w-p-s1-global-coherence.s3.us-west-2.amazonaws.com/{key}'
 
     name = Path(raster_path).stem
