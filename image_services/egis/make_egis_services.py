@@ -10,6 +10,7 @@ from typing import List
 
 import arcpy
 import boto3
+import requests
 from osgeo import gdal, osr
 
 gdal.UseExceptions()
@@ -41,6 +42,20 @@ SEASONS = {
         'EndDate': '05/31/2020',
     }
 }
+
+
+def set_aws_permissions(edl_token):
+    with open(edl_token, 'r') as f:
+        token = f.read()
+
+    response = requests.get('https://sentinel1.asf.alaska.edu/s3credentials',
+                            headers={'Authorization': f'Bearer {token}'})
+    response.raise_for_status()
+    credentials = response.json()
+
+    os.environ['AWS_ACCESS_KEY_ID'] = credentials['accessKeyId']
+    os.environ['AWS_SECRET_ACCESS_KEY'] = credentials['secretAccessKey']
+    os.environ['AWS_SESSION_TOKEN'] = credentials['sessionToken']
 
 
 def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
@@ -175,6 +190,7 @@ def main():
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--working-directory', default=os.getcwd())
+    parser.add_argument('--edl-token', default='/home/arcgis/edl_token.json')
     parser.add_argument('config_file')
     args = parser.parse_args()
 
@@ -196,6 +212,7 @@ def main():
 
     arcpy.env.parallelProcessingFactor = '75%'
 
+    set_aws_permissions(args.edl_token)
     rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
     update_csv(csv_file, rasters)
 
@@ -304,6 +321,7 @@ def main():
 
         local_overview = os.path.join(os.getcwd(), local_overview_filename)
 
+        set_aws_permissions(args.edl_token)
         logging.info(f'Generating {local_overview}')
         with arcpy.EnvManager(cellSize=900):
             arcpy.management.CopyRaster(
