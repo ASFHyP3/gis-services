@@ -64,7 +64,7 @@ class EnvContextManager:
         self.old_values = {key: os.environ.get(key) for key in self.env_vars.keys()}
         os.environ.update(self.env_vars)
 
-    def __exit__(self, exc_value, exc_traceback):
+    def __exit__(self, exec_type, exc_value, exc_traceback):
         os.environ.update(self.old_values)
 
 
