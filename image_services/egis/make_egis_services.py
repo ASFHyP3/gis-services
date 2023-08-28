@@ -44,18 +44,28 @@ SEASONS = {
 }
 
 
-def set_aws_permissions(edl_token):
+def edc_aws_credentials(edl_token):
     with open(edl_token, 'r') as f:
-        token = f.read()
+        token = f.read().strip('\n')
 
     response = requests.get('https://sentinel1.asf.alaska.edu/s3credentials',
                             headers={'Authorization': f'Bearer {token}'})
     response.raise_for_status()
     credentials = response.json()
 
-    os.environ['AWS_ACCESS_KEY_ID'] = credentials['accessKeyId']
-    os.environ['AWS_SECRET_ACCESS_KEY'] = credentials['secretAccessKey']
-    os.environ['AWS_SESSION_TOKEN'] = credentials['sessionToken']
+    return [credentials['accessKeyId'], credentials['secretAccessKey'], credentials['sessionToken']]
+
+
+class EnvContextManager:
+    def __init__(self, **kwargs):
+        self.env_vars = kwargs
+
+    def __enter__(self):
+        self.old_values = {key: os.environ.get(key) for key in self.env_vars.keys()}
+        os.environ.update(self.env_vars)
+
+    def __exit__(self, exc_value, exc_traceback):
+        os.environ.update(self.old_values)
 
 
 def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
@@ -197,6 +207,7 @@ def main():
     bucket = 'asf-ngap2w-p-s1-global-coherence'
     overview_path = '/vsis3/asf-gis-services/public/GSSICB/'
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
+    edl_access_key, edl_secret_access_key, edl_session_token = edc_aws_credentials(edl_token=args.edl_token)
 
     with open(args.config_file) as f:
         config = json.load(f)
@@ -212,9 +223,10 @@ def main():
 
     arcpy.env.parallelProcessingFactor = '75%'
 
-    set_aws_permissions(args.edl_token)
-    rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-    update_csv(csv_file, rasters)
+    with EnvContextManager(AWS_ACCESS_KEY_ID=edl_access_key, AWS_SECRET_ACCESS_KEY=edl_secret_access_key,
+                           AWS_SESSION_TOKEN=edl_session_token):
+        rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
+        update_csv(csv_file, rasters)
 
     today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
     output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
@@ -321,13 +333,14 @@ def main():
 
         local_overview = os.path.join(os.getcwd(), local_overview_filename)
 
-        set_aws_permissions(args.edl_token)
         logging.info(f'Generating {local_overview}')
-        with arcpy.EnvManager(cellSize=900):
-            arcpy.management.CopyRaster(
-                in_raster=mosaic_dataset,
-                out_rasterdataset=local_overview,
-            )
+        with EnvContextManager(AWS_ACCESS_KEY_ID=edl_access_key, AWS_SECRET_ACCESS_KEY=edl_secret_access_key,
+                               AWS_SESSION_TOKEN=edl_session_token):
+            with arcpy.EnvManager(cellSize=900):
+                arcpy.management.CopyRaster(
+                    in_raster=mosaic_dataset,
+                    out_rasterdataset=local_overview,
+                )
 
         logging.info(f'Moving CRF to {s3_overview}')
         subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
