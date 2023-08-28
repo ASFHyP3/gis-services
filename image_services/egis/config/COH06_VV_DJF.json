@@ -1,6 +1,6 @@
 {
   "project_name": "GSSICB",
-  "s3_prefix": "tiles",
+  "s3_prefix": "tiles/N00E028",
   "s3_suffix": "_winter_vv_COH06.tif",
   "dataset_name": "COH06_VV_DJF",
   "raster_function_templates": [

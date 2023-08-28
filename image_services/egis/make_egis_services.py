@@ -226,7 +226,8 @@ def main():
     with EnvContextManager(AWS_ACCESS_KEY_ID=edl_access_key, AWS_SECRET_ACCESS_KEY=edl_secret_access_key,
                            AWS_SESSION_TOKEN=edl_session_token):
         rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-        update_csv(csv_file, rasters)
+
+    update_csv(csv_file, rasters)
 
     today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
     output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
