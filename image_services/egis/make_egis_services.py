@@ -337,13 +337,11 @@ def main():
         local_overview = os.path.join(os.getcwd(), local_overview_filename)
 
         logging.info(f'Generating {local_overview}')
-        with EnvContextManager(AWS_ACCESS_KEY_ID=edl_access_key, AWS_SECRET_ACCESS_KEY=edl_secret_access_key,
-                               AWS_SESSION_TOKEN=edl_session_token):
-            with arcpy.EnvManager(cellSize=900):
-                arcpy.management.CopyRaster(
-                    in_raster=mosaic_dataset,
-                    out_rasterdataset=local_overview,
-                )
+        with EnvContextManager(edl_token=args.edl_token), arcpy.EnvManager(cellSize=900):
+            arcpy.management.CopyRaster(
+                in_raster=mosaic_dataset,
+                out_rasterdataset=local_overview,
+            )
 
         logging.info(f'Moving CRF to {s3_overview}')
         subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
