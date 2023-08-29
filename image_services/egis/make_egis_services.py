@@ -229,8 +229,7 @@ def main():
 
     with EnvContextManager(edl_token=args.edl_token):
         rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-
-    update_csv(csv_file, rasters)
+        update_csv(csv_file, rasters)
 
     today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
     output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
