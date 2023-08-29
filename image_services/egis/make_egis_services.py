@@ -53,19 +53,22 @@ def edc_aws_credentials(edl_token):
     response.raise_for_status()
     credentials = response.json()
 
-    return [credentials['accessKeyId'], credentials['secretAccessKey'], credentials['sessionToken']]
+    return credentials
 
 
 class EnvContextManager:
     def __init__(self, **kwargs):
-        self.env_vars = kwargs
+        self.credentials = kwargs
 
     def __enter__(self):
-        self.old_values = {key: os.environ.get(key) for key in self.env_vars.keys()}
-        os.environ.update(self.env_vars)
+        os.environ['AWS_ACCESS_KEY_ID'] = self.credentials['accessKeyId']
+        os.environ['AWS_SECRET_ACCESS_KEY'] = self.credentials['secretAccessKey']
+        os.environ['AWS_SESSION_TOKEN'] = self.credentials['sessionToken']
 
-    def __exit__(self, exec_type, exc_value, exc_traceback):
-        os.environ.update(self.old_values)
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        os.environ.pop('AWS_ACCESS_KEY_ID')
+        os.environ.pop('AWS_SECRET_ACCESS_KEY')
+        os.environ.pop('AWS_SESSION_TOKEN')
 
 
 def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
@@ -207,7 +210,6 @@ def main():
     bucket = 'asf-ngap2w-p-s1-global-coherence'
     overview_path = '/vsis3/asf-gis-services/public/GSSICB/'
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
-    edl_access_key, edl_secret_access_key, edl_session_token = edc_aws_credentials(edl_token=args.edl_token)
 
     with open(args.config_file) as f:
         config = json.load(f)
@@ -223,8 +225,7 @@ def main():
 
     arcpy.env.parallelProcessingFactor = '75%'
 
-    with EnvContextManager(AWS_ACCESS_KEY_ID=edl_access_key, AWS_SECRET_ACCESS_KEY=edl_secret_access_key,
-                           AWS_SESSION_TOKEN=edl_session_token):
+    with EnvContextManager(edl_token=args.edl_token):
         rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
 
     update_csv(csv_file, rasters)
