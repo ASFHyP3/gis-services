@@ -57,13 +57,15 @@ def edc_aws_credentials(edl_token):
 
 
 class EnvContextManager:
-    def __init__(self, **kwargs):
-        self.credentials = kwargs
+    def __init__(self, edl_token):
+        self.edl_token = edl_token
 
     def __enter__(self):
-        os.environ['AWS_ACCESS_KEY_ID'] = self.credentials['accessKeyId']
-        os.environ['AWS_SECRET_ACCESS_KEY'] = self.credentials['secretAccessKey']
-        os.environ['AWS_SESSION_TOKEN'] = self.credentials['sessionToken']
+        credentials = edc_aws_credentials(self.edl_token)
+
+        os.environ['AWS_ACCESS_KEY_ID'] = credentials['accessKeyId']
+        os.environ['AWS_SECRET_ACCESS_KEY'] = credentials['secretAccessKey']
+        os.environ['AWS_SESSION_TOKEN'] = credentials['sessionToken']
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
         os.environ.pop('AWS_ACCESS_KEY_ID')
