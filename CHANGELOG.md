@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Newly released ESRI ArcGIS Server 10.9 patch updates to `image_server/arcgis_setup.sh`
 - Permissions for image server to write overviews to `s3://asf-gis-services/public/`
 
+## [0.6.2]
+### Added
+- Scripts to generate configuration and metadata files for new datasets
+
 ## [0.6.1]
 ### Added
 - Documentation for publishing web maps to Earthdata GIS
