@@ -29,7 +29,7 @@ SEASONS = {
 def make_configuration(data_type, polarization, season):
     config = {
         "project_name": "GSSICB",
-        "s3_prefix": "data/tiles",
+        "s3_prefix": "tiles/",
         "s3_suffix": f"_{SEASONS[season]['Season']}_{polarization.lower()}_{data_type}.tif",
         "dataset_name": f"{data_type}_{polarization.upper()}_{season}",
         "raster_function_templates": [
