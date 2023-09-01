@@ -169,6 +169,7 @@ Resources:
                 - !Sub "arn:aws:s3:::${Bucket}/${OverviewPrefix}*"
                 - !Sub "arn:aws:s3:::hyp3-examples/${OverviewPrefix}*"
                 - !Sub "arn:aws:s3:::hyp3-pdc-data/${OverviewPrefix}*"
+                - arn:aws:s3:::asf-gis-services/public/*
 
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile

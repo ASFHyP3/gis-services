@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.2]
+### Added
+- Newly released ESRI ArcGIS Server 10.9 patch updates to `image_server/arcgis_setup.sh`
+- Permissions for image server to write overviews to `s3://asf-gis-services/public/`
+
+## [0.6.1]
+### Added
+- Documentation for publishing web maps to Earthdata GIS
 
 ## [0.6.0]
 ### Added
@@ -11,9 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Scripts to generate customized metadata content for GSSICB coherence image services
 - Config files and service metadata files for all COH06 services
 
-## [0.5.2]
 ### Changed
-- IAM permissions for image server to read from any s3 bucket.
+- IAM permissions for image server to read from any s3 bucket
 
 ## [0.5.1]
 ### Changed
