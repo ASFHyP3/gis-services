@@ -44,35 +44,6 @@ SEASONS = {
 }
 
 
-def edc_aws_credentials(edl_token):
-    with open(edl_token, 'r') as f:
-        token = f.read().strip('\n')
-
-    response = requests.get('https://sentinel1.asf.alaska.edu/s3credentials',
-                            headers={'Authorization': f'Bearer {token}'})
-    response.raise_for_status()
-    credentials = response.json()
-
-    return credentials
-
-
-class EnvContextManager:
-    def __init__(self, edl_token):
-        self.edl_token = edl_token
-
-    def __enter__(self):
-        credentials = edc_aws_credentials(self.edl_token)
-
-        os.environ['AWS_ACCESS_KEY_ID'] = credentials['accessKeyId']
-        os.environ['AWS_SECRET_ACCESS_KEY'] = credentials['secretAccessKey']
-        os.environ['AWS_SESSION_TOKEN'] = credentials['sessionToken']
-
-    def __exit__(self, exc_type, exc_value, exc_traceback):
-        os.environ.pop('AWS_ACCESS_KEY_ID')
-        os.environ.pop('AWS_SECRET_ACCESS_KEY')
-        os.environ.pop('AWS_SESSION_TOKEN')
-
-
 def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
     rasters = []
     s3 = boto3.client('s3')
@@ -228,120 +199,122 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        with EnvContextManager(edl_token=args.edl_token):
-            rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-            update_csv(csv_file, rasters)
+        os.environ['AWS_PROFILE'] = 'edc-prod'
+        rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
+        update_csv(csv_file, rasters)
 
-            today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
-            output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
-            overview_name = f'{output_name}_overview'
-            local_overview_filename = f'{overview_name}.crf'
-            s3_overview = f'{overview_path}{overview_name}.crf'
+        today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
+        output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
+        overview_name = f'{output_name}_overview'
+        local_overview_filename = f'{overview_name}.crf'
+        s3_overview = f'{overview_path}{overview_name}.crf'
 
-            logging.info('Creating geodatabase')
-            geodatabase = arcpy.management.CreateFileGDB(
-                out_folder_path=args.working_directory,
-                out_name=f'{output_name}.gdb',
-            )
+        logging.info('Creating geodatabase')
+        geodatabase = arcpy.management.CreateFileGDB(
+            out_folder_path=args.working_directory,
+            out_name=f'{output_name}.gdb',
+        )
 
-            logging.info('Creating mosaic dataset')
-            mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
-                in_workspace=geodatabase,
-                in_mosaicdataset_name=config['dataset_name'],
-                coordinate_system=3857,
-            ))
+        logging.info('Creating mosaic dataset')
+        mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
+            in_workspace=geodatabase,
+            in_mosaicdataset_name=config['dataset_name'],
+            coordinate_system=3857,
+        ))
 
-            logging.info(f'Adding source rasters to {mosaic_dataset}')
-            arcpy.management.AddRastersToMosaicDataset(
-                in_mosaic_dataset=mosaic_dataset,
-                raster_type='Table',
-                input_path=csv_file,
-            )
+        logging.info(f'Adding source rasters to {mosaic_dataset}')
+        arcpy.management.AddRastersToMosaicDataset(
+            in_mosaic_dataset=mosaic_dataset,
+            raster_type='Table',
+            input_path=csv_file,
+        )
 
-            logging.info(f'Building raster footprints for {mosaic_dataset}')
-            arcpy.management.BuildFootprints(
-                in_mosaic_dataset=mosaic_dataset,
-                reset_footprint='NONE',
-                min_data_value=0,
-                max_data_value=4294967295,
-                approx_num_vertices=12,
-                update_boundary='UPDATE_BOUNDARY',
-            )
+        logging.info(f'Building raster footprints for {mosaic_dataset}')
+        arcpy.management.BuildFootprints(
+            in_mosaic_dataset=mosaic_dataset,
+            reset_footprint='NONE',
+            min_data_value=0,
+            max_data_value=4294967295,
+            approx_num_vertices=12,
+            update_boundary='UPDATE_BOUNDARY',
+        )
 
-            logging.info(f'Building {mosaic_dataset} dataset boundary')
-            arcpy.management.BuildBoundary(
-                in_mosaic_dataset=mosaic_dataset,
-                append_to_existing='OVERWRITE',
-                simplification_method='NONE',
-            )
+        logging.info(f'Building {mosaic_dataset} dataset boundary')
+        arcpy.management.BuildBoundary(
+            in_mosaic_dataset=mosaic_dataset,
+            append_to_existing='OVERWRITE',
+            simplification_method='NONE',
+        )
 
-            logging.info(f'Setting properties for {mosaic_dataset}')
-            arcpy.management.SetMosaicDatasetProperties(
-                in_mosaic_dataset=mosaic_dataset,
-                rows_maximum_imagesize=5000,
-                columns_maximum_imagesize=5000,
-                allowed_compressions='JPEG;NONE;LZ77',
-                default_compression_type='JPEG',
-                JPEG_quality=80,
-                resampling_type='NEAREST',
-                LERC_Tolerance=0.01,
-                clip_to_footprints='CLIP',
-                clip_to_boundary='CLIP',
-                color_correction='NOT_APPLY',
-                footprints_may_contain_nodata='FOOTPRINTS_MAY_CONTAIN_NODATA',
-                allowed_mensuration_capabilities='BASIC',
-                default_mensuration_capabilities='BASIC',
-                allowed_mosaic_methods='Center;NorthWest;Nadir;LockRaster;ByAttribute;Seamline;None',
-                default_mosaic_method='ByAttribute',
-                order_field='StartDate',
-                order_base='1/1/2050 12:00:00 AM',
-                sorting_order='Ascending',
-                mosaic_operator='FIRST',
-                blend_width=10,
-                view_point_x=300,
-                view_point_y=300,
-                max_num_per_mosaic=50,
-                cell_size_tolerance=1.8,
-                cell_size=3,
-                metadata_level='BASIC',
-                transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;'
-                                    'CenterY;Tag;GroupName;StartDate;EndDate;ProductType;Season;Polarization;Tile;'
-                                    'DownloadURL;URLDisplay',
-                use_time='DISABLED',
-                start_time_field='StartDate',
-                end_time_field='EndDate',
-                max_num_of_download_items=50,
-                max_num_of_records_returned=2000,
-                processing_templates=f'{raster_function_template}None',
-                default_processing_template=default_raster_function_template,
-            )
+        logging.info(f'Setting properties for {mosaic_dataset}')
+        arcpy.management.SetMosaicDatasetProperties(
+            in_mosaic_dataset=mosaic_dataset,
+            rows_maximum_imagesize=5000,
+            columns_maximum_imagesize=5000,
+            allowed_compressions='JPEG;NONE;LZ77',
+            default_compression_type='JPEG',
+            JPEG_quality=80,
+            resampling_type='NEAREST',
+            LERC_Tolerance=0.01,
+            clip_to_footprints='CLIP',
+            clip_to_boundary='CLIP',
+            color_correction='NOT_APPLY',
+            footprints_may_contain_nodata='FOOTPRINTS_MAY_CONTAIN_NODATA',
+            allowed_mensuration_capabilities='BASIC',
+            default_mensuration_capabilities='BASIC',
+            allowed_mosaic_methods='Center;NorthWest;Nadir;LockRaster;ByAttribute;Seamline;None',
+            default_mosaic_method='ByAttribute',
+            order_field='StartDate',
+            order_base='1/1/2050 12:00:00 AM',
+            sorting_order='Ascending',
+            mosaic_operator='FIRST',
+            blend_width=10,
+            view_point_x=300,
+            view_point_y=300,
+            max_num_per_mosaic=50,
+            cell_size_tolerance=1.8,
+            cell_size=3,
+            metadata_level='BASIC',
+            transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;'
+                                'CenterY;Tag;GroupName;StartDate;EndDate;ProductType;Season;Polarization;Tile;'
+                                'DownloadURL;URLDisplay',
+            use_time='DISABLED',
+            start_time_field='StartDate',
+            end_time_field='EndDate',
+            max_num_of_download_items=50,
+            max_num_of_records_returned=2000,
+            processing_templates=f'{raster_function_template}None',
+            default_processing_template=default_raster_function_template,
+        )
 
-            logging.info('Calculating cell size ranges')
-            arcpy.management.CalculateCellSizeRanges(
-                in_mosaic_dataset=mosaic_dataset,
-                do_compute_min='NO_MIN_CELL_SIZES',
-                do_compute_max='NO_MAX_CELL_SIZES',
-                max_range_factor=10,
-                cell_size_tolerance_factor=0.8,
-                update_missing_only='UPDATE_ALL',
-            )
+        logging.info('Calculating cell size ranges')
+        arcpy.management.CalculateCellSizeRanges(
+            in_mosaic_dataset=mosaic_dataset,
+            do_compute_min='NO_MIN_CELL_SIZES',
+            do_compute_max='NO_MAX_CELL_SIZES',
+            max_range_factor=10,
+            cell_size_tolerance_factor=0.8,
+            update_missing_only='UPDATE_ALL',
+        )
 
-            logging.info(f'Calculating custom field values in {mosaic_dataset}')
-            arcpy.management.CalculateFields(
-                in_table=mosaic_dataset,
-                fields=[
-                    ['MaxPS', '910'],
-                ],
-            )
+        logging.info(f'Calculating custom field values in {mosaic_dataset}')
+        arcpy.management.CalculateFields(
+            in_table=mosaic_dataset,
+            fields=[
+                ['MaxPS', '910'],
+            ],
+        )
 
-            local_overview = os.path.join(os.getcwd(), local_overview_filename)
+        local_overview = os.path.join(os.getcwd(), local_overview_filename)
 
-            logging.info(f'Generating {local_overview}')
+        logging.info(f'Generating {local_overview}')
+        with arcpy.EnvManager(cellSize=900):
             arcpy.management.CopyRaster(
                 in_raster=mosaic_dataset,
                 out_rasterdataset=local_overview,
             )
 
+        os.environ['AWS_PROFILE'] = 'hyp3'
         logging.info(f'Moving CRF to {s3_overview}')
         subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
 
