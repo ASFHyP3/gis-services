@@ -175,7 +175,6 @@ def main():
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--working-directory', default=os.getcwd())
-    parser.add_argument('--edl-token', default='/home/arcgis/edl_token.json')
     parser.add_argument('config_file')
     args = parser.parse_args()
 
