@@ -197,17 +197,17 @@ def main():
 
     arcpy.env.parallelProcessingFactor = '75%'
 
+    os.environ['AWS_PROFILE'] = 'edc-prod'
+    rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
+    update_csv(csv_file, rasters)
+
+    today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
+    output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
+    overview_name = f'{output_name}_overview'
+    local_overview_filename = f'{overview_name}.crf'
+    s3_overview = f'{overview_path}{overview_name}.crf'
+
     try:
-        os.environ['AWS_PROFILE'] = 'edc-prod'
-        rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-        update_csv(csv_file, rasters)
-
-        today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
-        output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
-        overview_name = f'{output_name}_overview'
-        local_overview_filename = f'{overview_name}.crf'
-        s3_overview = f'{overview_path}{overview_name}.crf'
-
         logging.info('Creating geodatabase')
         geodatabase = arcpy.management.CreateFileGDB(
             out_folder_path=args.working_directory,
