@@ -10,7 +10,6 @@ from typing import List
 
 import arcpy
 import boto3
-import requests
 from osgeo import gdal, osr
 
 gdal.UseExceptions()
