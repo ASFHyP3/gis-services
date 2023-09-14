@@ -1,6 +1,6 @@
 {
   "project_name": "GSSICB",
-  "s3_prefix": "data/tiles",
+  "s3_prefix": "tiles",
   "s3_suffix": "_spring_vv_COH06.tif",
   "dataset_name": "COH06_VV_MAM",
   "raster_function_templates": [

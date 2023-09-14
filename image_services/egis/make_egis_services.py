@@ -68,10 +68,14 @@ def get_projection(srs_wkt: str) -> str:
     return srs.GetAttrValue('AUTHORITY', 1)
 
 
+def remove_prefix(raster_path, prefix):
+    return raster_path[len(prefix):]
+
+
 def get_raster_metadata(raster_path: str) -> dict:
-    assert raster_path.startswith('/vsis3/sentinel-1-global-coherence-earthbigdata/')
-    key = raster_path.removeprefix('/vsis3/sentinel-1-global-coherence-earthbigdata/')
-    download_url = f'https://sentinel-1-global-coherence-earthbigdata.s3.us-west-2.amazonaws.com/{key}'
+    assert raster_path.startswith('/vsis3/asf-ngap2w-p-s1-global-coherence/')
+    key = remove_prefix(raster_path, '/vsis3/asf-ngap2w-p-s1-global-coherence/')
+    download_url = f'https://asf-ngap2w-p-s1-global-coherence.s3.us-west-2.amazonaws.com/{key}'
 
     name = Path(raster_path).stem
     tile, season, polarization, product_type = name.split('_')
@@ -174,7 +178,7 @@ def main():
     parser.add_argument('config_file')
     args = parser.parse_args()
 
-    bucket = 'sentinel-1-global-coherence-earthbigdata'
+    bucket = 'asf-ngap2w-p-s1-global-coherence'
     overview_path = '/vsis3/asf-gis-services/public/GSSICB/'
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
@@ -192,6 +196,7 @@ def main():
 
     arcpy.env.parallelProcessingFactor = '75%'
 
+    os.environ['AWS_PROFILE'] = 'edc-prod'
     rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
     update_csv(csv_file, rasters)
 
@@ -307,6 +312,7 @@ def main():
                 out_rasterdataset=local_overview,
             )
 
+        os.environ['AWS_PROFILE'] = 'hyp3'
         logging.info(f'Moving CRF to {s3_overview}')
         subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
 

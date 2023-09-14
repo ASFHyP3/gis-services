@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.3]
+### Added
+- Scripts to generate configuration and metadata files for new datasets
+
+### Changed
+- GSSICB services created with `make_egis_services.py` now point to EDC-hosted source rasters in the `asf-ngap2w-p-s1-global-coherence` S3 bucket
+
+## [0.6.2]
+### Added
+- Newly released ESRI ArcGIS Server 10.9 patch updates to `image_server/arcgis_setup.sh`
+- Permissions for image server to write overviews to `s3://asf-gis-services/public/`
 
 ## [0.6.2]
 ### Added
