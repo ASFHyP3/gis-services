@@ -1,4 +1,5 @@
 import os
+
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
 
 SEASONS = {
