@@ -1,3 +1,4 @@
+import os
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
 
 SEASONS = {
@@ -51,12 +52,16 @@ def render_template(template: str, payload: dict) -> str:
     return rendered
 
 
+working_dir = r'egis_metadata/'
 intervals = [6, 12]
 polarizations = ['VV', 'HH']
+
 for interval in intervals:
     interval_str = str(interval).zfill(2)
     for polarization in polarizations:
         for season in SEASONS:
+            metadata_dir = f'{working_dir}/GSSICB_COH{interval_str}_{polarization}_{season}'
+            os.mkdir(metadata_dir)
             fields = {'season_code': season,
                       'interval_int': interval,
                       'interval_str': interval_str,
@@ -69,5 +74,5 @@ for interval in intervals:
                       }
 
             output_text = render_template('egis_template.yaml.j2', fields)
-            with open(f'egis_metadata/METADATA_COH{interval}_{polarization}_{season}.yml', 'w') as f:
+            with open(f'{metadata_dir}/METADATA.yml', 'w') as f:
                 f.write(output_text)
