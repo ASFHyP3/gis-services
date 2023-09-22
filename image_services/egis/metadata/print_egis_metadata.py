@@ -54,10 +54,12 @@ def render_template(template: str, payload: dict) -> str:
 intervals = [6, 12]
 polarizations = ['VV', 'HH']
 for interval in intervals:
+    interval_str = str(interval).zfill(2)
     for polarization in polarizations:
         for season in SEASONS:
             fields = {'season_code': season,
-                      'interval': interval,
+                      'interval_int': interval,
+                      'interval_str': interval_str,
                       'polarization': polarization,
                       'season': SEASONS[season]['Season'],
                       'start_date': SEASONS[season]['start_date'],
