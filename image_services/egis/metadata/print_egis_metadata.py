@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
 
@@ -82,7 +83,8 @@ for interval in intervals:
                       'date_range': SEASONS[season]['date_range'],
                       'months_full': SEASONS[season]['SeasonFull'],
                       'months_abbreviated': SEASONS[season]['SeasonShort'],
-                      'months_abbreviated_underscore': SEASONS[season]['SeasonShort2']
+                      'months_abbreviated_underscore': SEASONS[season]['SeasonShort2'],
+                      'today': datetime.now().strftime('%d %B %Y'),
                       }
 
             output_text = render_template('egis_parameter_template.yaml.j2', fields)
