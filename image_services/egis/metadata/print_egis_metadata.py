@@ -1,3 +1,4 @@
+import json
 import os
 
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
@@ -85,8 +86,12 @@ for interval in intervals:
                       }
 
             output_text = render_template('egis_parameter_template.yaml.j2', fields)
-            with open(f'{metadata_dir}/PARAMETERS.yml', 'w') as f:
+            with open(f'{metadata_dir}/PARAMETERS.json', 'w') as f:
                 f.write(output_text)
+
+            with open(f'{metadata_dir}/PARAMETERS.json') as f:
+                parameters = json.load(f)
+                fields['parameters'] = parameters
 
             output_text = render_template('egis_template.yaml.j2', fields)
             with open(f'{metadata_dir}/METADATA.yml', 'w') as f:
