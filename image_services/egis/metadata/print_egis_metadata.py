@@ -108,7 +108,7 @@ def create_metadata(interval, polarization, season, egis_base_directory, usernam
 
 working_dir = r'/Users/jrsmale/GitHub/egis-service-manager/services/images/ASF/GSSICB_COH_'
 intervals = [6, 12]
-polarizations = ['VV','HH']
+polarizations = ['VV', 'HH']
 
 for interval in intervals:
     interval_str = str(interval).zfill(2)
