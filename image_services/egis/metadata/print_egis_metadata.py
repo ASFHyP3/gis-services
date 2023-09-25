@@ -107,7 +107,7 @@ for interval in intervals:
                 f.write(output_text)
 
 
-def create_metadata(dataset_name, egis_base_directory, username: str=os.getlogin()):
+def create_metadata(dataset_name, egis_base_directory, username: str = os.getlogin()):
     data_type, polarization, season = dataset_name.split('_')
     fields = {'season_code': season,
               'interval_int': interval,
