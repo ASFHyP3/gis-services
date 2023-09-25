@@ -111,7 +111,6 @@ intervals = [6, 12]
 polarizations = ['VV', 'HH']
 
 for interval in intervals:
-    interval_str = str(interval).zfill(2)
     for polarization in polarizations:
         for season in SEASONS:
             create_metadata(interval, polarization, season, egis_base_directory=working_dir, username='Jacquelyn Smale')
