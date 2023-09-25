@@ -101,9 +101,9 @@ def create_metadata(interval, polarization, season, egis_base_directory, usernam
     with open(f'{metadata_dir_path}/METADATA.yaml', 'w') as f:
         f.write(metadata_text)
 
-    prdready_text = render_template('PRD-READY.md.j2', fields)
+    prd_ready_text = render_template('PRD-READY.md.j2', fields)
     with open(f'{metadata_dir_path}/PRD-READY.md', 'w') as f:
-        f.write(prdready_text)
+        f.write(prd_ready_text)
 
 
 working_dir = r'/Users/jrsmale/GitHub/egis-service-manager/services/images/ASF/GSSICB_COH_'
