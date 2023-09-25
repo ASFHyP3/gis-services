@@ -1,6 +1,8 @@
+import argparse
 import json
 import os
 from datetime import datetime
+from pathlib import Path
 
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
 
@@ -9,7 +11,6 @@ SEASONS = {
         'Season': 'summer',
         'SeasonFull': 'June/July/August',
         'SeasonShort': 'Jun/Jul/Aug',
-        'SeasonShort2': 'Jun_Jul_Aug',
         'start_date': '2020-06-01',
         'end_date': '2020-08-31',
         'date_range': 'Jun 2020 to Aug 2020'
@@ -18,7 +19,6 @@ SEASONS = {
         'Season': 'fall',
         'SeasonFull': 'September/October/November',
         'SeasonShort': 'Sep/Oct/Nov',
-        'SeasonShort2': 'Sep_Oct_Nov',
         'start_date': '2020-09-01',
         'end_date': '2020-11-30',
         'date_range': 'Sep 2020 to Nov 2020'
@@ -27,7 +27,6 @@ SEASONS = {
         'Season': 'winter',
         'SeasonFull': 'December/January/February',
         'SeasonShort': 'Dec/Jan/Feb',
-        'SeasonShort2': 'Dec_Jan_Feb',
         'start_date': '2019-12-01',
         'end_date': '2020-02-29',
         'date_range': 'Dec 2019 to Feb 2020'
@@ -36,7 +35,6 @@ SEASONS = {
         'Season': 'spring',
         'SeasonFull': 'March/April/May',
         'SeasonShort': 'Mar/Apr/May',
-        'SeasonShort2': 'Mar_Apr_May',
         'start_date': '2020-03-01',
         'end_date': '2020-05-31',
         'date_range': 'Mar 2020 to May 2020'
@@ -44,9 +42,18 @@ SEASONS = {
 }
 
 
+def organize_directories(base_directory, new_directory):
+    if not base_directory:
+        os.mkdir(base_directory)
+    dir_path = Path(base_directory / new_directory)
+    if not dir_path:
+        os.mkdir(dir_path)
+    return dir_path
+
+
 def get_environment() -> Environment:
     env = Environment(
-        loader=PackageLoader('templates', ''),
+        loader=PackageLoader('templates', 'egis_templates'),
         autoescape=select_autoescape(['html.j2', 'xml.j2']),
         undefined=StrictUndefined,
         trim_blocks=True,
@@ -83,7 +90,7 @@ for interval in intervals:
                       'date_range': SEASONS[season]['date_range'],
                       'months_full': SEASONS[season]['SeasonFull'],
                       'months_abbreviated': SEASONS[season]['SeasonShort'],
-                      'months_abbreviated_underscore': SEASONS[season]['SeasonShort2'],
+                      'months_abbreviated_underscore': SEASONS[season]['SeasonShort'].replace('/', '_'),
                       'today': datetime.now().strftime('%d %B %Y'),
                       }
 
@@ -98,3 +105,50 @@ for interval in intervals:
             output_text = render_template('egis_template.yaml.j2', fields)
             with open(f'{metadata_dir}/METADATA.yml', 'w') as f:
                 f.write(output_text)
+
+
+def create_metadata(dataset_name, egis_base_directory, username: str=os.getlogin()):
+    data_type, polarization, season = dataset_name.split('_')
+    fields = {'season_code': season,
+              'interval_int': interval,
+              'interval_str': interval_str,
+              'polarization': polarization,
+              'season': SEASONS[season]['Season'],
+              'start_date': SEASONS[season]['start_date'],
+              'end_date': SEASONS[season]['end_date'],
+              'date_range': SEASONS[season]['date_range'],
+              'months_full': SEASONS[season]['SeasonFull'],
+              'months_abbreviated': SEASONS[season]['SeasonShort'],
+              'months_abbreviated_underscore': SEASONS[season]['SeasonShort2'],
+              'username': username,
+              'today': datetime.now().strftime('%d %B %Y'),
+              }
+
+    metadata_dir_path = organize_directories(egis_base_directory, f'GSSICB_{data_type}_{polarization}_{season}')
+
+    metadata_text = render_template('METADATA.yaml.j2', fields)
+    with open(f'{metadata_dir_path}/METADATA.yaml', 'w') as f:
+        f.write(metadata_text)
+
+    parameter_text = render_template('PARAMETERS.json.j2', fields)
+    with open(f'{metadata_dir_path}/PARAMETERS.json', 'w') as f:
+        f.write(parameter_text)
+
+    parameter_text = render_template('PRD-READY.md.j2', fields)
+    with open(f'{metadata_dir_path}/PRD-READY.md', 'w') as f:
+        f.write(parameter_text)
+
+
+def main():
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('config_file', help='Configuration file from which resources are imported')
+    parser.add_argument('base_directory', help='Directory where metadata will be written')
+    parser.add_argument('-git-username', help='Name to sign the PRD-READY template with')
+    args = parser.parse_args()
+
+    dataset_name = json.load(open(args.config_file))['dataset_name']
+    create_metadata(dataset_name, args.base_directory, args.username)
+
+
+if __name__ == '__main__':
+    main()

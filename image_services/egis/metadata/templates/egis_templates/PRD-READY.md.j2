@@ -1,0 +1,77 @@
+# Production Ready & Publish Date Certification
+
+Certification Version: 0.1
+
+## Service Information
+
+Service Name: GSSICB_{{ data_type }}_{{ polarization }}_{{ season }}
+
+Service Type: Image
+
+## Ready Checks
+
+These ready and publication checks are designed to insure that all public services share specific basic characteristics. All services are free to provide more information and functionality. This certification only asks you to attest to a minimum. If any of your "Status" sit at an unallowable state you MUST update your service to meet the minimum standards before it can be release to the public. If your service is already released to the public and you are working on an update to the service you must re-attest that the service still meets all minimum requirements.c
+
+In the future we expect a usability assessment guide will replace much of the below ready checks and you will able to attest to "Full Usability" after following the guide and instead of checking each item here.
+
+- Allowable Status: YES, NA
+  - YES: Fully adheres to all requirements.
+  - NA Status: Reserved for instances where you service does not have a specific feature by design only (eg. your service consists of only one time slice and thus does not have temporal rendering capabilities).
+    - Common NA Checks:
+      - THUMBNAIL.png: If there are multiple parameters in a service there will be a thumbnails folder and associated thumbnails for each parameter.
+      - thumbnails folder: if there is only one parameter in the service there will be a THUMBNAIL.png and not a folder.
+- Unallowable Status: NO
+- Exceptions to Unallowable Status:
+  - Owner: Will be updated to NASA_Earthdata when the EGIS team publishes your service.
+  - Share Settings: Will be updated to the minimum when the EGIS team publishes your service, if you would like your content shared in additional group(s) you MUST ask for the additional group(s) in the Notes for section.
+
+### Service Folder
+
+| Content | Status | Notes |
+| --- | --- | --- |
+| METADATA.yaml: current and complete |  |  |
+| PARAMETERS.json: current and complete |  |  |
+| README.md: current and complete |  |  |
+| SCRIPT.py: current and complete |  |  |
+| THUMBNAIL.png: current and complete |  |  |
+| thumbnails folder: current and complete |  |  |
+
+### Portal Item
+
+Note: Most portal items can be checked with the [make_service_reports.py](../make_service_reports.py) If they are clear mark all of the below as YES. It WILL be fastest to run a service report and only correct those items in need of adjustment, rather than check manually.
+
+| Content | Status | Notes |
+| --- | --- | ---|
+| Title: human readable |  |  |
+| Thumbnail: saved, not rendered from map |  |  |
+| Summary: current & complete |  |  |
+| Owner: NASA_Earthdata |  |  |
+| Description: contains all required information |  |  |
+| Share Settings: Public & Gallery minimum |  |  |
+| Tags: current & complete |  |  |
+| Terms of Use: current & complete |  |  |
+
+### Usability Checklist
+
+Review the [Image Service Usability Checklist](../docs/procedures/image-service-usability-checklist.md), noting any caveats or limitations in any given ingest method.
+
+| Platform | Loaded/Projected | Queryable | Multidimensional | Temporal | Raster Functions |
+| --- | --- | --- | --- | --- | --- |
+| Web Applications |  |  |  |  | N/A |
+| ArcGIS Pro |  |  |  |  |  |
+| QGIS |  |  |  |  |  |
+
+OGC Enabled |  |
+Required endpoint capabilities (out of 5) |  |
+Recommended endpoint capabilities (out of 9) |  |
+Registered in CMR |  |
+CMR Checks |  |
+
+## Final Certification
+
+I {{ username }}, certify that the above service is ready for publication and public release on the Earthdata GIS (EGIS) ArcGIS Enterprise PRD environment/portal.
+
+I have performed all the validation checks that my science team/DAAC requested of me and I have reviewed the `Usability Test Guide` and am certain the service adheres to all minimum requirements.
+
+- Signed: {{ username }}
+- Date:  {{ date }}
