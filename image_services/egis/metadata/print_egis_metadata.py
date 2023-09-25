@@ -1,4 +1,3 @@
-import argparse
 import json
 import os
 from datetime import datetime
@@ -43,10 +42,10 @@ SEASONS = {
 
 
 def organize_directories(base_directory, new_directory):
-    if not base_directory:
+    if not Path(base_directory).exists():
         os.mkdir(base_directory)
-    dir_path = Path(base_directory / new_directory)
-    if not dir_path:
+    dir_path = Path(base_directory) / Path(new_directory)
+    if not dir_path.exists():
         os.mkdir(dir_path)
     return dir_path
 
@@ -70,85 +69,49 @@ def render_template(template: str, payload: dict) -> str:
     return rendered
 
 
-working_dir = r'egis_metadata/'
-intervals = [6, 12]
-polarizations = ['VV', 'HH']
-
-for interval in intervals:
-    interval_str = str(interval).zfill(2)
-    for polarization in polarizations:
-        for season in SEASONS:
-            metadata_dir = f'{working_dir}/GSSICB_COH{interval_str}_{polarization}_{season}'
-            os.mkdir(metadata_dir)
-            fields = {'season_code': season,
-                      'interval_int': interval,
-                      'interval_str': interval_str,
-                      'polarization': polarization,
-                      'season': SEASONS[season]['Season'],
-                      'start_date': SEASONS[season]['start_date'],
-                      'end_date': SEASONS[season]['end_date'],
-                      'date_range': SEASONS[season]['date_range'],
-                      'months_full': SEASONS[season]['SeasonFull'],
-                      'months_abbreviated': SEASONS[season]['SeasonShort'],
-                      'months_abbreviated_underscore': SEASONS[season]['SeasonShort'].replace('/', '_'),
-                      'today': datetime.now().strftime('%d %B %Y'),
-                      }
-
-            output_text = render_template('egis_parameter_template.yaml.j2', fields)
-            with open(f'{metadata_dir}/PARAMETERS.json', 'w') as f:
-                f.write(output_text)
-
-            with open(f'{metadata_dir}/PARAMETERS.json') as f:
-                parameters = json.load(f)
-                fields['parameters'] = parameters
-
-            output_text = render_template('egis_template.yaml.j2', fields)
-            with open(f'{metadata_dir}/METADATA.yml', 'w') as f:
-                f.write(output_text)
-
-
-def create_metadata(dataset_name, egis_base_directory, username: str = os.getlogin()):
-    data_type, polarization, season = dataset_name.split('_')
+def create_metadata(interval, polarization, season, egis_base_directory, username: str = os.getlogin(),
+                    data_type_code: str = 'COH'):
+    data_type = data_type_code + str(interval).zfill(2)
     fields = {'season_code': season,
-              'interval_int': interval,
-              'interval_str': interval_str,
+              'interval': interval,
               'polarization': polarization,
+              'data_type': data_type,
               'season': SEASONS[season]['Season'],
               'start_date': SEASONS[season]['start_date'],
               'end_date': SEASONS[season]['end_date'],
               'date_range': SEASONS[season]['date_range'],
               'months_full': SEASONS[season]['SeasonFull'],
               'months_abbreviated': SEASONS[season]['SeasonShort'],
-              'months_abbreviated_underscore': SEASONS[season]['SeasonShort2'],
+              'months_abbreviated_underscore': SEASONS[season]['SeasonShort'].replace('/', '_'),
               'username': username,
               'today': datetime.now().strftime('%d %B %Y'),
               }
 
     metadata_dir_path = organize_directories(egis_base_directory, f'GSSICB_{data_type}_{polarization}_{season}')
 
-    metadata_text = render_template('METADATA.yaml.j2', fields)
-    with open(f'{metadata_dir_path}/METADATA.yaml', 'w') as f:
-        f.write(metadata_text)
-
     parameter_text = render_template('PARAMETERS.json.j2', fields)
     with open(f'{metadata_dir_path}/PARAMETERS.json', 'w') as f:
         f.write(parameter_text)
 
-    parameter_text = render_template('PRD-READY.md.j2', fields)
+    with open(f'{metadata_dir_path}/PARAMETERS.json') as f:
+        parameters = json.load(f)
+        fields['parameters'] = parameters
+
+    metadata_text = render_template('METADATA.yaml.j2', fields)
+    with open(f'{metadata_dir_path}/METADATA.yaml', 'w') as f:
+        f.write(metadata_text)
+
+    prdready_text = render_template('PRD-READY.md.j2', fields)
     with open(f'{metadata_dir_path}/PRD-READY.md', 'w') as f:
-        f.write(parameter_text)
+        f.write(prdready_text)
 
 
-def main():
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('config_file', help='Configuration file from which resources are imported')
-    parser.add_argument('base_directory', help='Directory where metadata will be written')
-    parser.add_argument('-git-username', help='Name to sign the PRD-READY template with')
-    args = parser.parse_args()
+working_dir = r'/Users/jrsmale/GitHub/egis-service-manager/services/images/ASF/GSSICB_COH_'
+intervals = [6, 12]
+polarizations = ['VV','HH']
 
-    dataset_name = json.load(open(args.config_file))['dataset_name']
-    create_metadata(dataset_name, args.base_directory, args.username)
-
-
-if __name__ == '__main__':
-    main()
+for interval in intervals:
+    interval_str = str(interval).zfill(2)
+    for polarization in polarizations:
+        for season in SEASONS:
+            create_metadata(interval, polarization, season, egis_base_directory=working_dir, username='Jacquelyn Smale')
