@@ -12,6 +12,6 @@ data = item.get_data()
 
 delta_t = datetime.timedelta(weeks=3)
 end_time = datetime.date.fromtimestamp(data['widgets']['timeSlider']['properties']['endTime']/1000)
-data['widgets']['timeSlider']['properties']['endTime'] = calendar.timegm((end_time - delta_t).timetuple()) * 1000
+data['widgets']['timeSlider']['properties']['startTime'] = calendar.timegm((end_time - delta_t).timetuple()) * 1000
 
 item.update(data=json.dumps(data))
