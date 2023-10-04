@@ -1,8 +1,8 @@
-import datetime
 import calendar
+import datetime
+import json
 
 from arcgis import GIS
-import json
 
 webmap_id = '0b0336feb86e47b1a2b6ddf40b0d5bf3'
 gis = GIS('home')
