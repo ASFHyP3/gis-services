@@ -2,8 +2,8 @@ import calendar
 import datetime
 import json
 
-from arcgis import GIS
 import boto3
+from arcgis import GIS
 
 session = boto3.session.Session(profile_name='hyp3')
 client = session.client(service_name='secretsmanager', region_name='us-west-2')
