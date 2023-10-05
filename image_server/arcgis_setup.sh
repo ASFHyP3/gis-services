@@ -24,12 +24,15 @@ wget https://gisupdates.esri.com/QFE/PFA-1091-P-805/ArcGIS-1091-PFA-QCS-Patch-li
 wget https://gisupdates.esri.com/QFE/PFA-1091-P-839/ArcGIS-1091-PFA-SEC2022U2-PatchB-linux.tar
 wget https://gisupdates.esri.com/QFE/PFA-1091-P-858/ArcGIS-1091-PFA-ESFD-Patch-linux.tar
 wget https://gisupdates.esri.com/QFE/DS-1091-P-806/ArcGIS-1091-DS-DE-Patch-linux.tar
+aws s3 cp s3://hyp3-software/HF-000005735.zip .
 
+for f in *.zip; do unzip "$f"; done
 for f in *.tar; do tar -xvf "$f"; done
 
 for f in S-1091-P-*/applypatch; do "$f" -s -server; done
 for f in PFA-1091-P-*/applypatch; do "$f" -s -portal; done
 for f in DS-1091-P-*/applypatch; do "$f" -s -datastore; done
+for f in S-1091-HF-*/applypatch; do "$f" -s -server; done
 
 /opt/arcgis/server/tools/patchnotification/patchnotification
 
