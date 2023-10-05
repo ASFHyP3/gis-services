@@ -37,8 +37,7 @@ webmap_ids = ['2205f66af0324a88a8d0b8a6c8fde5bf',  # Alaska Rivers
 gis = GIS('pro')
 
 for webmap_id in webmap_ids:
-    item = gis.content.get(webmap_id)
-    if update_time_slider(item):
+    if update_time_slider(gis.content.get(webmap_id)):
         print(f'Updated webmap with id {webmap_id}')
     else:
         print(f'Error updating {webmap_id}')
