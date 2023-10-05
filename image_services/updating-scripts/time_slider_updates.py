@@ -3,6 +3,12 @@ import datetime
 import json
 
 from arcgis import GIS
+import boto3
+
+session = boto3.session.Session(profile_name='hyp3')
+client = session.client(service_name='secretsmanager', region_name='us-west-2')
+response = client.get_secret_value(SecretId='tools_user_accounts')
+password_dict = json.loads(response['SecretString'])
 
 
 def datetime_to_esri(date_time):
@@ -34,7 +40,9 @@ webmap_ids = ['2205f66af0324a88a8d0b8a6c8fde5bf',  # Alaska Rivers
               'faa83e4ccfe64bb8a99c13ef70b19b8f',  # SWE
               ]
 
-gis = GIS('pro')
+gis = GIS('https://asf-daac.maps.arcgis.com',
+          password_dict['asf-agol-username'],
+          password_dict['asf-agol-password'])
 
 for webmap_id in webmap_ids:
     if update_time_slider(gis.content.get(webmap_id)):
