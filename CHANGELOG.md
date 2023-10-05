@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.4]
 ### Added
+- A new hotfix stored in our S3 bucket in `image_server/arcgis_setup.sh`
 - Scripts to automatically update time sliders for ASF published WebMaps
 
 ## [0.6.3]
