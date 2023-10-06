@@ -1,4 +1,3 @@
-import calendar
 import datetime
 import json
 
@@ -11,7 +10,7 @@ password_dict = json.loads(response['SecretString'])
 
 
 def datetime_to_esri(date_time):
-    return calendar.timegm(date_time.timetuple()) * 1000
+    return int(date_time.timestamp()) * 1000
 
 
 def update_time_slider(item):
@@ -21,14 +20,13 @@ def update_time_slider(item):
     buffer_length = datetime.timedelta(days=1)
 
     today_time = datetime.date.today() + buffer_length
-    data['widgets']['timeSlider']['properties']['endTime'] = datetime_to_esri(today_time)
+    time_slider = data['widgets']['timeSlider']['properties']
 
-    time_stop_interval = {'interval': 1, 'units': 'esriTimeUnitsDays'}
-    data['widgets']['timeSlider']['properties']['timeStopInterval'] = time_stop_interval
-
-    data['widgets']['timeSlider']['properties']['startTime'] = datetime_to_esri(today_time - slider_length)
-    data['widgets']['timeSlider']['properties']['currentTimeExtent'] = [datetime_to_esri(today_time - window_length),
-                                                                        datetime_to_esri(today_time)]
+    time_slider['endTime'] = datetime_to_esri(today_time)
+    time_slider['timeStopInterval'] = {'interval': 1, 'units': 'esriTimeUnitsDays'}
+    time_slider['startTime'] = datetime_to_esri(today_time - slider_length)
+    time_slider['currentTimeExtent'] = [datetime_to_esri(today_time - window_length),
+                                        datetime_to_esri(today_time)]
 
     return item.update(data=json.dumps(data))
 
