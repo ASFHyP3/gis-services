@@ -5,8 +5,7 @@ import json
 import boto3
 from arcgis import GIS
 
-session = boto3.session.Session(profile_name='hyp3')
-client = session.client(service_name='secretsmanager', region_name='us-west-2')
+client = boto3.client(service_name='secretsmanager', region_name='us-west-2')
 response = client.get_secret_value(SecretId='tools_user_accounts')
 password_dict = json.loads(response['SecretString'])
 
