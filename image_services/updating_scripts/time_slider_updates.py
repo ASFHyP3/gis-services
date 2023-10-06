@@ -1,3 +1,4 @@
+import calendar
 import datetime
 import json
 
@@ -10,7 +11,7 @@ password_dict = json.loads(response['SecretString'])
 
 
 def datetime_to_esri(date_time):
-    return int(date_time.timestamp()) * 1000
+    return calendar.timegm(date_time.timetuple()) * 1000
 
 
 def update_time_slider(item):
