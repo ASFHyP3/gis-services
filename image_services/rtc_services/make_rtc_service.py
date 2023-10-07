@@ -137,8 +137,6 @@ parser.add_argument('--working-directory', default=os.getcwd())
 parser.add_argument('config_file')
 args = parser.parse_args()
 
-today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
-
 raster_store = '/home/arcgis/raster_store/'
 bucket = 'hyp3-nasa-disasters'
 overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
@@ -158,6 +156,8 @@ else:
 
 arcpy.env.parallelProcessingFactor = '75%'
 
+stats_skip_factor = '1000'
+
 try:
     rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
     update_csv(csv_file, rasters)
@@ -172,35 +172,28 @@ try:
             s3_overview = f'{overview_path}{overview_name}.crf'
             service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
-stats_skip_factor = '1000'
+            logging.info('Creating geodatabase')
+            geodatabase = arcpy.management.CreateFileGDB(
+                out_folder_path=args.working_directory,
+                out_name=f'{output_name}.gdb',
+            )
 
-arcpy.env.parallelProcessingFactor = '75%'
+            logging.info('Creating mosaic dataset')
+            mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
+                in_workspace=geodatabase,
+                in_mosaicdataset_name=config['dataset_name'],
+                coordinate_system=3857,
+            ))
 
-try:
-    rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-    update_csv(csv_file, rasters)
-
-    logging.info('Creating geodatabase')
-    geodatabase = arcpy.management.CreateFileGDB(
-        out_folder_path=args.working_directory,
-        out_name=f'{output_name}.gdb',
-    )
-    logging.info('Creating mosaic dataset')
-    mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
-        in_workspace=geodatabase,
-        in_mosaicdataset_name=config['dataset_name'],
-        coordinate_system=3857,
-    ))
-
-    logging.info(f'Adding fields to {mosaic_dataset}')
-    arcpy.management.AddFields(
-        in_table=mosaic_dataset,
-        field_description=[
-            ['StartDate', 'DATE'],
-            ['EndDate', 'DATE'],
-            ['DownloadURL', 'TEXT'],
-        ],
-    )
+            logging.info(f'Adding fields to {mosaic_dataset}')
+            arcpy.management.AddFields(
+                in_table=mosaic_dataset,
+                field_description=[
+                    ['StartDate', 'DATE'],
+                    ['EndDate', 'DATE'],
+                    ['DownloadURL', 'TEXT'],
+                ],
+            )
 
             logging.info(f'Adding source rasters to {mosaic_dataset}')
             arcpy.management.AddRastersToMosaicDataset(
