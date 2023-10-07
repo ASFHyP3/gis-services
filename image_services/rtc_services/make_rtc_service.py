@@ -288,6 +288,9 @@ try:
         update_missing_only='UPDATE_ALL',
     )
 
+    logging.info(f'Building multidimensional info for {mosaic_dataset}')
+    arcpy.md.BuildMultidimensionalInfo(mosaic_dataset, 'ProductName', 'EndDate')
+
     with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
         local_overview = os.path.join(temp_dir, local_overview_filename)
 
@@ -333,9 +336,6 @@ try:
 
     logging.info(f'Calculating statistics with a skip factor of {stats_skip_factor}')
     arcpy.CalculateStatistics_management(mosaic_dataset, stats_skip_factor, stats_skip_factor)
-
-    logging.info(f'Building multidimensional info for {mosaic_dataset}')
-    arcpy.md.BuildMultidimensionalInfo(mosaic_dataset, 'ProductName', 'StartDate')
 
     with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
         logging.info(f'Creating draft service definition {service_definition_draft.name}')
