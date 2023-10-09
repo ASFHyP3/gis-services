@@ -16,7 +16,7 @@ def datetime_to_esri(date_time):
 
 def update_time_slider(item):
     data = item.get_data()
-    slider_length = datetime.timedelta(weeks=51)
+    slider_length = datetime.timedelta(weeks=52)
     window_length = datetime.timedelta(weeks=3)
     buffer_length = datetime.timedelta(days=1)
 
