@@ -258,7 +258,7 @@ try:
         default_mosaic_method='ByAttribute',
         order_field='StartDate',
         order_base='1/1/2020 12:00:00 AM',
-        sorting_order='Descending',
+        sorting_order='Ascending',
         mosaic_operator='FIRST',
         blend_width=10,
         view_point_x=300,
