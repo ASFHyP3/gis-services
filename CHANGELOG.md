@@ -5,10 +5,54 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [0.4.2]
+## [0.6.5]
+### Changed
+- Changed time slider length to 52 weeks for automated web maps
+
+## [0.6.4]
 ### Added
+- A new hotfix stored in our S3 bucket in `image_server/arcgis_setup.sh`
+- Scripts to automatically update time sliders for web maps published by ASF
+
+## [0.6.3]
+### Added
+- Scripts to generate configuration and metadata files for new datasets
+
+### Changed
+- GSSICB services created with `make_egis_services.py` now point to EDC-hosted source rasters in the `asf-ngap2w-p-s1-global-coherence` S3 bucket
+
+## [0.6.2]
+### Added
+- Newly released ESRI ArcGIS Server 10.9 patch updates to `image_server/arcgis_setup.sh`
+- Permissions for image server to write overviews to `s3://asf-gis-services/public/`
+
+## [0.6.1]
+### Added
+- Documentation for publishing web maps to Earthdata GIS
+
+## [0.6.0]
+### Added
+- Scripts to generate GSSICB Coherence image services
+- Scripts to generate customized metadata content for GSSICB coherence image services
+- Config files and service metadata files for all COH06 services
+
+### Changed
+- IAM permissions for image server to read from any s3 bucket
+
+## [0.5.1]
+### Changed
+- Refactored the addRasters retry loop in the make_rtc_service.py and make_sample_service.py scripts to avoid duplicate entries in the mosaic dataset attribute table
+- Updated HKH config files to include WMS metadata
+- Updated HKH and PDC config files to increase time-out settings
+
+## [0.5.0]
+### Added
+- code to enable WMS capabilities in service definition files
 - Processing script and configuration files to support image services for PDC
 - IAM permissions for image server to manage mosaic datasets for `s3://hyp3-pdc-data/`
+
+### Changed
+- Refactored the addRasters retry loop in the make_pdc_service.py script to avoid duplicate entries in the mosaic dataset attribute table
 
 ## [0.4.1]
 ### Added

@@ -1,0 +1,11 @@
+{
+  "project_name": "GSSICB",
+  "s3_prefix": "tiles",
+  "s3_suffix": "_spring_hh_COH06.tif",
+  "dataset_name": "COH06_HH_MAM",
+  "raster_function_templates": [
+    "ScaledCoherence.rft.xml",
+    "UnscaledCoherence.rft.xml"
+  ],
+  "default_raster_function_template": "UnscaledCoherence.rft.xml"
+}
