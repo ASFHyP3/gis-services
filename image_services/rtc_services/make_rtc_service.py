@@ -331,8 +331,8 @@ try:
         ],
     )
 
-    logging.info(f'Calculating statistics with a skip factor of {stats_skip_factor}')
-    arcpy.CalculateStatistics_management(mosaic_dataset, stats_skip_factor, stats_skip_factor)
+    # logging.info(f'Calculating statistics with a skip factor of {stats_skip_factor}')
+    # arcpy.CalculateStatistics_management(mosaic_dataset, stats_skip_factor, stats_skip_factor)
 
     logging.info(f'Building multidimensional info for {mosaic_dataset}')
     arcpy.md.BuildMultidimensionalInfo(mosaic_dataset, 'ProductName', 'StartDate')
