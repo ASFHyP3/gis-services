@@ -257,7 +257,7 @@ try:
         allowed_mosaic_methods='Center;NorthWest;Nadir;LockRaster;ByAttribute;Seamline;None',
         default_mosaic_method='ByAttribute',
         order_field='EndDate',
-        order_base='1/1/2020 12:00:00 AM',
+        order_base='1/1/2050 12:00:00 AM',
         sorting_order='Ascending',
         mosaic_operator='FIRST',
         blend_width=10,
