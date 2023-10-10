@@ -258,7 +258,7 @@ try:
         default_mosaic_method='ByAttribute',
         order_field='EndDate',
         order_base='1/1/2020 12:00:00 AM',
-        sorting_order='Ascending',
+        sorting_order='Descending',
         mosaic_operator='FIRST',
         blend_width=10,
         view_point_x=300,
@@ -333,6 +333,11 @@ try:
 
     # logging.info(f'Calculating statistics with a skip factor of {stats_skip_factor}')
     # arcpy.CalculateStatistics_management(mosaic_dataset, stats_skip_factor, stats_skip_factor)
+
+    logging.info(f'Resetting sorting properties for {mosaic_dataset}')
+    arcpy.management.SetMosaicDatasetProperties(
+        sorting_order='Ascending'
+    )
 
     logging.info(f'Building multidimensional info for {mosaic_dataset}')
     arcpy.md.BuildMultidimensionalInfo(mosaic_dataset, 'ProductName', 'StartDate')
