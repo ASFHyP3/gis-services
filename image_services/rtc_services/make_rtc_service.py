@@ -336,6 +336,7 @@ try:
 
     logging.info(f'Resetting sorting properties for {mosaic_dataset}')
     arcpy.management.SetMosaicDatasetProperties(
+        in_mosaic_dataset=mosaic_dataset,
         sorting_order='Ascending'
     )
 
