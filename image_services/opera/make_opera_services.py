@@ -12,9 +12,6 @@ import arcpy
 import boto3
 from osgeo import gdal, osr
 
-OPERA_BUCKET = 'TODO: ADD BUCKET'
-OPERA_URL = 'TODO: ADD URL'
-
 gdal.UseExceptions()
 gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
@@ -48,10 +45,10 @@ def remove_prefix(raster_path, prefix):
     return raster_path[len(prefix):]
 
 
-def get_raster_metadata(raster_path: str) -> dict:
-    assert raster_path.startswith(OPERA_BUCKET)
-    key = remove_prefix(raster_path, OPERA_BUCKET)
-    download_url = f'{OPERA_URL}_{key}'
+def get_raster_metadata(raster_path: str, bucket: str) -> dict:
+    assert raster_path.startswith(f'/vsis3/{bucket}')
+    key = remove_prefix(raster_path, f'/vsis3/{bucket}')
+    download_url = f'https://{bucket}.s3.us-west-2.amazonaws.com/{key}'
 
     name = Path(raster_path).stem
     tile, season, polarization, product_type = name.split('_')
@@ -81,7 +78,7 @@ def get_raster_metadata(raster_path: str) -> dict:
     }
 
 
-def update_csv(csv_file: str, rasters: List[str]):
+def update_csv(csv_file: str, rasters: List[str], bucket: str):
     if os.path.isfile(csv_file):
         with open(csv_file) as f:
             records = [record for record in csv.DictReader(f)]
@@ -94,7 +91,7 @@ def update_csv(csv_file: str, rasters: List[str]):
 
     logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
     for raster in new_rasters:
-        record = get_raster_metadata(raster)
+        record = get_raster_metadata(raster, bucket)
         records.append(record)
 
     records = sorted(records, key=lambda x: x['Raster'])
@@ -148,7 +145,9 @@ def main():
     parser.add_argument('config_file')
     args = parser.parse_args()
 
+    bucket = 'asf-cumulus-prod-opera-products'
     overview_path = '/vsis3/asf-gis-services/public/OPERA/'
+
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
     with open(args.config_file) as f:
@@ -167,7 +166,7 @@ def main():
 
     os.environ['AWS_PROFILE'] = 'edc-prod'
     rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-    update_csv(csv_file, rasters)
+    update_csv(csv_file, rasters, bucket)
 
     today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
     output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
