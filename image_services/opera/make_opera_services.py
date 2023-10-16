@@ -50,6 +50,7 @@ def get_raster_metadata(raster_path: str, bucket: str) -> dict:
     key = remove_prefix(raster_path, f'/vsis3/{bucket}')
     download_url = f'https://{bucket}.s3.us-west-2.amazonaws.com/{key}'
 
+    # TODO: FIGURE OUT NAMING AND WHAT'S NECESSARY/INCLUDED
     name = Path(raster_path).stem
     tile, season, polarization, product_type = name.split('_')
     polarization = polarization.upper()
@@ -106,26 +107,21 @@ def calculate_overview_fields(mosaic_dataset, local_path):
     print('Calculating field values for overview record')
     ds = os.path.join(local_path, mosaic_dataset)
     ds_cursor = arcpy.da.UpdateCursor(ds, ['Tag', 'MinPS', 'Category', 'StartDate', 'EndDate', 'GroupName',
-                                           'Name', 'ProductType', 'Season', 'Polarization', 'Tile', 'DownloadURL',
+                                           'Name', 'ProductType', 'Polarization', 'Tile', 'DownloadURL',
                                            'URLDisplay'])
     if ds_cursor is not None:
         print('Updating Overview Field Values')
         for row in ds_cursor:
             if row[0] == 'Dataset':
-                _, ProdTypeOvField, PolOvField, SeasonOvCode, _, _, _ = row[6].split('_')
-
-                try:
-                    season = next(season for season in SEASONS if SEASONS[season]['SeasonCode'] == SeasonOvCode)
-                except StopIteration:
-                    raise ValueError(f'Season code {SeasonOvCode} not recognized')
+                _, ProdTypeOvField, PolOvField, _, _, _ = row[6].split('_')
 
                 TileOvField = 'Zoom in further to see specific tile information'
                 DLOvField = 'Zoom in further to access download link'
 
-                row[0] = f'{ProdTypeOvField}_{PolOvField}_{SeasonOvCode}_Overview'
+                row[0] = f'{ProdTypeOvField}_{PolOvField}__Overview'
                 row[1] = 900
                 row[2] = 2
-                row[5] = f'{ProdTypeOvField}_{PolOvField}_{SeasonOvCode} Mosaic Overview'
+                row[5] = f'{ProdTypeOvField}_{PolOvField} Mosaic Overview'
                 row[7] = ProdTypeOvField
                 row[9] = PolOvField
                 row[10] = TileOvField
