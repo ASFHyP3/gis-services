@@ -45,21 +45,15 @@ def remove_prefix(raster_path, prefix):
     return raster_path[len(prefix):]
 
 
-def get_raster_metadata(raster_path: str, bucket: str) -> dict:
-    assert raster_path.startswith(f'/vsis3/{bucket}')
-    key = remove_prefix(raster_path, f'/vsis3/{bucket}')
-    download_url = f'https://{bucket}.s3.us-west-2.amazonaws.com/{key}'
-
-    # TODO: FIGURE OUT NAMING AND WHAT'S NECESSARY/INCLUDED
-    name = Path(raster_path).stem
-    tile, season, polarization, product_type = name.split('_')
-    polarization = polarization.upper()
-    tag = f'{product_type}_{polarization}'
+def get_raster_metadata(raster_path: str) -> dict:
+    assert raster_path.startswith('/vsis3/hyp3-testing/opera-rtc-image-service-prototype/VV/')
+    key = remove_prefix(raster_path, '/vsis3/hyp3-testing/')
+    download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
 
     info = gdal.Info(raster_path, format='json')
     return {
-        'Raster': raster_path,
-        'Name': name,
+        'Raster': info['description'],
+        'Name': Path(info['description']).stem,
         'xMin': info['cornerCoordinates']['lowerLeft'][0],
         'yMin': info['cornerCoordinates']['lowerLeft'][1],
         'xMax': info['cornerCoordinates']['upperRight'][0],
@@ -69,17 +63,11 @@ def get_raster_metadata(raster_path: str, bucket: str) -> dict:
         'nBands': len(info['bands']),
         'PixelType': get_pixel_type(info['bands'][0]['type']),
         'SRS': get_projection(info['coordinateSystem']['wkt']),
-        'Tag': tag,
-        'GroupName': tag,
-        'ProductType': product_type,
-        'Polarization': polarization,
-        'Tile': tile,
         'DownloadURL': download_url,
-        'URLDisplay': name,
     }
 
 
-def update_csv(csv_file: str, rasters: List[str], bucket: str):
+def update_csv(csv_file: str, rasters: List[str]):
     if os.path.isfile(csv_file):
         with open(csv_file) as f:
             records = [record for record in csv.DictReader(f)]
@@ -92,7 +80,7 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str):
 
     logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
     for raster in new_rasters:
-        record = get_raster_metadata(raster, bucket)
+        record = get_raster_metadata(raster)
         records.append(record)
 
     records = sorted(records, key=lambda x: x['Raster'])
@@ -141,7 +129,7 @@ def main():
     parser.add_argument('config_file')
     args = parser.parse_args()
 
-    bucket = 'asf-cumulus-prod-opera-products'
+    bucket = 'hyp3-testing'
     overview_path = '/vsis3/asf-gis-services/public/OPERA/'
 
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
@@ -160,9 +148,9 @@ def main():
 
     arcpy.env.parallelProcessingFactor = '75%'
 
-    os.environ['AWS_PROFILE'] = 'edc-prod'
+    os.environ['AWS_PROFILE'] = 'hyp3'
     rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-    update_csv(csv_file, rasters, bucket)
+    update_csv(csv_file, rasters)
 
     today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
     output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
@@ -286,8 +274,6 @@ def main():
             raster_type='Raster Dataset',
             input_path=s3_overview,
         )
-
-        calculate_overview_fields(mosaic_dataset, args.working_directory)
 
     except arcpy.ExecuteError:
         logging.error(arcpy.GetMessages())
