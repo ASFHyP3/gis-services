@@ -64,6 +64,8 @@ def get_raster_metadata(raster_path: str) -> dict:
         'PixelType': get_pixel_type(info['bands'][0]['type']),
         'SRS': get_projection(info['coordinateSystem']['wkt']),
         'DownloadURL': download_url,
+        'StartDate': name[36:38] + '/' + name[38:40] + '/' + name[32:36],
+        'EndDate': name[36:38] + '/' + name[38:40] + '/' + name[32:36]
     }
 
 
@@ -225,9 +227,8 @@ def main():
             cell_size_tolerance=1.8,
             cell_size=3,
             metadata_level='BASIC',
-            transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;'
-                                'CenterY;Tag;GroupName;StartDate;EndDate;ProductType;Season;Polarization;Tile;'
-                                'DownloadURL;URLDisplay',
+            transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;CenterY;'
+                            'Tag;ProductName;GroupName;DownloadURL',
             use_time='DISABLED',
             start_time_field='StartDate',
             end_time_field='EndDate',
