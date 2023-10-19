@@ -49,7 +49,7 @@ def get_raster_metadata(raster_path: str) -> dict:
     assert raster_path.startswith('/vsis3/hyp3-testing/opera-rtc-image-service-prototype/VV/')
     key = remove_prefix(raster_path, '/vsis3/hyp3-testing/')
     download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
-
+    acquisition_date = name[36:38] + '/' + name[38:40] + '/' + name[32:36] + ' ' + name[41:43] + ':' + name[43:45] + ':' + name[45:47],
     name = Path(raster_path).stem
     info = gdal.Info(raster_path, format='json')
     return {
@@ -65,8 +65,8 @@ def get_raster_metadata(raster_path: str) -> dict:
         'PixelType': get_pixel_type(info['bands'][0]['type']),
         'SRS': get_projection(info['coordinateSystem']['wkt']),
         'DownloadURL': download_url,
-        'StartDate': name[36:38] + '/' + name[38:40] + '/' + name[32:36],
-        'EndDate': name[36:38] + '/' + name[38:40] + '/' + name[32:36]
+        'StartDate': acquisition_date,
+        'EndDate': acquisition_date,
     }
 
 
@@ -133,7 +133,7 @@ def main():
     args = parser.parse_args()
 
     bucket = 'hyp3-testing'
-    overview_path = '/vsis3/asf-gis-services/public/OPERA/'
+    overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
 
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
