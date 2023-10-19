@@ -107,20 +107,12 @@ def calculate_overview_fields(mosaic_dataset, local_path):
     overview_start_date = min(start_dates).replace(microsecond=0) + datetime.timedelta(hours=-8)
     overview_end_date = max(start_dates).replace(microsecond=0) + datetime.timedelta(hours=8)
 
-    logging.info('Calculating custom fields for overview record')
-    selection = arcpy.management.SelectLayerByAttribute(
-        in_layer_or_view=mosaic_dataset,
-        selection_type='NEW_SELECTION',
-        where_clause=f"Name = '{overview_name}'",
-    )
-
     if ds_cursor is not None:
         print('Updating Overview Field Values')
         for row in ds_cursor:
             if row[0] == 'Dataset':
                 _, ProdTypeOvField, PolOvField, _, _, _ = row[6].split('_')
 
-                TileOvField = 'Zoom in further to see specific tile information'
                 DLOvField = 'Zoom in further to access download link'
 
                 row[0] = f'{ProdTypeOvField}_{PolOvField}__Overview'
@@ -336,6 +328,9 @@ def main():
             raster_type='Raster Dataset',
             input_path=s3_overview,
         )
+
+        logging.info('Populate overview attributes')
+        calculate_overview_fields(mosaic_dataset, args.working_directory)
 
         with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
             logging.info(f'Creating draft service definition {service_definition_draft.name}')
