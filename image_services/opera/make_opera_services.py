@@ -133,7 +133,7 @@ def main():
     args = parser.parse_args()
 
     bucket = 'hyp3-testing'
-    overview_path = '/vsis3/asf-gis-services/public/OPERA/'
+    overview_path = '/vsis3/hyp3-testing/opera-rtc-image-service-prototype/overviews/'
 
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 

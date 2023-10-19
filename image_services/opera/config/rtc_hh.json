@@ -4,7 +4,8 @@
   "s3_suffix": "_HH.tif",
   "dataset_name": "OPERA_TEST",
   "raster_function_templates": [
-    "Sentinel1_RTC_dB_Stretch.rft.xml"
+    "Sentinel1_RTC_dB_Stretch.rft.xml",
+    "Sentinel1_RTC_Power.rft.xml"
   ],
-  "default_raster_function_template": "Sentinel1_RTC_dB_Stretch.rft.xml"
+  "default_raster_function_template": "Sentinel1_RTC_Power.rft.xml"
 }
