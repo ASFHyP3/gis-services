@@ -98,8 +98,21 @@ def calculate_overview_fields(mosaic_dataset, local_path):
     print('Calculating field values for overview record')
     ds = os.path.join(local_path, mosaic_dataset)
     ds_cursor = arcpy.da.UpdateCursor(ds, ['Tag', 'MinPS', 'Category', 'StartDate', 'EndDate', 'GroupName',
-                                           'Name', 'ProductType', 'Polarization', 'Tile', 'DownloadURL',
+                                           'Name', 'ProductType', 'Polarization', 'DownloadURL',
                                            'URLDisplay'])
+
+    logging.info('Calculating Overview Start and End Dates')
+    start_dates = [row[1] for row in arcpy.da.SearchCursor(mosaic_dataset, ['Tag', 'StartDate']) if row[0] != 'Dataset']
+    overview_start_date = min(start_dates).replace(microsecond=0) + datetime.timedelta(hours=-8)
+    overview_end_date = max(start_dates).replace(microsecond=0) + datetime.timedelta(hours=8)
+
+    logging.info('Calculating custom fields for overview record')
+    selection = arcpy.management.SelectLayerByAttribute(
+        in_layer_or_view=mosaic_dataset,
+        selection_type='NEW_SELECTION',
+        where_clause=f"Name = '{overview_name}'",
+    )
+
     if ds_cursor is not None:
         print('Updating Overview Field Values')
         for row in ds_cursor:
@@ -110,14 +123,15 @@ def calculate_overview_fields(mosaic_dataset, local_path):
                 DLOvField = 'Zoom in further to access download link'
 
                 row[0] = f'{ProdTypeOvField}_{PolOvField}__Overview'
-                row[1] = 900
+                row[1] = 600
                 row[2] = 2
+                row[3] = overview_start_date
+                row[4] = overview_end_date
                 row[5] = f'{ProdTypeOvField}_{PolOvField} Mosaic Overview'
                 row[7] = ProdTypeOvField
-                row[9] = PolOvField
-                row[10] = TileOvField
-                row[11] = DLOvField
-                row[12] = DLOvField
+                row[8] = PolOvField
+                row[9] = DLOvField
+                row[10] = DLOvField
 
                 ds_cursor.updateRow(row)
                 print('Overview fields updated')
@@ -252,14 +266,14 @@ def main():
         arcpy.management.CalculateFields(
             in_table=mosaic_dataset,
             fields=[
-                ['MaxPS', '910'],
+                ['MaxPS', '610'],
             ],
         )
 
         local_overview = os.path.join(os.getcwd(), local_overview_filename)
 
         logging.info(f'Generating {local_overview}')
-        with arcpy.EnvManager(cellSize=900):
+        with arcpy.EnvManager(cellSize=600):
             arcpy.management.CopyRaster(
                 in_raster=mosaic_dataset,
                 out_rasterdataset=local_overview,
