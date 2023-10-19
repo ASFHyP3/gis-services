@@ -50,8 +50,8 @@ def get_raster_metadata(raster_path: str) -> dict:
     assert raster_path.startswith('/vsis3/hyp3-testing/opera-rtc-image-service-prototype/VV/')
     key = remove_prefix(raster_path, '/vsis3/hyp3-testing/')
     download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
-    acquisition_date = name[36:38] + '/' + name[38:40] + '/' + name[32:36] + ' ' + name[41:43] + ':' + name[43:45] + ':' + name[45:47],
     name = Path(raster_path).stem
+    acquisition_date = name[36:38] + '/' + name[38:40] + '/' + name[32:36] + ' ' + name[41:43] + ':' + name[43:45] + ':' + name[45:47]
     info = gdal.Info(raster_path, format='json')
     return {
         'Raster': info['description'],
