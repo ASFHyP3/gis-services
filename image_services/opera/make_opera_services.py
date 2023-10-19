@@ -133,7 +133,7 @@ def main():
     args = parser.parse_args()
 
     bucket = 'hyp3-testing'
-    overview_path = '/vsis3/hyp3-testing/opera-rtc-image-service-prototype/overviews/'
+    overview_path = '/vsis3/asf-gis-services/public/OPERA/'
 
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
@@ -229,7 +229,7 @@ def main():
             metadata_level='BASIC',
             transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;'
                             'CenterY;Tag;ProductName;GroupName;DownloadURL',
-            use_time='DISABLED',
+            use_time='ENABLED',
             start_time_field='StartDate',
             end_time_field='EndDate',
             max_num_of_download_items=50,
