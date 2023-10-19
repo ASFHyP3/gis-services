@@ -151,7 +151,6 @@ def main():
 
     arcpy.env.parallelProcessingFactor = '75%'
 
-    os.environ['AWS_PROFILE'] = 'hyp3'
     rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
     update_csv(csv_file, rasters)
 
@@ -266,7 +265,6 @@ def main():
                 out_rasterdataset=local_overview,
             )
 
-        os.environ['AWS_PROFILE'] = 'hyp3'
         logging.info(f'Moving CRF to {s3_overview}')
         subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
 
