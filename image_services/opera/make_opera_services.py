@@ -228,8 +228,8 @@ def main():
             cell_size_tolerance=1.8,
             cell_size=3,
             metadata_level='BASIC',
-            transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;CenterY;'
-                            'Tag;ProductName;GroupName;DownloadURL',
+            transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;'
+                            'CenterY;Tag;ProductName;GroupName;DownloadURL',
             use_time='DISABLED',
             start_time_field='StartDate',
             end_time_field='EndDate',
