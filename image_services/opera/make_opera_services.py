@@ -50,10 +50,11 @@ def get_raster_metadata(raster_path: str) -> dict:
     key = remove_prefix(raster_path, '/vsis3/hyp3-testing/')
     download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
 
+    name = Path(raster_path).stem
     info = gdal.Info(raster_path, format='json')
     return {
         'Raster': info['description'],
-        'Name': Path(info['description']).stem,
+        'Name': name,
         'xMin': info['cornerCoordinates']['lowerLeft'][0],
         'yMin': info['cornerCoordinates']['lowerLeft'][1],
         'xMax': info['cornerCoordinates']['upperRight'][0],
