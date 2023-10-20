@@ -158,7 +158,7 @@ Resources:
                 Action:
                 - s3:ListBucket
                 - s3:GetBucketAcl
-                - s3:GetBucketLocataion
+                - s3:GetBucketLocation
                 Resource:
                 - arn:aws:s3:::*
               - Effect: Allow
