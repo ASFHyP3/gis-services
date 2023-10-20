@@ -307,7 +307,7 @@ def main():
             in_table=mosaic_dataset,
             fields=[
                 ['MaxPS', '610'],
-                ['Tag', '!Name!.split("_")[8]'],
+                ['Tag', '!Name!.split("_")[9]'],
             ],
         )
 
