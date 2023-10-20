@@ -284,7 +284,7 @@ def main():
             cell_size=3,
             metadata_level='BASIC',
             transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;'
-                            'CenterY;Tag;ProductName;GroupName;DownloadURL',
+                            'CenterY;Tag;ProductName;GroupName;DownloadURL;URLDisplay',
             use_time='ENABLED',
             start_time_field='StartDate',
             end_time_field='EndDate',
