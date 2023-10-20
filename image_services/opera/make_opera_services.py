@@ -100,7 +100,7 @@ def calculate_overview_fields(mosaic_dataset, local_path):
     print('Calculating field values for overview record')
     ds = os.path.join(local_path, mosaic_dataset)
     ds_cursor = arcpy.da.UpdateCursor(ds, ['Tag', 'MinPS', 'Category', 'StartDate', 'EndDate', 'GroupName',
-                                           'Name', 'ProductType', 'Polarization', 'DownloadURL',
+                                           'Name', 'Polarization', 'DownloadURL',
                                            'URLDisplay'])
 
     logging.info('Calculating Overview Start and End Dates')
@@ -122,10 +122,9 @@ def calculate_overview_fields(mosaic_dataset, local_path):
                 row[3] = overview_start_date
                 row[4] = overview_end_date
                 row[5] = f'{ProdTypeOvField}_{PolOvField} Mosaic Overview'
-                row[7] = ProdTypeOvField
-                row[8] = PolOvField
+                row[7] = PolOvField
+                row[8] = DLOvField
                 row[9] = DLOvField
-                row[10] = DLOvField
 
                 ds_cursor.updateRow(row)
                 print('Overview fields updated')
