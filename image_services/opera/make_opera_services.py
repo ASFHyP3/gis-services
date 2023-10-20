@@ -310,7 +310,6 @@ def main():
             fields=[
                 ['MaxPS', '610'],
                 ['Tag', '!Name!.split("_")[9]'],
-                ['URLDisplay', 'Zoom in further to access download links for source rasters.']
             ],
         )
 
