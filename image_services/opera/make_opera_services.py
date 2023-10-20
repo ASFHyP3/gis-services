@@ -66,6 +66,7 @@ def get_raster_metadata(raster_path: str) -> dict:
         'PixelType': get_pixel_type(info['bands'][0]['type']),
         'SRS': get_projection(info['coordinateSystem']['wkt']),
         'DownloadURL': download_url,
+        'Polarization': name.split('_')[9],
         'StartDate': acquisition_date,
         'EndDate': acquisition_date,
     }
