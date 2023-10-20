@@ -180,6 +180,7 @@ def main():
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--working-directory', default=os.getcwd())
+    parser.add_argument('--server-connection-file', default='/home/arcgis/server_connection.json')
     parser.add_argument('config_file')
     args = parser.parse_args()
 
