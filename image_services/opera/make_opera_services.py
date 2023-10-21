@@ -101,8 +101,7 @@ def calculate_overview_fields(mosaic_dataset, local_path):
     print('Calculating field values for overview record')
     ds = os.path.join(local_path, mosaic_dataset)
     ds_cursor = arcpy.da.UpdateCursor(ds, ['Tag', 'MinPS', 'Category', 'StartDate', 'EndDate', 'GroupName',
-                                           'Name', 'Polarization', 'DownloadURL',
-                                           'URLDisplay'])
+                                           'Name', 'Polarization', 'DownloadURL', 'URLDisplay'])
 
     logging.info('Calculating Overview Start and End Dates')
     start_dates = [row[1] for row in arcpy.da.SearchCursor(mosaic_dataset, ['Tag', 'StartDate']) if row[0] != 'Dataset']
@@ -118,7 +117,7 @@ def calculate_overview_fields(mosaic_dataset, local_path):
                 DLOvField = 'Zoom in further to access download link'
 
                 row[0] = f'{ProdTypeOvField}_{PolOvField}__Overview'
-                row[1] = 600
+                row[1] = 450
                 row[2] = 2
                 row[3] = overview_start_date
                 row[4] = overview_end_date
@@ -308,7 +307,7 @@ def main():
         arcpy.management.CalculateFields(
             in_table=mosaic_dataset,
             fields=[
-                ['MaxPS', '610'],
+                ['MaxPS', '460'],
                 ['Tag', '!Name!.split("_")[9]'],
             ],
         )
@@ -316,7 +315,7 @@ def main():
         local_overview = os.path.join(os.getcwd(), local_overview_filename)
 
         logging.info(f'Generating {local_overview}')
-        with arcpy.EnvManager(cellSize=600):
+        with arcpy.EnvManager(cellSize=450):
             arcpy.management.CopyRaster(
                 in_raster=mosaic_dataset,
                 out_rasterdataset=local_overview,
