@@ -31,7 +31,6 @@
     "ItemInfo/Description": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in VH polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL). Values for the VH polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.",
     "ItemInfo/Snippet": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in VH polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL).",
     "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='title']/Value": "OPERA_RTC_VH_WMS",
-    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='abstract']/Value": "WMS service for Radiometric Terrain Corrected (RTC) products in VH polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL).",
-
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='abstract']/Value": "WMS service for Radiometric Terrain Corrected (RTC) products in VH polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL)."
   }
 }
