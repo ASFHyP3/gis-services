@@ -183,8 +183,9 @@ def main():
     parser.add_argument('config_file')
     args = parser.parse_args()
 
+    raster_store = '/home/arcgis/raster_store/'
     bucket = 'hyp3-testing'
-    overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
+    overview_path = '/vsis3/asf-gis-services/overviews/'
 
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
@@ -311,15 +312,15 @@ def main():
                 ['Tag', '!Name!.split("_")[9]'],
             ],
         )
+        with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
+            local_overview = os.path.join(temp_dir, local_overview_filename)
 
-        local_overview = os.path.join(os.getcwd(), local_overview_filename)
-
-        logging.info(f'Generating {local_overview}')
-        with arcpy.EnvManager(cellSize=450):
-            arcpy.management.CopyRaster(
-                in_raster=mosaic_dataset,
-                out_rasterdataset=local_overview,
-            )
+            logging.info(f'Generating {local_overview}')
+            with arcpy.EnvManager(cellSize=450):
+                arcpy.management.CopyRaster(
+                    in_raster=mosaic_dataset,
+                    out_rasterdataset=local_overview,
+                )
 
         logging.info(f'Moving CRF to {s3_overview}')
         subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
