@@ -7,5 +7,30 @@
     "Sentinel1_RTC_dB_Stretch.rft.xml",
     "Sentinel1_RTC_Power.rft.xml"
   ],
-  "default_raster_function_template": "Sentinel1_RTC_Power.rft.xml"
+  "default_raster_function_template": "Sentinel1_RTC_Power.rft.xml",
+  "service_folder": "OPERA",
+  "service_name": "OPERA_RTC_HH",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in HH polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL).",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in HH polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL). Values for the HH polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "OPERA Level-2 Radiometric Terrain Corrected Static Layers from Sentinel-1. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='idleTimeout']/Value": "3600",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='usageTimeout']/Value": "1200",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='waitTimeout']/Value": "120",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='IdleTimeout']/Value": "3600",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='keepAliveInterval']/Value": "600",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='UsageTimeout']/Value": "1200",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='WaitTimeout']/Value": "120",
+    "ItemInfo/Title": "OPERA RTC HH",
+    "ItemInfo/Credits": "OPERA Level-2 Radiometric Terrain Corrected Static Layers from Sentinel-1. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "ItemInfo/Description": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in HH polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL). Values for the HH polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.",
+    "ItemInfo/Snippet": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in HH polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL).",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='title']/Value": "OPERA_RTC_HH_WMS",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='abstract']/Value": "WMS service for Radiometric Terrain Corrected (RTC) products in HH polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL)."
+  }
 }
