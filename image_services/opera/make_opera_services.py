@@ -192,7 +192,7 @@ def main():
     with open(args.config_file) as f:
         config = json.load(f)
 
-    csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
+    csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["service_name"]}.csv')
 
     raster_function_template = ''.join([f'{template_directory / template};'
                                         for template in config['raster_function_templates']])
