@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.6]
 ### Added
-- Scripts to generate OPERA services using EDC-hosted source rasters in the `asf-cumulus-prod-opera-products` S3 bucket
+- Scripts to generate OPERA RTC services
 
 ## [0.6.5]
 ### Changed
