@@ -122,7 +122,7 @@ def calculate_overview_fields(mosaic_dataset, local_path):
                 row[2] = 2
                 row[3] = overview_start_date
                 row[4] = overview_end_date
-                row[5] = f'{ProdTypeOvField}_{PolOvField} Mosaic Overview'
+                row[5] = f'{ProjectName}_{ProdTypeOvField}_{PolOvField} Mosaic Overview'
                 row[7] = PolOvField
                 row[8] = DLOvField
                 row[9] = DLOvField
@@ -310,7 +310,7 @@ def main():
             in_table=mosaic_dataset,
             fields=[
                 ['MaxPS', '460'],
-                ['Tag', '!Name!.split("_")[9]'],
+                ['Tag', '"_".join(!Name!.split("_")[0:3] + [!Name!.split("_")[9]])'],
             ],
         )
         with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
