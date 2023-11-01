@@ -70,6 +70,7 @@ def get_raster_metadata(raster_path: str) -> dict:
         'Polarization': name.split('_')[9],
         'StartDate': acquisition_date,
         'EndDate': acquisition_date,
+        'GroupName': name.rsplit('_', 1)[0],
     }
 
 
@@ -112,11 +113,11 @@ def calculate_overview_fields(mosaic_dataset, local_path):
         print('Updating Overview Field Values')
         for row in ds_cursor:
             if row[0] == 'Dataset':
-                _, ProdTypeOvField, PolOvField, _, _, _ = row[6].split('_')
+                ProjectName, ProdTypeOvField, PolOvField, _, _, _ = row[6].split('_')
 
                 DLOvField = 'Zoom in further to access download link'
 
-                row[0] = f'{ProdTypeOvField}_{PolOvField}__Overview'
+                row[0] = f'{ProjectName}_{ProdTypeOvField}_{PolOvField}_Overview'
                 row[1] = 450
                 row[2] = 2
                 row[3] = overview_start_date
@@ -283,8 +284,8 @@ def main():
             cell_size_tolerance=1.8,
             cell_size=3,
             metadata_level='BASIC',
-            transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;'
-                            'CenterY;Tag;ProductName;GroupName;DownloadURL;URLDisplay',
+            transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;Dataset_ID;CenterX;'
+                            'CenterY;Tag;GroupName;Polarization;DownloadURL;URLDisplay',
             use_time='ENABLED',
             start_time_field='StartDate',
             end_time_field='EndDate',
