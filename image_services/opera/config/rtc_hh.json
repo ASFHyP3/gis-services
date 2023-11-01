@@ -2,7 +2,7 @@
   "project_name": "OPERA",
   "s3_prefix": "opera-rtc-image-service-prototype/HH",
   "s3_suffix": "_HH.tif",
-  "dataset_name": "OPERA_RTC_HH",
+  "dataset_name": "RTC_HH",
   "raster_function_templates": [
     "Sentinel1_RTC_Power.rft.xml",
     "Sentinel1_RTC_Amplitude.rft.xml",
