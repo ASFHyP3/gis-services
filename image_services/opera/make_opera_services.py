@@ -70,7 +70,6 @@ def get_raster_metadata(raster_path: str) -> dict:
         'Polarization': name.split('_')[9],
         'StartDate': acquisition_date,
         'EndDate': acquisition_date,
-        'GroupName': name.rsplit('_', 1)[0],
     }
 
 
@@ -311,6 +310,7 @@ def main():
             fields=[
                 ['MaxPS', '460'],
                 ['Tag', '"_".join(!Name!.split("_")[0:3] + [!Name!.split("_")[9]])'],
+                ['GroupName', '!Name!.rsplit("_", 1)[0]'],
             ],
         )
         with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
