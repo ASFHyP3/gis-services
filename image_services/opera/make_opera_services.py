@@ -51,7 +51,8 @@ def get_raster_metadata(raster_path: str) -> dict:
     key = remove_prefix(raster_path, '/vsis3/hyp3-testing/')
     download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
     name = Path(raster_path).stem
-    acquisition_date = name[36:38] + '/' + name[38:40] + '/' + name[32:36] + ' ' + name[41:43] + ':' + name[43:45] + ':' + name[45:47]
+    acquisition_date = name[36:38] + '/' + name[38:40] + '/' + name[32:36] + ' ' + name[41:43] + ':' + name[43:45] + \
+                       ':' + name[45:47]
     info = gdal.Info(raster_path, format='json')
     return {
         'Raster': info['description'],
@@ -284,7 +285,7 @@ def main():
             cell_size=3,
             metadata_level='BASIC',
             transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;Dataset_ID;CenterX;'
-                            'CenterY;Tag;GroupName;Polarization;DownloadURL;URLDisplay',
+                                'CenterY;Tag;GroupName;Polarization;DownloadURL;URLDisplay',
             use_time='ENABLED',
             start_time_field='StartDate',
             end_time_field='EndDate',
