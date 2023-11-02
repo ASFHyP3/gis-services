@@ -1,0 +1,14 @@
+Title:
+ OPERA RTC HH
+
+Tags:
+ASF, Alaska Satellite Facility, Synthetic Aperture Radar, SAR, Sentinel-1, OPERA, CALVAL
+
+Summary:
+OPERA Level-2 Radiometric Terrain Corrected (RTC) products in HH polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL)
+
+Description:
+OPERA Level-2 Radiometric Terrain Corrected (RTC) products in HH polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL). Values for the HH polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.
+
+Credits:
+OPERA Level-2 Radiometric Terrain Corrected Static Layers from Sentinel-1. Contains modified Copernicus Sentinel data, processed by ESA.
