@@ -1,6 +1,6 @@
 {
   "project_name": "OPERA",
-  "s3_prefix": "opera-rtc-image-service-na/VH",
+  "s3_prefix": "opera-rtc-image-service-na",
   "s3_suffix": "_VH.tif",
   "dataset_name": "RTC_VH",
   "raster_function_templates": [
