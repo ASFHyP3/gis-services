@@ -93,7 +93,7 @@ def update_csv(csv_file: str, rasters: List[str]):
         for raster in new_rasters:
             record = get_raster_metadata(raster)
             logging.info(f'Adding {raster} to {csv_file}')
-            writer.writerows(record)
+            writer.writerows(raster)
 
 
 def calculate_overview_fields(mosaic_dataset, local_path):
