@@ -91,7 +91,7 @@ def update_csv(csv_file: str, rasters: List[str]):
             new_record = []
             record = get_raster_metadata(raster)
             new_record.append(record)
-            writer = csv.DictWriter(csvfile, fieldnames=newrecord[0].keys(), lineterminator=os.linesep)
+            writer = csv.DictWriter(csvfile, fieldnames=new_record[0].keys(), lineterminator=os.linesep)
             logging.info(f'Adding {raster} to {csv_file}')
             writer.writerows(record)
 
