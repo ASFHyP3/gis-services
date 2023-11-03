@@ -47,7 +47,7 @@ def remove_prefix(raster_path, prefix):
 
 
 def get_raster_metadata(raster_path: str) -> dict:
-    assert raster_path.startswith('/vsis3/hyp3-testing/opera-rtc-image-service-prototype/')
+    assert raster_path.startswith('/vsis3/hyp3-testing/opera-rtc-image-service-na/')
     key = remove_prefix(raster_path, '/vsis3/hyp3-testing/')
     download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
     name = Path(raster_path).stem
@@ -186,7 +186,7 @@ def main():
 
     raster_store = '/home/arcgis/raster_store/'
     bucket = 'hyp3-testing'
-    overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
+    overview_path = '/vsis3/gis-service-overviews/'
 
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
