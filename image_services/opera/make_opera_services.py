@@ -93,7 +93,7 @@ def update_csv(csv_file: str, rasters: List[str]):
             new_record.append(record)
             writer = csv.DictWriter(csvfile, fieldnames=new_record[0].keys(), lineterminator=os.linesep)
             logging.info(f'Adding {raster} to {csv_file}')
-            writer.writerows(record)
+            writer.writerows(new_record[0])
 
             # writer.writeheader()
 
