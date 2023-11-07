@@ -84,11 +84,9 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
 
     existing_rasters = [record['Raster'] for record in records]
     new_rasters = set(rasters) - set(existing_rasters)
-
     logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
 
     if new_rasters:
-
         header_record = get_raster_metadata(next(iter(new_rasters)), bucket, s3_prefix)
         with open(csv_file, 'a', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=header_record.keys(), lineterminator=os.linesep)
@@ -98,6 +96,7 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
                 record = get_raster_metadata(raster, bucket, s3_prefix)
                 logging.info(f'Adding {raster} to {csv_file}')
                 writer.writerow(record)
+
 
 
 def calculate_overview_fields(mosaic_dataset, local_path):

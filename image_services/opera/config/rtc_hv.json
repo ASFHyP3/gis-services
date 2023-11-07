@@ -1,5 +1,8 @@
 {
   "project_name": "OPERA",
+  "raster_store": "/home/arcgis/raster_store/",
+  "bucket": "asf-cumulus-prod-opera-products",
+  "overview_path": "/vsis3/gis-service-overviews/overviews/",
   "s3_prefix": "opera-rtc-image-service-prototype/HV",
   "s3_suffix": "_HV.tif",
   "dataset_name": "RTC_HV",
