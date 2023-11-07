@@ -46,9 +46,9 @@ def remove_prefix(raster_path, prefix):
     return raster_path[len(prefix):]
 
 
-def get_raster_metadata(raster_path: str) -> dict:
-    assert raster_path.startswith('/vsis3/hyp3-testing/opera-rtc-image-service-prototype/')
-    key = remove_prefix(raster_path, '/vsis3/hyp3-testing/')
+def get_raster_metadata(raster_path: str, bucket: str, s3_prefix: str) -> dict:
+    assert raster_path.startswith(f'/vsis3/{bucket}/{s3_prefix}/')
+    key = remove_prefix(raster_path, f'/vsis3/{bucket}/')
     download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
     name = Path(raster_path).stem
     acquisition_date = \
@@ -74,7 +74,7 @@ def get_raster_metadata(raster_path: str) -> dict:
     }
 
 
-def update_csv(csv_file: str, rasters: List[str]):
+def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
     if os.path.isfile(csv_file):
         with open(csv_file) as f:
             records = [record for record in csv.DictReader(f)]
@@ -87,13 +87,13 @@ def update_csv(csv_file: str, rasters: List[str]):
 
     if new_rasters:
         logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
-        header_record = get_raster_metadata(next(iter(new_rasters)))
+        header_record = get_raster_metadata(next(iter(new_rasters)), bucket, s3_prefix)
         with open(csv_file, 'a', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=header_record.keys(), lineterminator=os.linesep)
             if not existing_rasters:
                 writer.writeheader()
             for raster in new_rasters:
-                record = get_raster_metadata(raster)
+                record = get_raster_metadata(raster, bucket, s3_prefix)
                 logging.info(f'Adding {raster} to {csv_file}')
                 writer.writerow(record)
 
@@ -207,7 +207,7 @@ def main():
 
     try:
         rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-        update_csv(csv_file, rasters)
+        update_csv(csv_file, rasters, bucket, config['s3_prefix'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
                                 before_sleep=before_sleep_log(logging, logging.WARNING)):
