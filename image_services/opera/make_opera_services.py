@@ -85,19 +85,17 @@ def update_csv(csv_file: str, rasters: List[str]):
     existing_rasters = [record['Raster'] for record in records]
     new_rasters = set(rasters) - set(existing_rasters)
 
-    logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
-
-    sample_record = next(iter(new_rasters))
-    header_record = get_raster_metadata(sample_record)
-
-    with open(csv_file, 'a', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=header_record.keys(), lineterminator=os.linesep)
-        writer.writeheader()
-
-        for raster in new_rasters:
-            record = get_raster_metadata(raster)
-            logging.info(f'Adding {raster} to {csv_file}')
-            writer.writerow(record)
+    if new_rasters:
+        logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
+        header_record = get_raster_metadata(next(iter(new_rasters)))
+        with open(csv_file, 'a', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=header_record.keys(), lineterminator=os.linesep)
+            if not existing_rasters:
+                writer.writeheader()
+            for raster in new_rasters:
+                record = get_raster_metadata(raster)
+                logging.info(f'Adding {raster} to {csv_file}')
+                writer.writerow(record)
 
 
 def calculate_overview_fields(mosaic_dataset, local_path):
