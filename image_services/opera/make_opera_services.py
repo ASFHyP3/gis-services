@@ -47,7 +47,7 @@ def remove_prefix(raster_path, prefix):
 
 
 def get_raster_metadata(raster_path: str) -> dict:
-    assert raster_path.startswith('/vsis3/hyp3-testing/opera-rtc-image-service-na/')
+    assert raster_path.startswith('/vsis3/hyp3-testing/opera-rtc-image-service-prototype/')
     key = remove_prefix(raster_path, '/vsis3/hyp3-testing/')
     download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
     name = Path(raster_path).stem
