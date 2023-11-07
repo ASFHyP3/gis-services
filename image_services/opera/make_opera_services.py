@@ -17,15 +17,21 @@ from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
 
-def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
-    rasters = []
-    s3 = boto3.client('s3')
-    paginator = s3.get_paginator('list_objects_v2')
-    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
-        for obj in page['Contents']:
-            if obj['Key'].endswith(suffix):
-                rasters.append(f'/vsis3/{bucket}/{obj["Key"]}')
-    return rasters
+#def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
+#   rasters = []
+#    s3 = boto3.client('s3')
+#    paginator = s3.get_paginator('list_objects_v2')
+#    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+#        for obj in page['Contents']:
+#            if obj['Key'].endswith(suffix):
+#                rasters.append(f'/vsis3/{bucket}/{obj["Key"]}')
+#    return rasters
+
+
+def get_rasters(url_file):
+    with open(url_file, newline='') as urlfile:
+        records = urlfile.read().split('\n')[:-1]
+    return records
 
 
 def get_pixel_type(data_type: str) -> int:
@@ -191,6 +197,7 @@ def main():
     with open(args.config_file) as f:
         config = json.load(f)
 
+    url_file = '/home/arcgis/gis-services/image_services/opera/urls.txt'
     csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
     raster_function_template = ''.join([f'{template_directory / template};'
@@ -203,7 +210,8 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
+        #rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
+        rasters = get_rasters(url_file)
         update_csv(csv_file, rasters, config['bucket'], config['s3_prefix'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
