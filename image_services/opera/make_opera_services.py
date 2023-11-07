@@ -187,7 +187,7 @@ def main():
 
     raster_store = '/home/arcgis/raster_store/'
     bucket = 'hyp3-testing'
-    overview_path = '/vsis3/gis-service-overviews/overviews'
+    overview_path = '/vsis3/gis-service-overviews/overviews/'
 
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
