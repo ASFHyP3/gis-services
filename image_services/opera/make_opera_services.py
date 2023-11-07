@@ -186,10 +186,6 @@ def main():
     parser.add_argument('config_file')
     args = parser.parse_args()
 
-    raster_store = '/home/arcgis/raster_store/'
-    bucket = 'hyp3-testing'
-    overview_path = '/vsis3/gis-service-overviews/overviews/'
-
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
     with open(args.config_file) as f:
@@ -207,8 +203,8 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-        update_csv(csv_file, rasters, bucket, config['s3_prefix'])
+        rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
+        update_csv(csv_file, rasters, config['bucket'], config['s3_prefix'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
                                 before_sleep=before_sleep_log(logging, logging.WARNING)):
@@ -217,7 +213,7 @@ def main():
                 output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
                 overview_name = f'{output_name}_overview'
                 local_overview_filename = f'{overview_name}.crf'
-                s3_overview = f'{overview_path}{overview_name}.crf'
+                s3_overview = f'{config["overview_path"]}{overview_name}.crf'
                 service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
                 logging.info('Creating geodatabase')
@@ -316,7 +312,7 @@ def main():
                 ['GroupName', '!Name!.rsplit("_", 1)[0]'],
             ],
         )
-        with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
+        with tempfile.TemporaryDirectory(dir=config['raster_store']) as temp_dir:
             local_overview = os.path.join(temp_dir, local_overview_filename)
 
             logging.info(f'Generating {local_overview}')
