@@ -87,7 +87,7 @@ def update_csv(csv_file: str, rasters: List[str]):
 
     logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
     with open(csv_file, 'a', newline='') as csvfile:
-        header_record = get_raster_metadata(new_rasters[0])
+        header_record = get_raster_metadata(records[0])
         writer = csv.DictWriter(csvfile, fieldnames=header_record.keys(), lineterminator=os.linesep)
         writer.writeheader()
         for raster in new_rasters:
