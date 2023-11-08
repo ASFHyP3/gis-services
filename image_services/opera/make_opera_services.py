@@ -59,7 +59,7 @@ def get_raster_metadata(raster_path: str, bucket: str, s3_prefix: str) -> dict:
     name = Path(raster_path).stem
     acquisition_date = \
         name[36:38] + '/' + name[38:40] + '/' + name[32:36] + ' ' + name[41:43] + ':' + name[43:45] + ':' + name[45:47]
-    info = gdal.Info(f'vsicurl/{raster_path}', format='json')
+    info = gdal.Info(f'/vsicurl/{raster_path}', format='json')
     return {
         'Raster': info['description'],
         'Name': name,
