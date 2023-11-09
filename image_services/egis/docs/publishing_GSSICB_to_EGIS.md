@@ -67,8 +67,9 @@ Publishers must add the appropriate NASA Portal(s) to their list of portals in A
 
 ## Publish the Mosaic Dataset as an Image Service
 
-1. Right-click the mosaic dataset in the Catalog pane and select Share As Web Layer
+1. Right-click the mosaic dataset in the **Catalog** pane and select Share As Web Layer
 ![Share As Web Layer](images/ShareAsWebLayer.PNG)
+    *Note that the Share as Web Layer option is also available as an option when right-clicking item in the **Contents** pane, but the option must be selected from the **Catalog** pane for a successful connection to the EGIS Portal.* 
 2. Verify the metadata entries in the General tab
 ![Share As Web Layer Dialog Metadata](images/ShareAsWebLayerDialogMetadata.PNG)
    1. The Name field should be automatically populated with the Title that was entered in the mosaic dataset metadata (i.e. `GSSICB_Median_6_day_VV_Coherence_Dec_Jan_Feb`).
