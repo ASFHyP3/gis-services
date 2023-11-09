@@ -93,6 +93,7 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
     logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
 
     if new_rasters:
+        records = []
         header_record = get_raster_metadata(next(iter(new_rasters)), bucket, s3_prefix)
         with open(csv_file, 'a', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=header_record.keys(), lineterminator=os.linesep)
@@ -100,8 +101,15 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
                 writer.writeheader()
             for raster in new_rasters:
                 record = get_raster_metadata(raster, bucket, s3_prefix)
+                records.append(record)
                 logging.info(f'Adding {raster} to {csv_file}')
                 writer.writerow(record)
+
+        records = sorted(records, key=lambda x: x['Raster'])
+        with open(csv_file, 'w', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=header_record.keys(), lineterminator=os.linesep)
+            writer.writeheader()
+            writer.writerows(records)
 
 
 
