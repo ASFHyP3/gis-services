@@ -82,7 +82,9 @@ Currently, only the [EGIS PRD Server](https://gis.earthdata.nasa.gov/portal/home
 3. Set the options in the General tab
 ![Share As Web Layer Dialog](images/ShareAsWebLayerDialog.PNG)
    1. Set the Portal Folder to GSSICB
-   2. Set the Server to https://url_to_gis_server/image (the `/image` option is not the default in the Server dropdown menu, and if this is not changed, there will be a licensing error)
+   2. Set the Server to one of the following servers (using the default option in the Server dropdown menu will result a licensing error): 
+      - https://url_to_gis_server/image for publication-ready services
+      - https://url_to_gis_server/UAT for test services not ready to be shared
    3. Set the server Folder to GSSICB
    4. Select Everyone and Earthdata GIS under the Share options
       * **For the production server, the Everyone option is not available to us. Select the Organization option, and contact the EGIS team to request that they share the service publicly.**
