@@ -197,7 +197,6 @@ def main():
     with open(args.config_file) as f:
         config = json.load(f)
 
-    url_file = '/home/arcgis/gis-services/image_services/opera/urls.txt'
     csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
     raster_function_template = ''.join([f'{template_directory / template};'
