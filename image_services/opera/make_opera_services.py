@@ -100,7 +100,7 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
             records = [record for record in csv.DictReader(f)]
         records = sorted(records, key=lambda x: x['Raster'])
         with open(csv_file, 'w', newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=records[0].keys(), lineterminator=os.linesep)
+            writer = csv.DictWriter(csvfile, fieldnames=records[-1].keys(), lineterminator=os.linesep)
             writer.writeheader()
             writer.writerows(records)
 
