@@ -46,9 +46,9 @@ def remove_prefix(raster_path, prefix):
     return raster_path[len(prefix):]
 
 
-def get_raster_metadata(raster_path: str) -> dict:
-    assert raster_path.startswith('/vsis3/hyp3-testing/opera-rtc-image-service-prototype/')
-    key = remove_prefix(raster_path, '/vsis3/hyp3-testing/')
+def get_raster_metadata(raster_path: str, bucket: str, s3_prefix: str) -> dict:
+    assert raster_path.startswith(f'/vsis3/{bucket}/{s3_prefix}/')
+    key = remove_prefix(raster_path, f'/vsis3/{bucket}/')
     download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
     name = Path(raster_path).stem
     acquisition_date = \
@@ -74,7 +74,7 @@ def get_raster_metadata(raster_path: str) -> dict:
     }
 
 
-def update_csv(csv_file: str, rasters: List[str]):
+def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
     if os.path.isfile(csv_file):
         with open(csv_file) as f:
             records = [record for record in csv.DictReader(f)]
@@ -84,17 +84,25 @@ def update_csv(csv_file: str, rasters: List[str]):
 
     existing_rasters = [record['Raster'] for record in records]
     new_rasters = set(rasters) - set(existing_rasters)
-
     logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
-    for raster in new_rasters:
-        record = get_raster_metadata(raster)
-        records.append(record)
 
-    records = sorted(records, key=lambda x: x['Raster'])
-    with open(csv_file, 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=records[0].keys(), lineterminator=os.linesep)
-        writer.writeheader()
-        writer.writerows(records)
+    if new_rasters:
+        header_record = get_raster_metadata(next(iter(new_rasters)), bucket, s3_prefix)
+        with open(csv_file, 'a', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=header_record.keys(), lineterminator=os.linesep)
+            if not existing_rasters:
+                writer.writeheader()
+            for raster in new_rasters:
+                record = get_raster_metadata(raster, bucket, s3_prefix)
+                writer.writerow(record)
+
+        with open(csv_file) as f:
+            records = [record for record in csv.DictReader(f)]
+        records = sorted(records, key=lambda x: x['Raster'])
+        with open(csv_file, 'w', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=records[0].keys(), lineterminator=os.linesep)
+            writer.writeheader()
+            writer.writerows(records)
 
 
 def calculate_overview_fields(mosaic_dataset, local_path):
@@ -184,10 +192,6 @@ def main():
     parser.add_argument('config_file')
     args = parser.parse_args()
 
-    raster_store = '/home/arcgis/raster_store/'
-    bucket = 'hyp3-testing'
-    overview_path = '/vsis3/gis-service-overviews/overviews/'
-
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
     with open(args.config_file) as f:
@@ -205,8 +209,8 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-        update_csv(csv_file, rasters)
+        rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
+        update_csv(csv_file, rasters, config['bucket'], config['s3_prefix'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
                                 before_sleep=before_sleep_log(logging, logging.WARNING)):
@@ -215,7 +219,7 @@ def main():
                 output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
                 overview_name = f'{output_name}_overview'
                 local_overview_filename = f'{overview_name}.crf'
-                s3_overview = f'{overview_path}{overview_name}.crf'
+                s3_overview = f'{config["overview_path"]}{overview_name}.crf'
                 service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
                 logging.info('Creating geodatabase')
@@ -314,7 +318,7 @@ def main():
                 ['GroupName', '!Name!.rsplit("_", 1)[0]'],
             ],
         )
-        with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
+        with tempfile.TemporaryDirectory(dir=config['raster_store']) as temp_dir:
             local_overview = os.path.join(temp_dir, local_overview_filename)
 
             logging.info(f'Generating {local_overview}')
