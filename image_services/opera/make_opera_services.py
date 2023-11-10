@@ -18,14 +18,14 @@ from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
 
 def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
-   rasters = []
-   s3 = boto3.client('s3')
-   paginator = s3.get_paginator('list_objects_v2')
-   for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
-       for obj in page['Contents']:
-           if obj['Key'].endswith(suffix):
-               rasters.append(f'/vsis3/{bucket}/{obj["Key"]}')
-   return rasters
+    rasters = []
+    s3 = boto3.client('s3')
+    paginator = s3.get_paginator('list_objects_v2')
+    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+        for obj in page['Contents']:
+            if obj['Key'].endswith(suffix):
+                rasters.append(f'/vsis3/{bucket}/{obj["Key"]}')
+    return rasters
 
 
 def get_pixel_type(data_type: str) -> int:
