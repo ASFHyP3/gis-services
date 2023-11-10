@@ -99,9 +99,9 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
     with open(csv_file) as f:
         records = [record for record in csv.DictReader(f)]
     logging.info(f'Sorting rasters in {csv_file}')
-    records = sorted(records, key=lambda x: x['Raster'])
+    records = sorted(records, key=lambda x: x['EndDate'])
     with open(csv_file, 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=records[-1].keys(), lineterminator=os.linesep)
+        writer = csv.DictWriter(csvfile, fieldnames=records[0].keys(), lineterminator=os.linesep)
         writer.writeheader()
         writer.writerows(records)
 
