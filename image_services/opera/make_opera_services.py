@@ -100,7 +100,6 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
                 writer.writeheader()
             for raster in new_rasters:
                 record = get_raster_metadata(raster, bucket, s3_prefix)
-                logging.info(f'Adding {raster} to {csv_file}')
                 writer.writerow(record)
 
         with open(csv_file) as f:
