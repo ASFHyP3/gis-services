@@ -217,8 +217,8 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        #rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
-        rasters = get_rasters(url_file)
+        rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
+        # rasters = get_rasters(url_file)
         update_csv(csv_file, rasters, config['bucket'], config['s3_prefix'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
