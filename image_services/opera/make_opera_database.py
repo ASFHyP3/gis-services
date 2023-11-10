@@ -11,27 +11,20 @@ from typing import List
 
 import arcpy
 import boto3
-from arcgis.gis.server import Server
 from lxml import etree
 from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
 
-# def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
-#    rasters = []
-#    s3 = boto3.client('s3')
-#    paginator = s3.get_paginator('list_objects_v2')
-#    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
-#        for obj in page['Contents']:
-#            if obj['Key'].endswith(suffix):
-#                rasters.append(f'/vsis3/{bucket}/{obj["Key"]}')
-#    return rasters
-
-
-def get_rasters(url_file):
-    with open(url_file, newline='') as urlfile:
-        records = urlfile.read().split('\n')[:-1]
-    return records
+def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
+    rasters = []
+    s3 = boto3.client('s3')
+    paginator = s3.get_paginator('list_objects_v2')
+    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+        for obj in page['Contents']:
+            if obj['Key'].endswith(suffix):
+                rasters.append(f'/vsis3/{bucket}/{obj["Key"]}')
+    return rasters
 
 
 def get_pixel_type(data_type: str) -> int:
@@ -52,14 +45,14 @@ def remove_prefix(raster_path, prefix):
     return raster_path[len(prefix):]
 
 
-def get_raster_metadata(raster_path: str, bucket: str, s3_prefix: str) -> dict:
-    #assert raster_path.startswith(f'/vsis3/{bucket}/{s3_prefix}/')
-    key = remove_prefix(raster_path, f'/vsis3/{bucket}/')
+def get_raster_metadata(raster_path: str) -> dict:
+    assert raster_path.startswith('/vsis3/hyp3-testing/opera-rtc-image-service-prototype/')
+    key = remove_prefix(raster_path, '/vsis3/hyp3-testing/')
     download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
     name = Path(raster_path).stem
     acquisition_date = \
         name[36:38] + '/' + name[38:40] + '/' + name[32:36] + ' ' + name[41:43] + ':' + name[43:45] + ':' + name[45:47]
-    info = gdal.Info(f'/vsicurl/{raster_path}', format='json')
+    info = gdal.Info(raster_path, format='json')
     return {
         'Raster': info['description'],
         'Name': name,
@@ -80,7 +73,7 @@ def get_raster_metadata(raster_path: str, bucket: str, s3_prefix: str) -> dict:
     }
 
 
-def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
+def update_csv(csv_file: str, rasters: List[str]):
     if os.path.isfile(csv_file):
         with open(csv_file) as f:
             records = [record for record in csv.DictReader(f)]
@@ -90,26 +83,17 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
 
     existing_rasters = [record['Raster'] for record in records]
     new_rasters = set(rasters) - set(existing_rasters)
+
     logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
+    for raster in new_rasters:
+        record = get_raster_metadata(raster)
+        records.append(record)
 
-    if new_rasters:
-        header_record = get_raster_metadata(next(iter(new_rasters)), bucket, s3_prefix)
-        with open(csv_file, 'a', newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=header_record.keys(), lineterminator=os.linesep)
-            if not existing_rasters:
-                writer.writeheader()
-            for raster in new_rasters:
-                record = get_raster_metadata(raster, bucket, s3_prefix)
-                logging.info(f'Adding {raster} to {csv_file}')
-                writer.writerow(record)
-
-        with open(csv_file) as f:
-            records = [record for record in csv.DictReader(f)]
-        records = sorted(records, key=lambda x: x['Raster'])
-        with open(csv_file, 'w', newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=records[0].keys(), lineterminator=os.linesep)
-            writer.writeheader()
-            writer.writerows(records)
+    records = sorted(records, key=lambda x: x['Raster'])
+    with open(csv_file, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=records[0].keys(), lineterminator=os.linesep)
+        writer.writeheader()
+        writer.writerows(records)
 
 
 def calculate_overview_fields(mosaic_dataset, local_path):
@@ -199,12 +183,16 @@ def main():
     parser.add_argument('config_file')
     args = parser.parse_args()
 
+    os.environ['AWS_PROFILE'] = 'hyp3'
+    raster_store = os.getcwd() + r'\raster_store'
+    bucket = 'hyp3-testing'
+    overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
+
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
     with open(args.config_file) as f:
         config = json.load(f)
 
-    url_file = '/home/arcgis/gis-services/image_services/opera/urls.txt'
     csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
     raster_function_template = ''.join([f'{template_directory / template};'
@@ -217,9 +205,8 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        #rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
-        rasters = get_rasters(url_file)
-        update_csv(csv_file, rasters, config['bucket'], config['s3_prefix'])
+        rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
+        update_csv(csv_file, rasters)
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
                                 before_sleep=before_sleep_log(logging, logging.WARNING)):
@@ -228,8 +215,7 @@ def main():
                 output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
                 overview_name = f'{output_name}_overview'
                 local_overview_filename = f'{overview_name}.crf'
-                s3_overview = f'{config["overview_path"]}{overview_name}.crf'
-                service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
+                s3_overview = f'{overview_path}{overview_name}.crf'
 
                 logging.info('Creating geodatabase')
                 geodatabase = arcpy.management.CreateFileGDB(
@@ -327,7 +313,7 @@ def main():
                 ['GroupName', '!Name!.rsplit("_", 1)[0]'],
             ],
         )
-        with tempfile.TemporaryDirectory(dir=config['raster_store']) as temp_dir:
+        with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
             local_overview = os.path.join(temp_dir, local_overview_filename)
 
             logging.info(f'Generating {local_overview}')
@@ -349,43 +335,6 @@ def main():
 
         logging.info('Populate overview attributes')
         calculate_overview_fields(mosaic_dataset, args.working_directory)
-
-        with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
-            logging.info(f'Creating draft service definition {service_definition_draft.name}')
-            arcpy.CreateImageSDDraft(
-                raster_or_mosaic_layer=mosaic_dataset,
-                out_sddraft=service_definition_draft.name,
-                service_name=config['service_name'],
-            )
-
-            tree = etree.parse(service_definition_draft.name)
-
-            logging.info(f'Enabling WMS in {service_definition_draft.name}')
-            extensions = tree.find('/Configurations/SVCConfiguration/Definition/Extensions')
-            extensions.append(build_wms_extension())
-
-            logging.info(f'Editing service definition overrides for {service_definition_draft.name}')
-            for key, value in config['service_definition_overrides'].items():
-                tree.find(key).text = value
-
-            tree.write(service_definition_draft.name)
-
-            logging.info(f'Creating service definition {service_definition}')
-            arcpy.server.StageService(
-                in_service_definition_draft=service_definition_draft.name,
-                out_service_definition=service_definition,
-            )
-
-        with open(args.server_connection_file) as f:
-            server_connection = json.load(f)
-
-        for attempt in Retrying(stop=stop_after_attempt(3), reraise=True,
-                                before_sleep=before_sleep_log(logging, logging.WARNING)):
-            with attempt:
-                logging.info(f'Publishing {service_definition}')
-                server = Server(**server_connection)
-                server.publish_sd(service_definition, folder=config['service_folder'])
-
     except arcpy.ExecuteError:
         logging.error(arcpy.GetMessages())
         raise
