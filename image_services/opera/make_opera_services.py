@@ -96,14 +96,14 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
                 record = get_raster_metadata(raster, bucket, s3_prefix)
                 writer.writerow(record)
 
-        with open(csv_file) as f:
-            records = [record for record in csv.DictReader(f)]
-        logging.info(f'Sorting rasters in {csv_file}')
-        records = sorted(records, key=lambda x: x['Raster'])
-        with open(csv_file, 'w', newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=records[-1].keys(), lineterminator=os.linesep)
-            writer.writeheader()
-            writer.writerows(records)
+    with open(csv_file) as f:
+        records = [record for record in csv.DictReader(f)]
+    logging.info(f'Sorting rasters in {csv_file}')
+    records = sorted(records, key=lambda x: x['Raster'])
+    with open(csv_file, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=records[-1].keys(), lineterminator=os.linesep)
+        writer.writeheader()
+        writer.writerows(records)
 
 
 def calculate_overview_fields(mosaic_dataset, local_path):
