@@ -17,21 +17,15 @@ from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
 
-# def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
-#    rasters = []
-#    s3 = boto3.client('s3')
-#    paginator = s3.get_paginator('list_objects_v2')
-#    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
-#        for obj in page['Contents']:
-#            if obj['Key'].endswith(suffix):
-#                rasters.append(f'/vsis3/{bucket}/{obj["Key"]}')
-#    return rasters
-
-
-def get_rasters(url_file):
-    with open(url_file, newline='') as urlfile:
-        records = urlfile.read().split('\n')[:-1]
-    return records
+def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
+   rasters = []
+   s3 = boto3.client('s3')
+   paginator = s3.get_paginator('list_objects_v2')
+   for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+       for obj in page['Contents']:
+           if obj['Key'].endswith(suffix):
+               rasters.append(f'/vsis3/{bucket}/{obj["Key"]}')
+   return rasters
 
 
 def get_pixel_type(data_type: str) -> int:
@@ -53,7 +47,7 @@ def remove_prefix(raster_path, prefix):
 
 
 def get_raster_metadata(raster_path: str, bucket: str, s3_prefix: str) -> dict:
-    #assert raster_path.startswith(f'/vsis3/{bucket}/{s3_prefix}/')
+    assert raster_path.startswith(f'/vsis3/{bucket}/{s3_prefix}/')
     key = remove_prefix(raster_path, f'/vsis3/{bucket}/')
     download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
     name = Path(raster_path).stem
@@ -100,7 +94,6 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
                 writer.writeheader()
             for raster in new_rasters:
                 record = get_raster_metadata(raster, bucket, s3_prefix)
-                logging.info(f'Adding {raster} to {csv_file}')
                 writer.writerow(record)
 
         with open(csv_file) as f:
@@ -217,8 +210,7 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        #rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
-        rasters = get_rasters(url_file)
+        rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
         update_csv(csv_file, rasters, config['bucket'], config['s3_prefix'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
