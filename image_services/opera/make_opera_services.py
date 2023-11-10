@@ -17,8 +17,8 @@ from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
 
-#def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
-#   rasters = []
+# def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
+#    rasters = []
 #    s3 = boto3.client('s3')
 #    paginator = s3.get_paginator('list_objects_v2')
 #    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
@@ -110,7 +110,6 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
             writer = csv.DictWriter(csvfile, fieldnames=records[0].keys(), lineterminator=os.linesep)
             writer.writeheader()
             writer.writerows(records)
-
 
 
 def calculate_overview_fields(mosaic_dataset, local_path):
