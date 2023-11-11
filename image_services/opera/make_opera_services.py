@@ -204,7 +204,7 @@ def main():
     with open(args.config_file) as f:
         config = json.load(f)
 
-    url_file = '/home/arcgis/gis-services/image_services/opera/urls.txt'
+    url_file = '/home/arcgis/jrsmale/gis-services/image_services/opera/urls.txt'
     cookie_file = Path.home() / 'cookies.txt'
     os.environ['GDAL_HTTP_COOKIEFILE'] = str(cookie_file)
     os.environ['GDAL_HTTP_COOKIEJAR'] = str(cookie_file)
