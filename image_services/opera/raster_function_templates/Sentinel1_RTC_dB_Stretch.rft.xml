@@ -150,7 +150,7 @@
                      id='ID25'>
                 <Name>StretchType</Name>
                 <Description></Description>
-                <Value xsi:type='xs:int'>5</Value>
+                <Value xsi:type='xs:int'>6</Value>
                 <IsDataset>false</IsDataset>
             </AnyType>
             <AnyType xsi:type='typens:RasterFunctionVariable'
@@ -178,7 +178,7 @@
                      id='ID29'>
                 <Name>MaxPercent</Name>
                 <Description></Description>
-                <Value xsi:type='xs:double'>0.5</Value>
+                <Value xsi:type='xs:double'>0.25</Value>
                 <IsDataset>false</IsDataset>
             </AnyType>
             <AnyType xsi:type='typens:RasterFunctionVariable'
