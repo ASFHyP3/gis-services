@@ -31,7 +31,7 @@ from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 def get_rasters(url_file):
     with open(url_file, newline='') as urlfile:
         records = urlfile.read().split('\n')[:-1]
-    return [([f'/viscurl/{record}' for record in records])]
+    return [f'/viscurl/{record}' for record in records]
 
 
 def get_pixel_type(data_type: str) -> int:
