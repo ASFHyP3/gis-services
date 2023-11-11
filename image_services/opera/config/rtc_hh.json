@@ -3,7 +3,7 @@
   "raster_store": "/home/arcgis/raster_store/",
   "bucket": "hyp3-testing",
   "overview_path": "/vsis3/gis-service-overviews/overviews/",
-  "s3_prefix": "opera-rtc-image-service-prototype/HH",
+  "s3_prefix": "opera-rtc-image-service-na/HH",
   "s3_suffix": "_HH.tif",
   "dataset_name": "RTC_HH",
   "raster_function_templates": [
