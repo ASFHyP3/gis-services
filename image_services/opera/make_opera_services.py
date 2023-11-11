@@ -31,7 +31,7 @@ from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 def get_rasters(url_file):
     with open(url_file, newline='') as urlfile:
         records = urlfile.read().split('\n')[:-1]
-    return records
+    return [([f'/viscurl/{record}' for record in records])]
 
 
 def get_pixel_type(data_type: str) -> int:
@@ -59,7 +59,7 @@ def get_raster_metadata(raster_path: str, bucket: str, s3_prefix: str) -> dict:
     name = Path(raster_path).stem
     acquisition_date = \
         name[36:38] + '/' + name[38:40] + '/' + name[32:36] + ' ' + name[41:43] + ':' + name[43:45] + ':' + name[45:47]
-    info = gdal.Info(f'/vsicurl/{raster_path}', format='json')
+    info = gdal.Info(raster_path, format='json')
     return {
         'Raster': info['description'],
         'Name': name,
