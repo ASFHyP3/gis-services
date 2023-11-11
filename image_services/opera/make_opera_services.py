@@ -205,6 +205,10 @@ def main():
         config = json.load(f)
 
     url_file = '/home/arcgis/gis-services/image_services/opera/urls.txt'
+    cookie_file = Path.home() / 'cookies.txt'
+    os.environ['GDAL_HTTP_COOKIEFILE'] = str(cookie_file)
+    os.environ['GDAL_HTTP_COOKIEJAR'] = str(cookie_file)
+
     csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
     raster_function_template = ''.join([f'{template_directory / template};'
