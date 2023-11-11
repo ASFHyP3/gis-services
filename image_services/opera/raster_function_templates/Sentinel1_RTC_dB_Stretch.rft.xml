@@ -206,7 +206,7 @@
                      id='ID33'>
                 <Name>DRA</Name>
                 <Description></Description>
-                <Value xsi:type='xs:boolean'>false</Value>
+                <Value xsi:type='xs:boolean'>true</Value>
                 <IsDataset>false</IsDataset>
             </AnyType>
             <AnyType xsi:type='typens:RasterFunctionVariable'
