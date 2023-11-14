@@ -196,6 +196,9 @@ def main():
     os.environ['GDAL_HTTP_COOKIEFILE'] = str(cookie_file)
     os.environ['GDAL_HTTP_COOKIEJAR'] = str(cookie_file)
 
+    gdal.SetConfigOption('AWS_DEFAULT_REGION', 'us-west-2')
+    os.environ['AWS_DEFAULT_REGION'] = 'us-west-2'
+
     csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
     raster_function_template = ''.join([f'{template_directory / template};'
