@@ -18,14 +18,13 @@ from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
 
-def add_urls(start_date: str = '2023-10-25T08:00:00Z'):
-    ## TODO: Determine an appropriate start date
+def get_rasters():
     ## TODO: get rid of or update the interesects with option
     options = {
         'intersectsWith': 'POLYGON((-78.5937 37.5232,-74.494 37.5232,-74.494 39.8807,-78.5937 39.8807,-78.5937 '
                           '37.5232))',
         'dataset': 'OPERA-S1',
-        'start': start_date,
+        'start': '2023-10-25T08:00:00Z',
         'processingLevel': 'RTC',
         'polarization': 'VH',
     }
@@ -37,21 +36,7 @@ def add_urls(start_date: str = '2023-10-25T08:00:00Z'):
             url = item['URL']
             if url.startswith('s3://') and url.endswith('VH.tif'):
                 urls.append(url.replace('s3://', '/vsis3/'))
-
-    # We could eventually remove this and just pass the urls directly to update_csv
-    csv_file = f'{os.getcwd()}/urls.txt'
-    with open(csv_file, 'w', newline='') as f:
-        writer = csv.writer(f)
-        for url in urls:
-            writer.writerows(url)
-
-    return csv_file
-
-
-def get_rasters(url_file):
-    with open(url_file, newline='') as urlfile:
-        records = urlfile.read().split('\n')[:-1]
-    return [f'{record}' for record in records]
+    return urls
 
 
 def get_pixel_type(data_type: str) -> int:
@@ -228,7 +213,6 @@ def main():
     os.environ['GDAL_HTTP_COOKIEFILE'] = str(cookie_file)
     os.environ['GDAL_HTTP_COOKIEJAR'] = str(cookie_file)
 
-    url_file = add_urls()
     csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
     raster_function_template = ''.join([f'{template_directory / template};'
@@ -241,8 +225,7 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        # rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
-        rasters = get_rasters(url_file)
+        rasters = get_rasters()
         update_csv(csv_file, rasters, config['bucket'], config['s3_prefix'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
