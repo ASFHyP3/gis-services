@@ -28,10 +28,18 @@ from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 #     return rasters
 
 
+def add_urls():
+    # code to find URLs for new acquisitions since the last update and write them to a url_file.txt
+    # - CMR query or asf_search results
+    # - crawl the EDC opera S3 bucket
+    return [url_file]
+    url_file = '/home/arcgis/jrsmale/gis-services/image_services/opera/vsis3_urls.txt'
+
+
 def get_rasters(url_file):
     with open(url_file, newline='') as urlfile:
         records = urlfile.read().split('\n')[:-1]
-    return [f'/vsicurl/{record}' for record in records]
+    return [f'{record}' for record in records]
 
 
 def get_pixel_type(data_type: str) -> int:
@@ -204,11 +212,11 @@ def main():
     with open(args.config_file) as f:
         config = json.load(f)
 
-    url_file = '/home/arcgis/jrsmale/gis-services/image_services/opera/urls.txt'
     cookie_file = Path.home() / 'cookies.txt'
     os.environ['GDAL_HTTP_COOKIEFILE'] = str(cookie_file)
     os.environ['GDAL_HTTP_COOKIEJAR'] = str(cookie_file)
 
+    url_file = add_urls()
     csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
     raster_function_template = ''.join([f'{template_directory / template};'
