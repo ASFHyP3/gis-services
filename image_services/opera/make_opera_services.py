@@ -10,22 +10,32 @@ from pathlib import Path
 from typing import List
 
 import arcpy
-import boto3
+import asf_search
 from arcgis.gis.server import Server
 from lxml import etree
 from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
 
-def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
-    rasters = []
-    s3 = boto3.client('s3')
-    paginator = s3.get_paginator('list_objects_v2')
-    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
-        for obj in page['Contents']:
-            if obj['Key'].endswith(suffix):
-                rasters.append(f'/vsis3/{bucket}/{obj["Key"]}')
-    return rasters
+def get_rasters():
+    # TODO: get rid of or update the interesects with option
+    options = {
+        'intersectsWith': 'POLYGON((-78.5937 37.5232,-74.494 37.5232,-74.494 39.8807,-78.5937 39.8807,-78.5937 '
+                          '37.5232))',
+        'dataset': 'OPERA-S1',
+        'start': '2023-10-25T08:00:00Z',
+        'processingLevel': 'RTC',
+        'polarization': 'VH',
+    }
+    results = asf_search.search(**options)
+
+    urls = []
+    for result in results:
+        for item in result.umm['RelatedUrls']:
+            url = item['URL']
+            if url.startswith('s3://') and url.endswith('VH.tif'):
+                urls.append(url.replace('s3://', '/vsis3/'))
+    return urls
 
 
 def get_pixel_type(data_type: str) -> int:
@@ -47,9 +57,9 @@ def remove_prefix(raster_path, prefix):
 
 
 def get_raster_metadata(raster_path: str, bucket: str, s3_prefix: str) -> dict:
-    assert raster_path.startswith(f'/vsis3/{bucket}/{s3_prefix}/')
+    assert raster_path.startswith(f'/vsis3/{bucket}/')
     key = remove_prefix(raster_path, f'/vsis3/{bucket}/')
-    download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
+    download_url = f'https://datapool.asf.alaska.edu/RTC/{key}'
     name = Path(raster_path).stem
     acquisition_date = \
         name[36:38] + '/' + name[38:40] + '/' + name[32:36] + ' ' + name[41:43] + ':' + name[43:45] + ':' + name[45:47]
@@ -198,6 +208,10 @@ def main():
     with open(args.config_file) as f:
         config = json.load(f)
 
+    cookie_file = Path.home() / 'cookies.txt'
+    os.environ['GDAL_HTTP_COOKIEFILE'] = str(cookie_file)
+    os.environ['GDAL_HTTP_COOKIEJAR'] = str(cookie_file)
+
     csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
     raster_function_template = ''.join([f'{template_directory / template};'
@@ -210,7 +224,7 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
+        rasters = get_rasters()
         update_csv(csv_file, rasters, config['bucket'], config['s3_prefix'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
