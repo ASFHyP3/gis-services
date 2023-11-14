@@ -12,6 +12,7 @@ from typing import List
 import arcpy
 import boto3
 from arcgis.gis.server import Server
+import asf_search
 from lxml import etree
 from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
@@ -28,12 +29,34 @@ from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 #     return rasters
 
 
-def add_urls():
-    # code to find URLs for new acquisitions since the last update and write them to a url_file.txt
-    # - CMR query or asf_search results
-    # - crawl the EDC opera S3 bucket
-    return [url_file]
-    url_file = '/home/arcgis/jrsmale/gis-services/image_services/opera/vsis3_urls.txt'
+def add_urls(start_date: str = '2023-10-25T08:00:00Z'):
+    ## TODO: Determine an appropriate start date
+    ## TODO: get rid of or update the interesects with option
+    options = {
+        'intersectsWith': 'POLYGON((-78.5937 37.5232,-74.494 37.5232,-74.494 39.8807,-78.5937 39.8807,-78.5937 '
+                          '37.5232))',
+        'dataset': 'OPERA-S1',
+        'start': start_date,
+        'processingLevel': 'RTC',
+        'polarization': 'VH',
+    }
+    results = asf_search.search(**options)
+
+    urls = []
+    for result in results:
+        for item in result.umm['RelatedUrls']:
+            url = item['URL']
+            if url.startswith('s3://') and url.endswith('VH.tif'):
+                urls.append(url.replace('s3://', '/vsis3/'))
+
+    # We could eventually remove this and just pass the urls directly to update_csv
+    csv_file = f'{os.getcwd()}/urls.txt'
+    with open(csv_file, 'w', newline='') as f:
+        writer = csv.writer(f)
+        for url in urls:
+            writer.writerows(url)
+
+    return csv_file
 
 
 def get_rasters(url_file):
@@ -61,9 +84,9 @@ def remove_prefix(raster_path, prefix):
 
 
 def get_raster_metadata(raster_path: str, bucket: str, s3_prefix: str) -> dict:
-    #assert raster_path.startswith(f'/vsis3/{bucket}/{s3_prefix}/')
+    assert raster_path.startswith(f'/vsis3/{bucket}/')
     key = remove_prefix(raster_path, f'/vsis3/{bucket}/')
-    download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
+    download_url = f'https://datapool.asf.alaska.edu/RTC/{key}'
     name = Path(raster_path).stem
     acquisition_date = \
         name[36:38] + '/' + name[38:40] + '/' + name[32:36] + ' ' + name[41:43] + ':' + name[43:45] + ':' + name[45:47]
@@ -229,7 +252,7 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        #rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
+        # rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
         rasters = get_rasters(url_file)
         update_csv(csv_file, rasters, config['bucket'], config['s3_prefix'])
 
