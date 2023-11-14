@@ -18,7 +18,7 @@ from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
 
 def get_rasters():
-    ## TODO: get rid of or update the interesects with option
+    # TODO: get rid of or update the interesects with option
     options = {
         'intersectsWith': 'POLYGON((-78.5937 37.5232,-74.494 37.5232,-74.494 39.8807,-78.5937 39.8807,-78.5937 '
                           '37.5232))',
