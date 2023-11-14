@@ -43,12 +43,11 @@ def remove_prefix(raster_path, prefix):
 
 def get_raster_metadata(raster_path: str, bucket: str, s3_prefix: str) -> dict:
     assert raster_path.startswith(f'/vsis3/{bucket}/')
-    key = remove_prefix(raster_path, f'/vsis3/{bucket}/')
-    download_url = f'https://datapool.asf.alaska.edu/RTC/{key}'
     name = Path(raster_path).stem
+    download_url = f'https://datapool.asf.alaska.edu/RTC/OPERA-S1/{name}.tif'
     acquisition_date = \
         name[36:38] + '/' + name[38:40] + '/' + name[32:36] + ' ' + name[41:43] + ':' + name[43:45] + ':' + name[45:47]
-    info = gdal.Info(download_url, format='json')
+    info = gdal.Info(raster_path, format='json')
     return {
         'Raster': info['description'],
         'Name': name,
