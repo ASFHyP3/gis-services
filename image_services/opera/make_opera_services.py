@@ -10,7 +10,6 @@ from pathlib import Path
 from typing import List
 
 import arcpy
-import asf_search
 from arcgis.gis.server import Server
 from lxml import etree
 from osgeo import gdal, osr
@@ -18,24 +17,10 @@ from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
 
 def get_rasters():
-    # TODO: get rid of or update the interesects with option
-    options = {
-        'intersectsWith': 'POLYGON((-78.5937 37.5232,-74.494 37.5232,-74.494 39.8807,-78.5937 39.8807,-78.5937 '
-                          '37.5232))',
-        'dataset': 'OPERA-S1',
-        'start': '2023-10-25T08:00:00Z',
-        'processingLevel': 'RTC',
-        'polarization': 'VH',
-    }
-    results = asf_search.search(**options)
-
-    urls = []
-    for result in results:
-        for item in result.umm['RelatedUrls']:
-            url = item['URL']
-            if url.startswith('s3://') and url.endswith('VH.tif'):
-                urls.append(url.replace('s3://', '/vsis3/'))
-    return urls
+    url_file = f'{os.getcwd()}/vsis3_urls.txt'
+    with open(url_file, newline='') as urlfile:
+        records = urlfile.read().split('\n')[:-1]
+    return [f'{record}' for record in records]
 
 
 def get_pixel_type(data_type: str) -> int:
