@@ -41,7 +41,7 @@ def remove_prefix(raster_path, prefix):
     return raster_path[len(prefix):]
 
 
-def get_raster_metadata(raster_path: str, bucket: str, s3_prefix: str) -> dict:
+def get_raster_metadata(raster_path: str, bucket: str) -> dict:
     assert raster_path.startswith(f'/vsis3/{bucket}/')
     name = Path(raster_path).stem
     download_url = f'https://datapool.asf.alaska.edu/RTC/OPERA-S1/{name}.tif'
@@ -68,7 +68,7 @@ def get_raster_metadata(raster_path: str, bucket: str, s3_prefix: str) -> dict:
     }
 
 
-def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
+def update_csv(csv_file: str, rasters: List[str], bucket: str):
     if os.path.isfile(csv_file):
         with open(csv_file) as f:
             records = [record for record in csv.DictReader(f)]
@@ -81,13 +81,13 @@ def update_csv(csv_file: str, rasters: List[str], bucket: str, s3_prefix: str):
     logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
 
     if new_rasters:
-        header_record = get_raster_metadata(next(iter(new_rasters)), bucket, s3_prefix)
+        header_record = get_raster_metadata(next(iter(new_rasters)), bucket)
         with open(csv_file, 'a', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=header_record.keys(), lineterminator=os.linesep)
             if not existing_rasters:
                 writer.writeheader()
             for raster in new_rasters:
-                record = get_raster_metadata(raster, bucket, s3_prefix)
+                record = get_raster_metadata(raster, bucket)
                 writer.writerow(record)
 
     with open(csv_file) as f:
@@ -215,7 +215,7 @@ def main():
 
     try:
         rasters = get_rasters()
-        update_csv(csv_file, rasters, config['bucket'], config['s3_prefix'])
+        update_csv(csv_file, rasters, config['bucket'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
                                 before_sleep=before_sleep_log(logging, logging.WARNING)):
