@@ -11,6 +11,7 @@ from typing import List
 
 import arcpy
 from arcgis.gis.server import Server
+import boto3
 from lxml import etree
 from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
