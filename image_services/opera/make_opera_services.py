@@ -11,7 +11,6 @@ from typing import List
 
 import arcpy
 from arcgis.gis.server import Server
-import boto3
 from lxml import etree
 from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
@@ -199,9 +198,6 @@ def main():
 
     gdal.SetConfigOption('AWS_DEFAULT_REGION', 'us-west-2')
     os.environ['AWS_DEFAULT_REGION'] = 'us-west-2'
-
-    gdal.SetConfigOption('AWS_PROFILE', 'edc-prod')
-    os.environ['AWS_PROFILE'] = 'edc-prod'
 
     csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
