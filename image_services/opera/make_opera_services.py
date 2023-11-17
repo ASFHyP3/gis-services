@@ -281,7 +281,7 @@ def main():
             blend_width=10,
             view_point_x=300,
             view_point_y=300,
-            max_num_per_mosaic=75,
+            max_num_per_mosaic=50,
             cell_size_tolerance=1.8,
             cell_size=3,
             metadata_level='BASIC',
