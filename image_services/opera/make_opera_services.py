@@ -15,6 +15,8 @@ from lxml import etree
 from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
+gdal.UseExceptions()
+gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
 def get_rasters():
     url_file = f'{os.getcwd()}/vsis3_urls.txt'
