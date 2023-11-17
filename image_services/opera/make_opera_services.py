@@ -199,6 +199,8 @@ def main():
     gdal.SetConfigOption('AWS_DEFAULT_REGION', 'us-west-2')
     os.environ['AWS_DEFAULT_REGION'] = 'us-west-2'
 
+    os.environ['AWS_PROFILE'] = 'edc-prod'
+
     csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
     raster_function_template = ''.join([f'{template_directory / template};'
@@ -330,6 +332,7 @@ def main():
                     out_rasterdataset=local_overview,
                 )
 
+            os.environ['AWS_PROFILE'] = 'hyp3'
             logging.info(f'Moving CRF to {s3_overview}')
             subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
 
