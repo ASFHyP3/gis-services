@@ -328,6 +328,9 @@ def main():
             del os.environ['AWS_ACCESS_KEY_ID']
             del os.environ['AWS_SECRET_ACCESS_KEY']
 
+            os.environ['AWS_DEFAULT_PROFILE'] = 'hyp3'
+            os.environ['AWS_PROFILE'] = 'hyp3'
+
             logging.info(f'Moving CRF to {s3_overview}')
             subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
 
