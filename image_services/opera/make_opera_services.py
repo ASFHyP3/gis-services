@@ -192,13 +192,6 @@ def main():
     with open(args.config_file) as f:
         config = json.load(f)
 
-    cookie_file = Path.home() / 'cookies.txt'
-    os.environ['GDAL_HTTP_COOKIEFILE'] = str(cookie_file)
-    os.environ['GDAL_HTTP_COOKIEJAR'] = str(cookie_file)
-
-    gdal.SetConfigOption('AWS_DEFAULT_REGION', 'us-west-2')
-    os.environ['AWS_DEFAULT_REGION'] = 'us-west-2'
-
     os.environ['AWS_PROFILE'] = 'edc-prod'
 
     csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
