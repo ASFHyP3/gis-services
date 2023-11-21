@@ -1,20 +1,26 @@
 import argparse
 import csv
-import os
-import requests
-import boto3
-from pathlib import Path
-import logging
 import json
+import logging
+import os
+from pathlib import Path
 
+import boto3
+import requests
 
 S3_CLIENT = boto3.client('s3')
 log = logging.getLogger(__name__)
 
 
-def query_cmr(params):
+def query_cmr(polarization):
     session = requests.Session()
     search_url = 'https://cmr.earthdata.nasa.gov/search/granules.umm_json'
+
+    params = {
+        'short_name': 'OPERA_L2_RTC-S1_V1',
+        'attribute[]': f'string,POLARIZATION,{polarization}',
+        'page_size': 2000,
+    }
     headers = {}
     vsis3_uris = []
     while True:
@@ -22,7 +28,7 @@ def query_cmr(params):
         response.raise_for_status()
         for granule in response.json()['items']:
             for url in granule['umm']['RelatedUrls']:
-                if url['URL'].startswith('s3://') and url['URL'].endswith('VV.tif'):
+                if url['URL'].startswith('s3://') and url['URL'].endswith(f'{polarization}.tif'):
                     vsis3_uris.append(url['URL'].replace('s3://', '/vsis3/'))
                     break
         if 'CMR-Search-After' not in response.headers:
@@ -56,14 +62,8 @@ def main():
     _, _, bucket, _, _ = config['overview_path'].split('/')
     csv_file = Path(f'{os.getcwd()}/opera_vsis3_{polarization}.csv')
 
-    params = {
-        'short_name': 'OPERA_L2_RTC-S1_V1',
-        'attribute[]': f'string,POLARIZATION,{polarization}',
-        'page_size': 2000,
-    }
-
     log.info(f'Querying CMR for OPERA {polarization} products')
-    vsis3_uris = query_cmr(params)
+    vsis3_uris = query_cmr(polarization)
 
     with open(csv_file, 'w', newline='') as f:
         writer = csv.writer(f)
