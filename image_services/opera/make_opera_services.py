@@ -24,9 +24,11 @@ def get_rasters(overview_path, s3_suffix, working_directory):
     _, _, bucket, _, _ = overview_path.split('/')
     polarization = s3_suffix[1:3]
     filename = f'{working_directory}/opera_vsis3_{polarization}.csv'
+    key =  f'opera_uris/opera_vsis3_{polarization}.csv'
 
     s3 = boto3.client('s3')
-    url_file = s3.download_file(bucket, f'opera_uris/opera_vsis3_{polarization}.csv', filename)
+    logging.info(f'Downloading {bucket}/{key} to {filename}')
+    url_file = s3.download_file(bucket, key, filename)
 
     with open(url_file, newline='') as urlfile:
         records = urlfile.read().split('\n')[:-1]
