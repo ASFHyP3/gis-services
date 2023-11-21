@@ -11,6 +11,7 @@ from typing import List
 
 import arcpy
 from arcgis.gis.server import Server
+import boto3
 from lxml import etree
 from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
@@ -18,8 +19,15 @@ from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 gdal.UseExceptions()
 gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
-def get_rasters():
-    url_file = f'{os.getcwd()}/vsis3_urls.txt'
+
+def get_rasters(overview_path, s3_suffix, working_directory):
+    _, _, bucket, _, _ = overview_path.split('/')
+    polarization = s3_suffix[1:3]
+    filename = f'{working_directory}/opera_vsis3_{polarization}.csv'
+
+    s3 = boto3.client('s3')
+    url_file = s3.download_file(bucket, f'opera_uris/opera_vsis3_{polarization}.csv', filename)
+
     with open(url_file, newline='') as urlfile:
         records = urlfile.read().split('\n')[:-1]
     return [f'{record}' for record in records]
@@ -206,7 +214,7 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        rasters = get_rasters()
+        rasters = get_rasters(config['overview_path'], config['s3_suffix'], args.working_directory)
         update_csv(csv_file, rasters, config['bucket'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
