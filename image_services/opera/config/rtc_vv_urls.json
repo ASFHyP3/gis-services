@@ -1,0 +1,40 @@
+{
+  "project_name": "OPERA",
+  "raster_store": "/home/arcgis/raster_store/",
+  "bucket": "asf-cumulus-prod-opera-products",
+  "overview_path": "/vsis3/gis-service-overviews/overviews/",
+  "s3_suffix": "_VV.tif",
+  "dataset_name": "RTC_VV",
+  "raster_function_templates": [
+    "Sentinel1_RTC_Power.rft.xml",
+    "Sentinel1_RTC_Amplitude.rft.xml",
+    "Sentinel1_RTC_dB.rft.xml",
+    "Sentinel1_RTC_dB_Stretch.rft.xml"
+  ],
+  "default_raster_function_template": "Sentinel1_RTC_dB_Stretch.rft.xml",
+  "service_folder": "OPERA",
+  "service_name": "OPERA_RTC_VV_URLS",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL).",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL). Values for the VV polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": "OPERA Level-2 Radiometric Terrain Corrected from Sentinel-1. NASA Alaska Satellite Facility Distributed Active Archive Center. doi: https://doi.org/10.5067/SNWG/OPERA_L2_RTC-S1_V1. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='idleTimeout']/Value": "3600",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='usageTimeout']/Value": "1200",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='waitTimeout']/Value": "120",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='IdleTimeout']/Value": "3600",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='keepAliveInterval']/Value": "600",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='UsageTimeout']/Value": "1200",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='WaitTimeout']/Value": "120",
+    "ItemInfo/Title": "OPERA RTC VV",
+    "ItemInfo/Credits": "OPERA Level-2 Radiometric Terrain Corrected products from Sentinel-1. Contains modified Copernicus Sentinel data, processed by ESA.",
+    "ItemInfo/Description": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL). Values for the VV polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.",
+    "ItemInfo/Snippet": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL).",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='title']/Value": "OPERA_RTC_VV_WMS",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='abstract']/Value": "WMS service for Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL)."
+  }
+}
