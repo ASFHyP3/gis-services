@@ -28,9 +28,9 @@ def get_rasters(overview_path, s3_suffix, working_directory):
 
     s3 = boto3.client('s3')
     logging.info(f'Downloading {bucket}/{key} to {filename}')
-    url_file = s3.download_file(bucket, key, filename)
+    s3.download_file(bucket, key, filename)
 
-    with open(url_file, newline='') as urlfile:
+    with open(filename, newline='') as urlfile:
         records = urlfile.read().split('\n')[:-1]
     return [f'{record}' for record in records]
 
