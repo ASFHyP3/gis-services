@@ -1,5 +1,5 @@
 Title:
- OPERA L2 RTC-S1 V1 CA VV
+OPERA L2 RTC-S1 V1 CA VV
 
 Tags:
 ASF, Alaska Satellite Facility, Synthetic Aperture Radar, SAR, Sentinel-1, OPERA, Radiometric Terrain Correction, RTC
