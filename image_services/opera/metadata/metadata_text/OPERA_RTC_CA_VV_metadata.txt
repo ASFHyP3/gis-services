@@ -5,7 +5,7 @@ Tags:
 ASF, Alaska Satellite Facility, Synthetic Aperture Radar, SAR, Sentinel-1, OPERA, Radiometric Terrain Correction, RTC
 
 Summary:
-OPERA Level-2 Radiometric Terrain Corrected (RTC) SAR Backscatter products for an area in Northern California from 08-Oct-2023 to 04-Dec-2023 in VV polarization generated from Sentinel-1 SAR imagery, processed by the OPERA project at JPL.
+OPERA Level-2 Radiometric Terrain Corrected (RTC) SAR Backscatter products for an area in Northern California from 08-Oct-2023 to 04-Dec-2023 in VV polarization generated from Sentinel-1 (S1) SAR imagery, processed by the OPERA project at JPL.
 
 Description:
 OPERA Level-2 Radiometric Terrain Corrected (RTC) SAR Backscatter products in VV polarization generated from Sentinel-1 (S1) SAR imagery, processed by the OPERA project at JPL. Values for the VV polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.
