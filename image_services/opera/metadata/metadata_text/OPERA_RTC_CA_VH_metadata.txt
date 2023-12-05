@@ -5,12 +5,12 @@ Tags:
 ASF, Alaska Satellite Facility, Synthetic Aperture Radar, SAR, Sentinel-1, OPERA, Radiometric Terrain Correction, RTC
 
 Summary:
-OPERA Level-2 Radiometric Terrain Corrected (RTC) SAR Backscatter products for an area in Northern California from 08-Oct-2023 to 03-Dec-2023 in VH polarization generated from Sentinel-1 (S1) SAR imagery, processed by the OPERA project at JPL.
+OPERA Level-2 Radiometric Terrain Corrected (RTC) SAR Backscatter products for an area in Northern California from 07-Oct-2023 to 03-Dec-2023 in VH polarization generated from Sentinel-1 (S1) SAR imagery, processed by the OPERA project at JPL.
 
 Description:
 OPERA Level-2 Radiometric Terrain Corrected (RTC) SAR Backscatter products in VH polarization generated from Sentinel-1 (S1) SAR imagery, processed by the OPERA project at JPL. Values for the VH (cross-polarized) polarization are generally driven by volume scattering, with more complex volume scatterers (such as dense vegetation) returning higher backscatter values. Surface water generally appears very dark, as it is predominantly a surface scatterer; most returns remain in the primary polarization.
 
-OPERA RTC-S1 data is available over all landmasses (excluding Antarctica) for Sentinel-1 acquisitions starting October 4, 2023. This is a test service that only includes the data available for a region in Northern California, acquired between October 8 and December 3, 2023. We are working towards providing services that include the full global extent of the dataset, but in incremental developments.
+OPERA RTC-S1 data is available over all landmasses (excluding Antarctica) for Sentinel-1 acquisitions starting October 4, 2023. This is a test service that only includes the data available for a region in Northern California, acquired between October 7 and December 3, 2023. We are working towards providing services that include the full global extent of the dataset, but in incremental developments.
 
 The source rasters referenced in this service are hosted by the Alaska Satellite Facility in NASA's Earthdata Cloud. More information about the dataset is available here: [https://asf.alaska.edu/datasets/daac/opera/](https://asf.alaska.edu/datasets/daac/opera/)
 
