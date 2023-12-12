@@ -20,8 +20,8 @@ gdal.UseExceptions()
 gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
 
-def get_rasters(s3_suffix, working_directory):
-    filename = f'{working_directory}/opera_vsis3_{s3_suffix[1:3]}.csv'
+def get_rasters(dataset_name, working_directory):
+    filename = f'{working_directory}/{dataset_name}_vsis3_urls.csv'
     with open(filename, newline='') as urlfile:
         records = urlfile.read().split('\n')[:-1]
     return [f'{record}' for record in records]
@@ -208,7 +208,7 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        rasters = get_rasters(config['overview_path'], config['s3_suffix'], args.working_directory)
+        rasters = get_rasters(csv_file.replace(".csv", ""), args.working_directory)
         update_csv(csv_file, rasters, config['bucket'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
