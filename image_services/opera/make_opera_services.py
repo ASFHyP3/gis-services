@@ -10,7 +10,6 @@ from pathlib import Path
 from typing import List
 
 import arcpy
-import boto3
 from arcgis.gis.server import Server
 from lxml import etree
 from osgeo import gdal, osr
@@ -21,7 +20,7 @@ gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
 
 def get_rasters(dataset_name, working_directory):
-    filename = f'{working_directory}/{dataset_name}_vsis3_urls.csv'
+    filename = f'{dataset_name}_vsis3_urls.csv'
     with open(filename, newline='') as urlfile:
         records = urlfile.read().split('\n')[:-1]
     return [f'{record}' for record in records]
