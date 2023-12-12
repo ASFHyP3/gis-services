@@ -60,17 +60,16 @@ def main():
 
     polarization = config['s3_suffix'][1:3]
     _, _, bucket, _, _ = config['overview_path'].split('/')
-    csv_file = Path(f'{os.getcwd()}/opera_vsis3_{polarization}.csv')
-
+    url_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}_vsis3_urls.csv')
     log.info(f'Querying CMR for OPERA {polarization} products')
-    vsis3_uris = query_cmr(polarization)
+    vsis3_urls = query_cmr(polarization)
 
-    with open(csv_file, 'w', newline='') as f:
+    with open(url_file, 'w', newline='') as f:
         writer = csv.writer(f)
-        for uri in vsis3_uris:
-            writer.writerow([uri])
+        for url in vsis3_urls:
+            writer.writerow([url])
 
-    upload_file_to_s3(csv_file, bucket, 'opera-uris')
+    upload_file_to_s3(url_file, bucket, 'opera-uris')
 
 
 if __name__ == '__main__':
