@@ -20,16 +20,8 @@ gdal.UseExceptions()
 gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
 
-def get_rasters(overview_path, s3_suffix, working_directory):
-    _, _, bucket, _, _ = overview_path.split('/')
-    polarization = s3_suffix[1:3]
-    filename = f'{working_directory}/opera_vsis3_{polarization}.csv'
-    key =  f'opera_uris/opera_vsis3_{polarization}.csv'
-
-    s3 = boto3.client('s3')
-    logging.info(f'Downloading {bucket}/{key} to {filename}')
-    s3.download_file(bucket, key, filename)
-
+def get_rasters(s3_suffix, working_directory):
+    filename = f'{working_directory}/opera_vsis3_{s3_suffix[1:3]}.csv'
     with open(filename, newline='') as urlfile:
         records = urlfile.read().split('\n')[:-1]
     return [f'{record}' for record in records]
