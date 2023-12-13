@@ -18,11 +18,12 @@ from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 gdal.UseExceptions()
 gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
-def get_rasters():
-    url_file = f'{os.getcwd()}/vsis3_urls.txt'
-    with open(url_file, newline='') as urlfile:
+
+def get_rasters(dataset_name):
+    filename = f'{dataset_name}_vsis3_urls.csv'
+    with open(filename, newline='') as urlfile:
         records = urlfile.read().split('\n')[:-1]
-    return [f'{record}' for record in records]
+    return [f'{record[:-1]}' for record in records]
 
 
 def get_pixel_type(data_type: str) -> int:
@@ -206,7 +207,7 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        rasters = get_rasters()
+        rasters = get_rasters(csv_file.replace(".csv", ""))
         update_csv(csv_file, rasters, config['bucket'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
