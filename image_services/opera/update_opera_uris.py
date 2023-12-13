@@ -4,6 +4,7 @@ import json
 import logging
 import os
 from pathlib import Path
+from typing import Union
 
 import boto3
 import requests
@@ -37,7 +38,7 @@ def query_cmr(polarization):
         return vsis3_uris
 
 
-def upload_file_to_s3(path_to_file: Path, bucket: str, prefix: str = ''):
+def upload_file_to_s3(path_to_file: Union[Path, str], bucket: str, prefix: str = ''):
     path_to_file = Path(path_to_file)
     key = str(Path(prefix) / path_to_file.name)
 
