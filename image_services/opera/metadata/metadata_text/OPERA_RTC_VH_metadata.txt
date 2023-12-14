@@ -11,4 +11,4 @@ Description:
 OPERA Level-2 Radiometric Terrain Corrected (RTC) products in VH polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL). Values for the VH (cross-polarized) polarization are generally driven by volume scattering, with more complex volume scatterers (such as dense vegetation) returning higher backscatter values. Surface water generally appears very dark, as it is predominantly a surface scatterer; most returns remain in the primary polarization.
 
 Credits:
-OPERA Level-2 Radiometric Terrain Corrected Static Layers from Sentinel-1. Contains modified Copernicus Sentinel data, processed by ESA.
+OPERA Level-2 Radiometric Terrain Corrected SAR Backscatter from Sentinel-1. NASA Alaska Satellite Facility Distributed Active Archive Center. doi: https://doi.org/10.5067/SNWG/OPERA_L2_RTC-S1_V1. Contains modified Copernicus Sentinel data, processed by ESA.
