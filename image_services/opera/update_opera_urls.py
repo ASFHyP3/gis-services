@@ -60,7 +60,7 @@ def main():
         config = json.load(f)
 
     polarization = config['s3_suffix'][1:3]
-    _, _, bucket, _, _ = config['overview_path'].split('/')
+    bucket = config['overview_path'].split('/')[2]
     url_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}_vsis3_urls.csv')
     log.info(f'Querying CMR for OPERA {polarization} products')
     vsis3_urls = query_cmr(polarization)
