@@ -1,9 +1,8 @@
 {
   "project_name": "OPERA",
   "raster_store": "/home/arcgis/raster_store/",
-  "bucket": "hyp3-testing",
+  "bucket": "asf-cumulus-prod-opera-products",
   "overview_path": "/vsis3/gis-service-overviews/overviews/",
-  "s3_prefix": "opera-rtc-image-service-prototype/VV",
   "s3_suffix": "_VV.tif",
   "dataset_name": "RTC_VV",
   "raster_function_templates": [
@@ -14,7 +13,7 @@
   ],
   "default_raster_function_template": "Sentinel1_RTC_dB_Stretch.rft.xml",
   "service_folder": "OPERA",
-  "service_name": "OPERA_RTC_VV",
+  "service_name": "OPERA_RTC_VV_URLS",
   "service_definition_overrides": {
     "Type": "esriServiceDefinitionType_Replacement",
     "Configurations/SVCConfiguration/Definition/Description": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL).",
@@ -39,4 +38,3 @@
     "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='abstract']/Value": "WMS service for Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL)."
   }
 }
-
