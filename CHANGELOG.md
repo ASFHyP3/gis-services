@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.6]
 ### Added
-- Scripts to generate OPERA RTC services
+- Scripts to generate OPERA RTC services, URL files, and relevant metadata
 
 ## [0.6.5]
 ### Changed
