@@ -19,7 +19,7 @@ gdal.UseExceptions()
 gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
 
-def get_rasters(dataset_name):
+def get_rasters(dataset_name: str) -> List[str]:
     filename = f'{dataset_name}_vsis3_urls.csv'
     with open(filename) as urlfile:
         records = urlfile.read().splitlines()[:-1]
