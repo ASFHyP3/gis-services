@@ -35,7 +35,7 @@ def main():
     if polarization[0] != polarization[1]:
         polarization_description = f'Values for the {polarization} (cross-polarized) polarization are generally ' \
                                    f'driven by volume scattering, with more complex volume scatterers (such as dense ' \
-                                   f'vegetation) returning higher backscatter values. Surface water generally ' \ 
+                                   f'vegetation) returning higher backscatter values. Surface water generally ' \
                                    f'appears very dark, as it is predominantly a surface scatterer; most returns ' \
                                    f'remain in the primary polarization. '
     elif polarization[0] == 'V':
