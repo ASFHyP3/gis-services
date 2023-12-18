@@ -10,22 +10,20 @@ from pathlib import Path
 from typing import List
 
 import arcpy
-import boto3
 from arcgis.gis.server import Server
 from lxml import etree
 from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
+gdal.UseExceptions()
+gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
-def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
-    rasters = []
-    s3 = boto3.client('s3')
-    paginator = s3.get_paginator('list_objects_v2')
-    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
-        for obj in page['Contents']:
-            if obj['Key'].endswith(suffix):
-                rasters.append(f'/vsis3/{bucket}/{obj["Key"]}')
-    return rasters
+
+def get_rasters(dataset_name: str) -> List[str]:
+    filename = f'{dataset_name}_vsis3_urls.csv'
+    with open(filename) as urlfile:
+        records = urlfile.read().splitlines()[:-1]
+    return [f'{record}' for record in records]
 
 
 def get_pixel_type(data_type: str) -> int:
@@ -46,11 +44,10 @@ def remove_prefix(raster_path, prefix):
     return raster_path[len(prefix):]
 
 
-def get_raster_metadata(raster_path: str) -> dict:
-    assert raster_path.startswith('/vsis3/hyp3-testing/opera-rtc-image-service-prototype/')
-    key = remove_prefix(raster_path, '/vsis3/hyp3-testing/')
-    download_url = f'https://hyp3-testing.s3.us-west-2.amazonaws.com/{key}'
+def get_raster_metadata(raster_path: str, bucket: str) -> dict:
+    assert raster_path.startswith(f'/vsis3/{bucket}/')
     name = Path(raster_path).stem
+    download_url = f'https://datapool.asf.alaska.edu/RTC/OPERA-S1/{name}.tif'
     acquisition_date = \
         name[36:38] + '/' + name[38:40] + '/' + name[32:36] + ' ' + name[41:43] + ':' + name[43:45] + ':' + name[45:47]
     info = gdal.Info(raster_path, format='json')
@@ -74,7 +71,7 @@ def get_raster_metadata(raster_path: str) -> dict:
     }
 
 
-def update_csv(csv_file: str, rasters: List[str]):
+def update_csv(csv_file: str, rasters: List[str], bucket: str):
     if os.path.isfile(csv_file):
         with open(csv_file) as f:
             records = [record for record in csv.DictReader(f)]
@@ -84,13 +81,22 @@ def update_csv(csv_file: str, rasters: List[str]):
 
     existing_rasters = [record['Raster'] for record in records]
     new_rasters = set(rasters) - set(existing_rasters)
-
     logging.info(f'Adding {len(new_rasters)} new items to {csv_file}')
-    for raster in new_rasters:
-        record = get_raster_metadata(raster)
-        records.append(record)
 
-    records = sorted(records, key=lambda x: x['Raster'])
+    if new_rasters:
+        header_record = get_raster_metadata(next(iter(new_rasters)), bucket)
+        with open(csv_file, 'a', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=header_record.keys(), lineterminator=os.linesep)
+            if not existing_rasters:
+                writer.writeheader()
+            for raster in new_rasters:
+                record = get_raster_metadata(raster, bucket)
+                writer.writerow(record)
+
+    with open(csv_file) as f:
+        records = [record for record in csv.DictReader(f)]
+    logging.info(f'Sorting rasters in {csv_file}')
+    records = sorted(records, key=lambda x: x['EndDate'])
     with open(csv_file, 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=records[0].keys(), lineterminator=os.linesep)
         writer.writeheader()
@@ -184,10 +190,6 @@ def main():
     parser.add_argument('config_file')
     args = parser.parse_args()
 
-    raster_store = '/home/arcgis/raster_store/'
-    bucket = 'hyp3-testing'
-    overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
-
     template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
     with open(args.config_file) as f:
@@ -205,8 +207,8 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
-        update_csv(csv_file, rasters)
+        rasters = get_rasters(csv_file.replace(".csv", ""))
+        update_csv(csv_file, rasters, config['bucket'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
                                 before_sleep=before_sleep_log(logging, logging.WARNING)):
@@ -215,7 +217,7 @@ def main():
                 output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
                 overview_name = f'{output_name}_overview'
                 local_overview_filename = f'{overview_name}.crf'
-                s3_overview = f'{overview_path}{overview_name}.crf'
+                s3_overview = f'{config["overview_path"]}{overview_name}.crf'
                 service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
                 logging.info('Creating geodatabase')
@@ -280,7 +282,7 @@ def main():
             blend_width=10,
             view_point_x=300,
             view_point_y=300,
-            max_num_per_mosaic=50,
+            max_num_per_mosaic=75,
             cell_size_tolerance=1.8,
             cell_size=3,
             metadata_level='BASIC',
@@ -314,7 +316,7 @@ def main():
                 ['GroupName', '!Name!.rsplit("_", 1)[0]'],
             ],
         )
-        with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
+        with tempfile.TemporaryDirectory(dir=config['raster_store']) as temp_dir:
             local_overview = os.path.join(temp_dir, local_overview_filename)
 
             logging.info(f'Generating {local_overview}')
@@ -323,6 +325,12 @@ def main():
                     in_raster=mosaic_dataset,
                     out_rasterdataset=local_overview,
                 )
+
+            del os.environ['AWS_ACCESS_KEY_ID']
+            del os.environ['AWS_SECRET_ACCESS_KEY']
+
+            os.environ['AWS_DEFAULT_PROFILE'] = 'hyp3'
+            os.environ['AWS_PROFILE'] = 'hyp3'
 
             logging.info(f'Moving CRF to {s3_overview}')
             subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
