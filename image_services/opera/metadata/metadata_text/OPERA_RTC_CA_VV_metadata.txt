@@ -1,0 +1,25 @@
+Title:
+OPERA L2 RTC-S1 V1 CA VV
+
+Tags:
+ASF, Alaska Satellite Facility, Synthetic Aperture Radar, SAR, Sentinel-1, OPERA, Radiometric Terrain Correction, RTC
+
+Summary:
+OPERA Level-2 Radiometric Terrain Corrected (RTC) SAR Backscatter products for an area in Northern California from 07-Oct-2023 to 03-Dec-2023 in VV polarization generated from Sentinel-1 (S1) SAR imagery, processed by the OPERA project at JPL.
+
+Description:
+OPERA Level-2 Radiometric Terrain Corrected (RTC) SAR Backscatter products in VV polarization generated from Sentinel-1 (S1) SAR imagery, processed by the OPERA project at JPL. Values for the VV polarization are commonly driven by surface roughness and/or soil moisture, with rougher surfaces and higher soil moisture returning higher backscatter values. Surface water appears very dark under calm conditions, as the signal bounces off the surface away from the sensor.
+
+OPERA RTC-S1 data is available over all landmasses (excluding Antarctica) for Sentinel-1 acquisitions starting October 4, 2023. This is a test service that only includes the data available for a region in Northern California, acquired between October 7 and December 3, 2023. We are working towards providing services that include the full global extent of the dataset, but in incremental developments.
+
+The source rasters referenced in this service are hosted by the Alaska Satellite Facility in NASA's Earthdata Cloud. More information about the dataset is available here: [https://asf.alaska.edu/datasets/daac/opera/](https://asf.alaska.edu/datasets/daac/opera/)
+
+The OPERA project is managed by JPL with partners from NASA’s Goddard Space Flight Center, the U.S. Geological Survey (USGS), the University of Maryland College Park, the University of Alaska Fairbanks, Southern Methodist University, and EarthScope. Refer to [OPERA’s website](https://www.jpl.nasa.gov/go/opera) for more details.
+
+<b>Data Use:</b> Please cite the use of this data set using the following:
+OPERA. 2023. OPERA Level-2 Radiometric Terrain Corrected from Sentinel-1. Fairbanks, Alaska USA. NASA Alaska Satellite Facility Distributed Active Archive Center. doi: https://doi.org/10.5067/SNWG/OPERA_L2_RTC-S1_V1. [Date Accessed]
+
+<b>Acknowledgements:</b> This service is provided by [Earthdata GIS (EGIS)](https://gis.earthdata.nasa.gov) supported by [Earth Observing System Data and Information System (EOSDIS)](https://www.earthdata.nasa.gov/). The OPERA project is supported by the Satellite Needs Working Group.
+
+Credits:
+OPERA Level-2 Radiometric Terrain Corrected SAR Backscatter from Sentinel-1, processed by the OPERA project at JPL. Contains modified Copernicus Sentinel data, processed by ESA.

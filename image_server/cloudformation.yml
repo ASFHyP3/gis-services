@@ -17,9 +17,6 @@ Parameters:
   SshCidrIp:
     Type: String
 
-  Bucket:
-    Type: String
-
   ImageId:
     Type: AWS::EC2::Image::Id
     Default: ami-0b1ddcef10ffe54fb
@@ -27,10 +24,6 @@ Parameters:
   InstanceType:
     Type: String
     Default: m6i.2xlarge
-
-  OverviewPrefix:
-    Type: String
-    Default: overviews/
 
   SecretArn:
     Type: String
@@ -158,21 +151,20 @@ Resources:
                 Action:
                 - s3:ListBucket
                 - s3:GetBucketAcl
+                - s3:GetBucketLocation
                 Resource:
                 - arn:aws:s3:::*
               - Effect: Allow
                 Action:
                 - s3:GetObject
                 - s3:GetObjectVersion
+                - s3:GetObjectTagging
                 Resource:
                 - arn:aws:s3:::*/*
               - Effect: Allow
                 Action: s3:PutObject
                 Resource:
-                - !Sub "arn:aws:s3:::${Bucket}/${OverviewPrefix}*"
-                - !Sub "arn:aws:s3:::hyp3-examples/${OverviewPrefix}*"
-                - !Sub "arn:aws:s3:::hyp3-pdc-data/${OverviewPrefix}*"
-                - arn:aws:s3:::asf-gis-services/public/*
+                - arn:aws:s3:::*/overviews/*
               - Effect: Allow
                 Action: secretsmanager:GetSecretValue
                 Resource: !Ref SecretArn
