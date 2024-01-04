@@ -33,7 +33,7 @@ def query_cmr(polarization):
         if 'CMR-Search-After' not in response.headers:
             break
         headers['CMR-Search-After'] = response.headers['CMR-Search-After']
-        return vsis3_uris
+    return vsis3_uris
 
 
 def main():
