@@ -217,7 +217,6 @@ def main():
                 overview_name = f'{output_name}_overview'
                 local_overview_filename = f'{overview_name}.crf'
                 s3_overview = f'{config["overview_path"]}{overview_name}.crf'
-                service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
                 logging.info('Creating geodatabase')
                 geodatabase = arcpy.management.CreateFileGDB(
