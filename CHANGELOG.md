@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.6.7]
 ### Added
 - Script for the use of the EGIS team to generate OPERA RTC mosaic datasets without the publishing step
+- Script for the use of the ASF development team to generate services using test buckets instead of EDC source rasters
 
 ## [0.6.6]
 ### Added
