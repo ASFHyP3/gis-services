@@ -13,7 +13,7 @@
   ],
   "default_raster_function_template": "Sentinel1_RTC_dB_Stretch.rft.xml",
   "service_folder": "OPERA",
-  "service_name": "OPERA_RTC_VV_URLS",
+  "service_name": "OPERA_RTC_VV",
   "service_definition_overrides": {
     "Type": "esriServiceDefinitionType_Replacement",
     "Configurations/SVCConfiguration/Definition/Description": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL).",
