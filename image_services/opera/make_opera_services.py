@@ -326,6 +326,9 @@ def main():
                     out_rasterdataset=local_overview,
                 )
 
+            del os.environ['AWS_ACCESS_KEY_ID']
+            del os.environ['AWS_SECRET_ACCESS_KEY']
+
             os.environ['AWS_DEFAULT_PROFILE'] = 'hyp3'
             os.environ['AWS_PROFILE'] = 'hyp3'
 
