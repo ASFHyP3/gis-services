@@ -119,16 +119,17 @@ def calculate_overview_fields(mosaic_dataset, local_path):
         print('Updating Overview Field Values')
         for row in ds_cursor:
             if row[0] == 'Dataset':
-                ProjectName, ProdTypeOvField, PolOvField, _, _, _ = row[6].split('_')
+                ProjectName, _, ProdTypeOvField, _, _, _, _, _, _, PolOvField = row[9].split('_')
+                ProdType = ProdTypeOvField.split('-')[0]
 
                 DLOvField = 'Zoom in further to access download link'
 
-                row[0] = f'{ProjectName}_{ProdTypeOvField}_{PolOvField}_Overview'
+                row[0] = f'{ProjectName}_{ProdType}_{PolOvField}_Overview'
                 row[1] = 450
                 row[2] = 2
                 row[3] = overview_start_date
                 row[4] = overview_end_date
-                row[5] = f'{ProjectName}_{ProdTypeOvField}_{PolOvField} Mosaic Overview'
+                row[5] = f'{ProjectName}_{ProdType}_{PolOvField} Mosaic Overview'
                 row[7] = PolOvField
                 row[8] = DLOvField
                 row[9] = DLOvField
