@@ -1,7 +1,7 @@
 <RasterFunctionTemplate xsi:type='typens:RasterFunctionTemplate'
                         xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
                         xmlns:xs='http://www.w3.org/2001/XMLSchema'
-                        xmlns:typens='http://www.esri.com/schemas/ArcGIS/3.0.0'>
+                        xmlns:typens='http://www.esri.com/schemas/ArcGIS/3.1.0'>
     <Name>Sentinel-1 RTC dB Stretch</Name>
     <Description>Sentinel-1 RTC data in dB scale with a stretch applied</Description>
     <Function xsi:type='typens:StretchFunction'
@@ -150,7 +150,7 @@
                      id='ID25'>
                 <Name>StretchType</Name>
                 <Description></Description>
-                <Value xsi:type='xs:int'>0</Value>
+                <Value xsi:type='xs:int'>6</Value>
                 <IsDataset>false</IsDataset>
             </AnyType>
             <AnyType xsi:type='typens:RasterFunctionVariable'
@@ -178,7 +178,7 @@
                      id='ID29'>
                 <Name>MaxPercent</Name>
                 <Description></Description>
-                <Value xsi:type='xs:double'>0.5</Value>
+                <Value xsi:type='xs:double'>0.25</Value>
                 <IsDataset>false</IsDataset>
             </AnyType>
             <AnyType xsi:type='typens:RasterFunctionVariable'
@@ -206,7 +206,7 @@
                      id='ID33'>
                 <Name>DRA</Name>
                 <Description></Description>
-                <Value xsi:type='xs:boolean'>false</Value>
+                <Value xsi:type='xs:boolean'>true</Value>
                 <IsDataset>false</IsDataset>
             </AnyType>
             <AnyType xsi:type='typens:RasterFunctionVariable'
@@ -217,7 +217,7 @@
                        id='ID35'>
                     <Argument xsi:type='typens:RasterStatistics'
                               id='ID36'>
-                        <Min>-25</Min>
+                        <Min>-20</Min>
                         <Max>0</Max>
                         <Mean>-8</Mean>
                         <StandardDeviation>-6</StandardDeviation>

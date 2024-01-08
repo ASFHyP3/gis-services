@@ -10,20 +10,22 @@ from pathlib import Path
 from typing import List
 
 import arcpy
+import boto3
 from arcgis.gis.server import Server
 from lxml import etree
 from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
 
-gdal.UseExceptions()
-gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
-
-def get_rasters(dataset_name: str) -> List[str]:
-    filename = f'{dataset_name}_vsis3_urls.csv'
-    with open(filename) as urlfile:
-        records = urlfile.read().splitlines()[:-1]
-    return [f'{record}' for record in records]
+def get_rasters(bucket: str, prefix: str, suffix: str) -> List[str]:
+    rasters = []
+    s3 = boto3.client('s3')
+    paginator = s3.get_paginator('list_objects_v2')
+    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+        for obj in page['Contents']:
+            if obj['Key'].endswith(suffix):
+                rasters.append(f'/vsis3/{bucket}/{obj["Key"]}')
+    return rasters
 
 
 def get_pixel_type(data_type: str) -> int:
@@ -207,7 +209,7 @@ def main():
     arcpy.env.parallelProcessingFactor = '75%'
 
     try:
-        rasters = get_rasters(csv_file.replace(".csv", ""))
+        rasters = get_rasters(config['bucket'], config['s3_prefix'], config['s3_suffix'])
         update_csv(csv_file, rasters, config['bucket'])
 
         for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
@@ -282,7 +284,7 @@ def main():
             blend_width=10,
             view_point_x=300,
             view_point_y=300,
-            max_num_per_mosaic=75,
+            max_num_per_mosaic=50,
             cell_size_tolerance=1.8,
             cell_size=3,
             metadata_level='BASIC',
@@ -325,9 +327,6 @@ def main():
                     in_raster=mosaic_dataset,
                     out_rasterdataset=local_overview,
                 )
-
-            del os.environ['AWS_ACCESS_KEY_ID']
-            del os.environ['AWS_SECRET_ACCESS_KEY']
 
             os.environ['AWS_DEFAULT_PROFILE'] = 'hyp3'
             os.environ['AWS_PROFILE'] = 'hyp3'

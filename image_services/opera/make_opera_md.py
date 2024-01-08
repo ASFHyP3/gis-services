@@ -10,7 +10,6 @@ from pathlib import Path
 from typing import List
 
 import arcpy
-from arcgis.gis.server import Server
 from lxml import etree
 from osgeo import gdal, osr
 from tenacity import Retrying, before_sleep_log, stop_after_attempt, wait_fixed
@@ -218,7 +217,6 @@ def main():
                 overview_name = f'{output_name}_overview'
                 local_overview_filename = f'{overview_name}.crf'
                 s3_overview = f'{config["overview_path"]}{overview_name}.crf'
-                service_definition = os.path.join(args.working_directory, f'{output_name}.sd')
 
                 logging.info('Creating geodatabase')
                 geodatabase = arcpy.management.CreateFileGDB(
@@ -326,12 +324,6 @@ def main():
                     out_rasterdataset=local_overview,
                 )
 
-            del os.environ['AWS_ACCESS_KEY_ID']
-            del os.environ['AWS_SECRET_ACCESS_KEY']
-
-            os.environ['AWS_DEFAULT_PROFILE'] = 'hyp3'
-            os.environ['AWS_PROFILE'] = 'hyp3'
-
             logging.info(f'Moving CRF to {s3_overview}')
             subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
 
@@ -344,42 +336,6 @@ def main():
 
         logging.info('Populate overview attributes')
         calculate_overview_fields(mosaic_dataset, args.working_directory)
-
-        with tempfile.NamedTemporaryFile(suffix='.sddraft') as service_definition_draft:
-            logging.info(f'Creating draft service definition {service_definition_draft.name}')
-            arcpy.CreateImageSDDraft(
-                raster_or_mosaic_layer=mosaic_dataset,
-                out_sddraft=service_definition_draft.name,
-                service_name=config['service_name'],
-            )
-
-            tree = etree.parse(service_definition_draft.name)
-
-            logging.info(f'Enabling WMS in {service_definition_draft.name}')
-            extensions = tree.find('/Configurations/SVCConfiguration/Definition/Extensions')
-            extensions.append(build_wms_extension())
-
-            logging.info(f'Editing service definition overrides for {service_definition_draft.name}')
-            for key, value in config['service_definition_overrides'].items():
-                tree.find(key).text = value
-
-            tree.write(service_definition_draft.name)
-
-            logging.info(f'Creating service definition {service_definition}')
-            arcpy.server.StageService(
-                in_service_definition_draft=service_definition_draft.name,
-                out_service_definition=service_definition,
-            )
-
-        with open(args.server_connection_file) as f:
-            server_connection = json.load(f)
-
-        for attempt in Retrying(stop=stop_after_attempt(3), reraise=True,
-                                before_sleep=before_sleep_log(logging, logging.WARNING)):
-            with attempt:
-                logging.info(f'Publishing {service_definition}')
-                server = Server(**server_connection)
-                server.publish_sd(service_definition, folder=config['service_folder'])
 
     except arcpy.ExecuteError:
         logging.error(arcpy.GetMessages())
