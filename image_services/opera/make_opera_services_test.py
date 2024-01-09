@@ -310,7 +310,7 @@ def main():
         )
 
         logging.info(f'Calculating custom field values in {mosaic_dataset}')
-        tag_string = f'"_".join(!Name!.split("_")[0:3] + {config["opera_version"]} + [!Name!.split("_")[9]])'
+        tag_string = f'"_".join(!Name!.split("_")[0:3] + "{config["opera_version"]}" + [!Name!.split("_")[9]])'
         arcpy.management.CalculateFields(
             in_table=mosaic_dataset,
             fields=[
