@@ -4,7 +4,7 @@
   "bucket": "asf-cumulus-prod-opera-products",
   "overview_path": "/vsis3/gis-service-overviews/overviews/",
   "s3_suffix": "_VV.tif",
-  "dataset_name": "RTC_VV",
+  "dataset_name": "OPERA_L2_RTC_S1_V1_VV",
   "raster_function_templates": [
     "Sentinel1_RTC_Power.rft.xml",
     "Sentinel1_RTC_Amplitude.rft.xml",
@@ -13,7 +13,7 @@
   ],
   "default_raster_function_template": "Sentinel1_RTC_dB_Stretch.rft.xml",
   "service_folder": "OPERA",
-  "service_name": "OPERA_RTC_VV",
+  "service_name": "OPERA_L2_RTC_S1_V1_VV",
   "service_definition_overrides": {
     "Type": "esriServiceDefinitionType_Replacement",
     "Configurations/SVCConfiguration/Definition/Description": "OPERA Level-2 Radiometric Terrain Corrected (RTC) products in VV polarization generated from Sentinel-1 SAR imagery, processed by OPERA (JPL).",
