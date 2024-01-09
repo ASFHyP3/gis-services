@@ -116,20 +116,19 @@ def calculate_overview_fields(mosaic_dataset, local_path):
     overview_end_date = max(start_dates).replace(microsecond=0) + datetime.timedelta(hours=8)
 
     tag = [row[0] for row in arcpy.da.SearchCursor(mosaic_dataset, ['Tag']) if row[0] != 'Dataset']
-    project_name, _, prod_type, polarization = tag[0].split('_')
-    prod_type = prod_type.split('-')[0]
+    _, _, _, _, polarization = tag[0].split('_')
     overview_description = 'Zoom in further to access download link'
 
     if ds_cursor is not None:
         print('Updating Overview Field Values')
         for row in ds_cursor:
             if row[0] == 'Dataset':
-                row[0] = f'{project_name}_{prod_type}_{polarization}_Overview'
+                row[0] = f'{tag[0]}_Overview'
                 row[1] = 450
                 row[2] = 2
                 row[3] = overview_start_date
                 row[4] = overview_end_date
-                row[5] = f'{project_name}_{prod_type}_{polarization} Mosaic Overview'
+                row[5] = f'{tag[0]} Mosaic Overview'
                 row[7] = polarization
                 row[8] = overview_description
                 row[9] = overview_description
@@ -215,7 +214,7 @@ def main():
                                 before_sleep=before_sleep_log(logging, logging.WARNING)):
             with attempt:
                 today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
-                output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
+                output_name = f'{config["dataset_name"]}_{today}'
                 overview_name = f'{output_name}_overview'
                 local_overview_filename = f'{overview_name}.crf'
                 s3_overview = f'{config["overview_path"]}{overview_name}.crf'
@@ -309,11 +308,12 @@ def main():
         )
 
         logging.info(f'Calculating custom field values in {mosaic_dataset}')
+        tag_string = f'"_".join(!Name!.split("_")[0:3] + ["{config["opera_version"]}"] + [!Name!.split("_")[9]])'
         arcpy.management.CalculateFields(
             in_table=mosaic_dataset,
             fields=[
                 ['MaxPS', '460'],
-                ['Tag', '"_".join(!Name!.split("_")[0:3] + [!Name!.split("_")[9]])'],
+                ['Tag', tag_string],
                 ['GroupName', '!Name!.rsplit("_", 1)[0]'],
             ],
         )
