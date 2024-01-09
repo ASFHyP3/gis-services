@@ -315,7 +315,7 @@ def main():
             in_table=mosaic_dataset,
             fields=[
                 ['MaxPS', '460'],
-                ['Tag', tag_string],
+                ['Tag', f'"_".join(!Name!.split("_")[0:3] + [!Name!.split("_")[9]])'],
                 ['GroupName', '!Name!.rsplit("_", 1)[0]'],
             ],
         )
