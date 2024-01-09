@@ -216,7 +216,7 @@ def main():
                                 before_sleep=before_sleep_log(logging, logging.WARNING)):
             with attempt:
                 today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
-                output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
+                output_name = f'{config["dataset_name"]}_{today}'
                 overview_name = f'{output_name}_overview'
                 local_overview_filename = f'{overview_name}.crf'
                 s3_overview = f'{config["overview_path"]}{overview_name}.crf'
