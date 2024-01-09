@@ -117,23 +117,24 @@ def calculate_overview_fields(mosaic_dataset, local_path):
     overview_start_date = min(start_dates).replace(microsecond=0) + datetime.timedelta(hours=-8)
     overview_end_date = max(start_dates).replace(microsecond=0) + datetime.timedelta(hours=8)
 
+    tag = [row[0] for row in arcpy.da.SearchCursor(mosaic_dataset, ['Tag']) if row[0] != 'Dataset']
+    project_name, _, prod_type, polarization = tag[0].split('_')
+    prod_type = prod_type.split('-')[0]
+    overview_description = 'Zoom in further to access download link'
+
     if ds_cursor is not None:
         print('Updating Overview Field Values')
         for row in ds_cursor:
             if row[0] == 'Dataset':
-                ProjectName, ProdTypeOvField, PolOvField, _, _, _ = row[6].split('_')
-
-                DLOvField = 'Zoom in further to access download link'
-
-                row[0] = f'{ProjectName}_{ProdTypeOvField}_{PolOvField}_Overview'
+                row[0] = f'{project_name}_{prod_type}_{polarization}_Overview'
                 row[1] = 450
                 row[2] = 2
                 row[3] = overview_start_date
                 row[4] = overview_end_date
-                row[5] = f'{ProjectName}_{ProdTypeOvField}_{PolOvField} Mosaic Overview'
-                row[7] = PolOvField
-                row[8] = DLOvField
-                row[9] = DLOvField
+                row[5] = f'{project_name}_{prod_type}_{polarization} Mosaic Overview'
+                row[7] = polarization
+                row[8] = overview_description
+                row[9] = overview_description
 
                 ds_cursor.updateRow(row)
                 print('Overview fields updated')
@@ -284,7 +285,7 @@ def main():
             blend_width=10,
             view_point_x=300,
             view_point_y=300,
-            max_num_per_mosaic=50,
+            max_num_per_mosaic=75,
             cell_size_tolerance=1.8,
             cell_size=3,
             metadata_level='BASIC',
