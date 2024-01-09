@@ -116,7 +116,7 @@ def calculate_overview_fields(mosaic_dataset, local_path):
     overview_end_date = max(start_dates).replace(microsecond=0) + datetime.timedelta(hours=8)
 
     tag = [row[0] for row in arcpy.da.SearchCursor(mosaic_dataset, ['Tag']) if row[0] != 'Dataset']
-    project_name, prod_type, _, polarization = tag[0].split('_')
+    project_name, _, prod_type, polarization = tag[0].split('_')
     prod_type = prod_type.split('-')[0]
     overview_description = 'Zoom in further to access download link'
 
