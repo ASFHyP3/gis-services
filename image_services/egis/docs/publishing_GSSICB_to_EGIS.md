@@ -56,6 +56,8 @@ Publishers must add the appropriate NASA Portal(s) to their list of portals in A
 
 *The same workflow is used for publishing to the NASA SIT, UAT, and Production Portals. You will need to add a separate connection for each of these portals before you can publish to it.*
 
+Currently, only the [EGIS PRD Server](https://gis.earthdata.nasa.gov/portal/home/ "https://gis.earthdata.nasa.gov/portal/home/" ){target=_blank} is available for publishing services. There is now a UAT environment within the PRD server that can be used for testing services, but the EGIS SIT and UAT Server environments are now set up only for internal EGIS server configuration testing activities.
+
 1. Open a project in ArcGIS Pro using the Map template
 2. Click the Project menu and click on the Portals section
 3. Click the Add Portal button
@@ -67,8 +69,10 @@ Publishers must add the appropriate NASA Portal(s) to their list of portals in A
 
 ## Publish the Mosaic Dataset as an Image Service
 
-1. Right-click the mosaic dataset in the Catalog pane and select Share As Web Layer
+1. Right-click the mosaic dataset in the **Catalog** pane and select Share As Web Layer
 ![Share As Web Layer](images/ShareAsWebLayer.PNG)
+    *Note that the Share As Web Layer option is also available as an option when right-clicking item in the **Contents** pane, but the option must be selected from the **Catalog** pane for a successful connection to the EGIS Portal.* 
+
 2. Verify the metadata entries in the General tab
 ![Share As Web Layer Dialog Metadata](images/ShareAsWebLayerDialogMetadata.PNG)
    1. The Name field should be automatically populated with the Title that was entered in the mosaic dataset metadata (i.e. `GSSICB_Median_6_day_VV_Coherence_Dec_Jan_Feb`).
@@ -78,7 +82,9 @@ Publishers must add the appropriate NASA Portal(s) to their list of portals in A
 3. Set the options in the General tab
 ![Share As Web Layer Dialog](images/ShareAsWebLayerDialog.PNG)
    1. Set the Portal Folder to GSSICB
-   2. Set the Server to https://url_to_gis_server/image (the `/image` option is not the default in the Server dropdown menu, and if this is not changed, there will be a licensing error)
+   2. Set the Server to one of the following servers (using the default option in the Server dropdown menu will result a licensing error): 
+      - https://url_to_gis_server/image for publication-ready services
+      - https://url_to_gis_server/UAT for test services not ready to be shared
    3. Set the server Folder to GSSICB
    4. Select Everyone and Earthdata GIS under the Share options
       * **For the production server, the Everyone option is not available to us. Select the Organization option, and contact the EGIS team to request that they share the service publicly.**
