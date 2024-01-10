@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.6.8]
 ### Changed
 - Updated guidance for publishing services to EGIS Image Server
+- Updated approach for tagging datasets and naming conventions for the datasets and services to include the OPERA version number and more descriptive fields for the overview record
 
 ## [0.6.7]
 ### Added
