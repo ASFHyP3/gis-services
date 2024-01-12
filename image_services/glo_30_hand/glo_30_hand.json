@@ -1,0 +1,37 @@
+{
+  "project_name": "GLO30-HAND",
+  "raster_store": "/home/arcgis/raster_store/",
+  "bucket": "glo-30-hand/",
+  "s3_prefix": ",/v1/2021/",
+  "s3_suffix": "_HH.tif",
+  "dataset_name": "GLO30_HAND",
+  "raster_function_templates": [
+    "GLO30_HAND_2SDstretch.rft.xml"
+  ],
+  "default_raster_function_template": "GLO30_HAND_2SDstretch.rft.xml",
+  "service_folder": "GlobalHAND",
+  "service_name": "GLO30_HAND_updates",
+  "service_definition_overrides": {
+    "Type": "esriServiceDefinitionType_Replacement",
+    "Configurations/SVCConfiguration/Definition/Description": "Height Above Nearest Drainage (HAND) is a terrain model that normalizes topography to the relative heights along the drainage network and is used to describe the relative soil gravitational potentials or the local drainage potentials. Each pixel value represents the vertical distance to the nearest drainage. The HAND data provides near-worldwide land coverage at 30 meters and was produced from the 2021 release of the Copernicus GLO-30 Public DEM as distributed in the Registry of Open Data on AWS (https://registry.opendata.aws/copernicus-dem/) using the the ASF Tools Python Package (https://hyp3-docs.asf.alaska.edu/tools/asf_tools_api/#asf_tools.hand.calculate) and the PySheds Python library (https://github.com/mdbartos/pysheds). The HAND data are provided as a tiled set of Cloud Optimized GeoTIFFs (COGs) with 30-meter (1 arcsecond) pixel spacing. The COGs are organized into the same 1 degree by 1 degree grid tiles as the GLO-30 DEM, and individual tiles are pixel-aligned to the corresponding COG DEM tile.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='description']/Value": "Height Above Nearest Drainage (HAND) is a terrain model that normalizes topography to the relative heights along the drainage network and is used to describe the relative soil gravitational potentials or the local drainage potentials. Each pixel value represents the vertical distance to the nearest drainage. The HAND data provides near-worldwide land coverage at 30 meters and was produced from the 2021 release of the Copernicus GLO-30 Public DEM as distributed in the Registry of Open Data on AWS (https://registry.opendata.aws/copernicus-dem/) using the the ASF Tools Python Package (https://hyp3-docs.asf.alaska.edu/tools/asf_tools_api/#asf_tools.hand.calculate) and the PySheds Python library (https://github.com/mdbartos/pysheds). The HAND data are provided as a tiled set of Cloud Optimized GeoTIFFs (COGs) with 30-meter (1 arcsecond) pixel spacing. The COGs are organized into the same 1 degree by 1 degree grid tiles as the GLO-30 DEM, and individual tiles are pixel-aligned to the corresponding COG DEM tile.",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='copyright']/Value": " TO DO ",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='idleTimeout']/Value": "3600",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='minInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='maxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='usageTimeout']/Value": "1200",
+    "Configurations/SVCConfiguration/Definition/ConfigurationProperties/PropertyArray/PropertySetProperty[Key='waitTimeout']/Value": "120",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='IdleTimeout']/Value": "3600",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='keepAliveInterval']/Value": "600",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MinInstances']/Value": "1",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='MaxInstances']/Value": "9",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='UsageTimeout']/Value": "1200",
+    "Configurations/SVCConfiguration/Definition/Props/PropertyArray/PropertySetProperty[Key='WaitTimeout']/Value": "120",
+    "ItemInfo/Title": "GLO30-HAND",
+    "ItemInfo/Credits": " TO DO ",
+    "ItemInfo/Description": " TO DO ",
+    "ItemInfo/Snippet": " TO DO ",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='title']/Value": "GLO30_HAND_WMS",
+    "Configurations/SVCConfiguration/Definition/Extensions/SVCExtension[TypeName='WMSServer']/Props/PropertyArray/PropertySetProperty[Key='abstract']/Value": " TO DO "
+  }
+}
