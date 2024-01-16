@@ -4,6 +4,7 @@
   "bucket": "glo-30-hand/",
   "s3_prefix": ",/v1/2021/",
   "s3_suffix": "_HH.tif",
+  "overview_path": "/vsis3/hyp3-nasa-disasters/overviews",
   "dataset_name": "GLO30_HAND",
   "raster_function_templates": [
     "GLO30_HAND_2SDstretch.rft.xml"
