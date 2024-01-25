@@ -6,20 +6,20 @@ OPERA GIS Services
 ## Steps for creating a service
 Below are the steps to create an image service using OPERA data. 
 
-### Check permissions and server set up
-1. Prior to running the workflow, ensure that permissions are granted to pull from the EDC-hosted S3 bucket `asf-cumulus-prod-opera-products` and push and pull from a separate S3 bucket for overviews. 
+### 1. Check permissions and server set up
+Prior to running the workflow, ensure that permissions are granted to pull from the EDC-hosted S3 bucket `asf-cumulus-prod-opera-products` and push and pull from a separate S3 bucket for overviews. 
 
-2. Ensure that the `arcpy` conda environment is created and activated. This can be done in the server's terminal with the following.
+Ensure that the `arcpy` conda environment is created and activated. 
 ```
 cd /home/arcgis/gis-services/image_server/
 mamba env create -f environment.yml
 conda env activate arcpy
 ```
 
-3. Check there is a server connection json file. This workflow will assume that this file will be in the home directory at `/home/arcgis`. If there is another location for this file, make sure to enter this as an argument in [when running the code](#Run-the-code).
+Check there is a server connection json file. This workflow will assume that this file will be in the home directory (`/home/arcgis`). If there is another location for this file, make sure to enter its location as an argument [when running the code](#Run-the-image-services-code).
 
-### Set up appropriate config file
-The rest of this workflow will require a configuration file to populate the image service. This configuration must include: 
+### 2. Set up appropriate config file
+The rest of this workflow will require a configuration file to populate the image service. This configuration *must* include: 
 - `project_name` : the project name
 - `raster_store`: A place to store rasters locally 
 - `bucket`: the S3 bucket in which the source rasters are located
@@ -34,7 +34,7 @@ The rest of this workflow will require a configuration file to populate the imag
 
 The service definition overrides are required for metadata but not as critical for the creation steps. Feel free to copy an existing configuration file and update it for your needs, as most of the information remains consistent across services.
 
-### Create a list of URIs to include
+### 3. Create a list of URIs to include
 This workflow uses a list of raster vsis3 URIs to specify desired rasters. This is created using the `update_opera_urls.py` and can be automated to run on a cron job using `update_opera_urls.sh` so that the latest rasters are included. The script `update_opera_urls.py` can be updated to include limiting search parameters. This must be run for each unique dataset name. If there are major updates to the list of rasters, it may be useful to delete the existing url csv and re-run for an updated list.
 
 You will need to specify the configuration file and working directory. The working directory parameter is optional. 
@@ -42,13 +42,13 @@ You will need to specify the configuration file and working directory. The worki
 python /home/arcgis/gis-services/image_services/opera/update_opera_urls.py /home/arcgis/gis-services/image_services/opera/config/rtc_vv.json --working_directory /home/arcgis/gis-services/image_services/opera
 ```
 
-### Run the code
+### 4. Run the image services code
 In your working directory, run `make_opera_services.py` with the configuration file created in the previous step. If you are not running from the working directory, specify the directory in which you want the resulting `csv`, `gdb`, and `sd` files to be saved with the `--curent-working-directory` tag. If your server connection file lives outside of the home directory, specify its location with the `--server-connection-file` tag. 
 ```
 python home/arcgis/gis-services/image_services/opera/make_opera_services.py home/arcgis/gis-services/image_services/opera/config/rtc_vv.json
 ```
 Common issues result from server permission errors and server connection glitches. Services can take a while to create, so if you are unsure if there's progress, check that the `.csv` file is gaining entries. 
 
-### Check your image services! 
+### 5. Check your image services! 
 Log on to your image service manager and check that everything worked as expected! 
 In our experience, if you successfully run the workflow, the image services work as expected. Permissions-related issues are common and can arise if the server does not have access to the mosaiced rasters. Make sure you can zoom in and out to different levels, ensuring to check overviews and if rasters load. The services time out if loading takes more than a minute, so the browser's developer tools can be useful to check how long each layer takes to load. We also check that the features in the table matches the number of rasters plus an overview layer.
