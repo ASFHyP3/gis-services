@@ -7,7 +7,22 @@ OPERA GIS Services
 Below are the steps to create an image service using OPERA data. 
 
 ### 1. Check permissions and server set up
-Prior to running the workflow, ensure that permissions are granted to pull from the EDC-hosted S3 bucket `asf-cumulus-prod-opera-products` and push and pull from a separate S3 bucket for overviews. 
+Prior to running the workflow, ensure that permissions are granted to pull from the EDC-hosted S3 bucket `asf-cumulus-prod-opera-products`. In a cloudformation template, this would include at least these permissions: 
+```
+ListBucket
+GetBucketAcl
+GetBucketLocation
+GetObject
+GetObjectVersion
+GetObjectTagging
+```
+
+These permissions will also be required for a separate S3 bucket dedicated to overviews. The overview bucket will also require the following push permission:
+```
+PutObject
+```
+
+Check out [this link](https://github.com/ASFHyP3/gis-services/blob/develop/image_server/cloudformation.yml#L145) for example of the CloudFormation template permissions. 
 
 Ensure that the `arcpy` conda environment is created and activated. 
 ```
@@ -16,7 +31,15 @@ mamba env create -f environment.yml
 conda env activate arcpy
 ```
 
-Check there is a server connection json file. This workflow will assume that this file will be in the home directory (`/home/arcgis`). If there is another location for this file, make sure to enter its location as an argument [when running the code](#Run-the-image-services-code).
+This workflow assumes there is a "server connection" json file that contains the connection information needed to publish the final mosaic dataset to the ArcGIS Image Server:
+```
+{
+    "url": "https://localhost:6443/arcgis/admin",
+    "username": "...",
+    "password": "..."
+}
+```
+You can write this information to `/home/arcgis/server_connection.json`, which is the default path. If you decide on another location for this file, make sure to enter its path as an argument [when running the code](#Run-the-image-services-code).
 
 ### 2. Set up appropriate config file
 The rest of this workflow will require a configuration file to populate the image service. This configuration *must* include: 
@@ -32,7 +55,7 @@ The rest of this workflow will require a configuration file to populate the imag
 - `service_folder`: folder on the service management site where the image service will be saved
 - `service_name`: name of the service on the server site and ArcOnline
 
-The service definition overrides are required for metadata but not as critical for the creation steps. Feel free to copy [an existing configuration file](config) and update it for your needs, as most of the information remains consistent across services.
+The service definition overrides are required for metadata but not as critical for the creation steps. Feel free to copy [an existing configuration file](https://github.com/ASFHyP3/gis-services/blob/develop/image_services/opera/config) and update it for your needs, as most of the information remains consistent across services.
 
 ### 3. Create a list of URIs to include
 This workflow uses a list of raster vsis3 URIs to specify desired rasters. This is created using the `update_opera_urls.py` and can be automated to run on a cron job using `update_opera_urls.sh` so that the latest rasters are included. The script `update_opera_urls.py` can be updated to include limiting search parameters. This must be run for each unique dataset name. If there are major updates to the list of rasters, it may be useful to delete the existing url csv and re-run for an updated list.
