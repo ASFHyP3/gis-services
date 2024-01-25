@@ -45,7 +45,7 @@ python /home/arcgis/gis-services/image_services/opera/update_opera_urls.py /home
 ### 4. Run the image services code
 In your working directory, run `make_opera_services.py` with the configuration file created in the previous step. If you are not running from the working directory, specify the directory in which you want the resulting `csv`, `gdb`, and `sd` files to be saved with the `--curent-working-directory` tag. If your server connection file lives outside of the home directory, specify its location with the `--server-connection-file` tag. 
 ```
-python home/arcgis/gis-services/image_services/opera/make_opera_services.py home/arcgis/gis-services/image_services/opera/config/rtc_vv.json
+python /home/arcgis/gis-services/image_services/opera/make_opera_services.py /home/arcgis/gis-services/image_services/opera/config/rtc_vv.json
 ```
 Common issues result from server permission errors and server connection glitches. Services can take a while to create, so if you are unsure if there's progress, check that the `.csv` file is gaining entries. 
 
