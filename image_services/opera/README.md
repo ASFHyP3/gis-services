@@ -32,7 +32,7 @@ The rest of this workflow will require a configuration file to populate the imag
 - `service_folder`: folder on the service management site where the image service will be saved
 - `service_name`: name of the service on the server site and ArcOnline
 
-The service definition overrides are required for metadata but not as critical for the creation steps. Feel free to copy an existing configuration file and update it for your needs, as most of the information remains consistent across services.
+The service definition overrides are required for metadata but not as critical for the creation steps. Feel free to copy [an existing configuration file](config) and update it for your needs, as most of the information remains consistent across services.
 
 ### 3. Create a list of URIs to include
 This workflow uses a list of raster vsis3 URIs to specify desired rasters. This is created using the `update_opera_urls.py` and can be automated to run on a cron job using `update_opera_urls.sh` so that the latest rasters are included. The script `update_opera_urls.py` can be updated to include limiting search parameters. This must be run for each unique dataset name. If there are major updates to the list of rasters, it may be useful to delete the existing url csv and re-run for an updated list.
