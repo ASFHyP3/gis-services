@@ -72,7 +72,7 @@ def render_template(template: str, payload: dict) -> str:
     return rendered
 
 
-data_types = ['COH06']
+data_types = ['COH24']
 polarizations = ['VV', 'HH']
 
 for data_type in data_types:
