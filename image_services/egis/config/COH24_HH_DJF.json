@@ -1,0 +1,11 @@
+{
+  "project_name": "GSSICB",
+  "s3_prefix": "tiles/",
+  "s3_suffix": "_winter_hh_COH24.tif",
+  "dataset_name": "COH24_HH_DJF",
+  "raster_function_templates": [
+    "ScaledCoherence.rft.xml",
+    "UnscaledCoherence.rft.xml"
+  ],
+  "default_raster_function_template": "UnscaledCoherence.rft.xml"
+}
