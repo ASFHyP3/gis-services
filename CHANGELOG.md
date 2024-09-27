@@ -7,13 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.7.0]
 ### Removed
 - Deleted files related to PDC image services.
-
-## [0.6.11]
 ### Added
 - Configuration files for COH24 services
-
-## [0.6.10]
-### Added
 - Added a README file to `/gis-services/image_services/opera/` to describe the OPERA service workflow
 
 ## [0.6.9]
