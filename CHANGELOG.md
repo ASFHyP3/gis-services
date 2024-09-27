@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0]
+### Removed
+- Deleted files related to PDC image services.
+### Added
+- Configuration files for COH24 services
+- Added a README file to `/gis-services/image_services/opera/` to describe the OPERA service workflow
 
 ## [0.6.9]
 ### Changed
