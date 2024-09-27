@@ -166,7 +166,6 @@ Resources:
                 Resource:
                   - arn:aws:s3:::hyp3-nasa-disasters/overviews/*
                   - arn:aws:s3:::hyp3-examples/overviews/*
-                  - arn:aws:s3:::hyp3-pdc-data/overviews/*
                   - arn:aws:s3:::hyp3-testing/*
                   - arn:aws:s3:::gis-service-overviews/*
               - Effect: Allow
