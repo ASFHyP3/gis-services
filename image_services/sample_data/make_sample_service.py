@@ -106,8 +106,9 @@ with open(args.config_file) as f:
 
 csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
-raster_function_template = ''.join([f'{template_directory / template};'
-                                    for template in config['raster_function_templates']])
+raster_function_template = ''.join(
+    [f'{template_directory / template};' for template in config['raster_function_templates']]
+)
 if config['default_raster_function_template'] != 'None':
     default_raster_function_template = str(template_directory / config['default_raster_function_template'])
 else:
@@ -120,8 +121,12 @@ try:
     rasters = get_rasters(bucket, config['s3_prefix'], config['s3_suffix'])
     update_csv(csv_file, rasters)
 
-    for attempt in Retrying(stop=stop_after_attempt(3), wait=wait_fixed(60), reraise=True,
-                            before_sleep=before_sleep_log(logging, logging.WARNING)):
+    for attempt in Retrying(
+        stop=stop_after_attempt(3),
+        wait=wait_fixed(60),
+        reraise=True,
+        before_sleep=before_sleep_log(logging, logging.WARNING),
+    ):
         with attempt:
             today = datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d_%H%M')
             output_name = f'{config["project_name"]}_{config["dataset_name"]}_{today}'
@@ -137,11 +142,13 @@ try:
             )
 
             logging.info('Creating mosaic dataset')
-            mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
-                in_workspace=geodatabase,
-                in_mosaicdataset_name=config['dataset_name'],
-                coordinate_system=3857,
-            ))
+            mosaic_dataset = str(
+                arcpy.management.CreateMosaicDataset(
+                    in_workspace=geodatabase,
+                    in_mosaicdataset_name=config['dataset_name'],
+                    coordinate_system=3857,
+                )
+            )
 
             logging.info(f'Adding fields to {mosaic_dataset}')
             arcpy.management.AddFields(
@@ -290,8 +297,9 @@ try:
     with open(args.server_connection_file) as f:
         server_connection = json.load(f)
 
-    for attempt in Retrying(stop=stop_after_attempt(3), reraise=True,
-                            before_sleep=before_sleep_log(logging, logging.WARNING)):
+    for attempt in Retrying(
+        stop=stop_after_attempt(3), reraise=True, before_sleep=before_sleep_log(logging, logging.WARNING)
+    ):
         with attempt:
             logging.info(f'Publishing {service_definition}')
             server = Server(**server_connection)

@@ -33,28 +33,31 @@ def main():
     polarization = json.load(open(args.config_file))['s3_suffix'][1:3]
 
     if polarization[0] != polarization[1]:
-        polarization_description = f'Values for the {polarization} (cross-polarized) polarization are generally ' \
-                                   f'driven by volume scattering, with more complex volume scatterers (such as dense ' \
-                                   f'vegetation) returning higher backscatter values. Surface water generally ' \
-                                   f'appears very dark, as it is predominantly a surface scatterer; most returns ' \
-                                   f'remain in the primary polarization. '
+        polarization_description = (
+            f'Values for the {polarization} (cross-polarized) polarization are generally '
+            f'driven by volume scattering, with more complex volume scatterers (such as dense '
+            f'vegetation) returning higher backscatter values. Surface water generally '
+            f'appears very dark, as it is predominantly a surface scatterer; most returns '
+            f'remain in the primary polarization. '
+        )
     elif polarization[0] == 'V':
-        polarization_description = f'Values for the {polarization} polarization are commonly driven by surface ' \
-                                   f'roughness and/or soil moisture, with rougher surfaces and higher soil moisture ' \
-                                   f'returning higher backscatter values. Surface water appears very dark under calm ' \
-                                   f'conditions, as the signal bounces off the surface away from the sensor. '
+        polarization_description = (
+            f'Values for the {polarization} polarization are commonly driven by surface '
+            f'roughness and/or soil moisture, with rougher surfaces and higher soil moisture '
+            f'returning higher backscatter values. Surface water appears very dark under calm '
+            f'conditions, as the signal bounces off the surface away from the sensor. '
+        )
     elif polarization[0] == 'H':
-        polarization_description = f'Values for the {polarization} polarization are a predominance of double-bounce ' \
-                                   f'scattering, with signal bouncing off the ground and then off of surficial ' \
-                                   f'objects (e.g., stemmy vegetation, manmade structures) and back towards the ' \
-                                   f'sensor. Surface water appears very dark under calm conditions, as the signal ' \
-                                   f'bounces off the surface away from the sensor. '
+        polarization_description = (
+            f'Values for the {polarization} polarization are a predominance of double-bounce '
+            f'scattering, with signal bouncing off the ground and then off of surficial '
+            f'objects (e.g., stemmy vegetation, manmade structures) and back towards the '
+            f'sensor. Surface water appears very dark under calm conditions, as the signal '
+            f'bounces off the surface away from the sensor. '
+        )
     else:
         polarization_description = ''
-    fields = {
-        'polarization': polarization,
-        'polarization_description': polarization_description
-    }
+    fields = {'polarization': polarization, 'polarization_description': polarization_description}
 
     output_text = render_template(args.template, fields)
     if args.output:

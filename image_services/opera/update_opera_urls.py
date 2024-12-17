@@ -7,6 +7,7 @@ import os
 import boto3
 import requests
 
+
 S3_CLIENT = boto3.client('s3')
 log = logging.getLogger(__name__)
 
