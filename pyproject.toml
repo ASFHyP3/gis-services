@@ -5,7 +5,9 @@ requires-python = "==3.8"
 
 [tool.ruff]
 line-length = 120
-src = ["src", "tests"]
+# The directories to consider when resolving first- vs. third-party imports.
+# See: https://docs.astral.sh/ruff/settings/#src
+src = []
 
 [tool.ruff.format]
 indent-style = "space"
