@@ -79,9 +79,18 @@ try:
             ['Tile', '!Name!.split("_")[4] + !Name!.split("_")[6]'],
             ['Tag', '"GLO30_HAND"'],
             ['Dataset_ID', '"Global_30m_HAND"'],
-            ['ProductName', '"GLO30_HAND_"+ !Name!.split("_")[4] + !Name!.split("_")[6]'],
-            ['URLDisplay', '"GLO30_HAND_"+ !Name!.split("_")[4] + !Name!.split("_")[6]'],
-            ['DownloadURL', '"https://glo-30-hand.s3.amazonaws.com/v1/2021/" + !Name! + ".tif"'],
+            [
+                'ProductName',
+                '"GLO30_HAND_"+ !Name!.split("_")[4] + !Name!.split("_")[6]',
+            ],
+            [
+                'URLDisplay',
+                '"GLO30_HAND_"+ !Name!.split("_")[4] + !Name!.split("_")[6]',
+            ],
+            [
+                'DownloadURL',
+                '"https://glo-30-hand.s3.amazonaws.com/v1/2021/" + !Name! + ".tif"',
+            ],
             ['MaxPS', '610'],
         ],
     )

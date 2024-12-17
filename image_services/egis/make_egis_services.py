@@ -333,7 +333,16 @@ def main():
 
         os.environ['AWS_PROFILE'] = 'hyp3'
         logging.info(f'Moving CRF to {s3_overview}')
-        subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
+        subprocess.run(
+            [
+                'aws',
+                's3',
+                'cp',
+                local_overview,
+                s3_overview.replace('/vsis3/', 's3://'),
+                '--recursive',
+            ]
+        )
 
         logging.info('Adding overview to mosaic dataset')
         arcpy.management.AddRastersToMosaicDataset(

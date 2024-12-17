@@ -26,7 +26,12 @@ def render_template(template: str, payload: dict) -> str:
 def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-o', '--output', help='File to save output to (optional)')
-    parser.add_argument('-t', '--template', help='Metadata template to fill', default='rtc_metadata.txt.j2')
+    parser.add_argument(
+        '-t',
+        '--template',
+        help='Metadata template to fill',
+        default='rtc_metadata.txt.j2',
+    )
     parser.add_argument('config_file', help='Configuration file from which resources are imported')
     args = parser.parse_args()
 
