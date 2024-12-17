@@ -3,6 +3,7 @@ import json
 
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
 
+
 SEASONS = {
     'JJA': {
         'Season': 'summer',
@@ -23,7 +24,7 @@ SEASONS = {
         'Season': 'spring',
         'SeasonAbbrev': 'Mar/Apr/May',
         'SeasonFull': 'March/April/May',
-    }
+    },
 }
 
 
@@ -62,7 +63,7 @@ def main():
         'polarization': polarization,
         'months_abbreviated': SEASONS[season]['SeasonAbbrev'],
         'season': SEASONS[season]['Season'],
-        'months_full': SEASONS[season]['SeasonFull']
+        'months_full': SEASONS[season]['SeasonFull'],
     }
 
     output_text = render_template(args.template, fields)

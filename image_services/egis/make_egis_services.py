@@ -12,6 +12,7 @@ import arcpy
 import boto3
 from osgeo import gdal, osr
 
+
 gdal.UseExceptions()
 gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 
@@ -39,7 +40,7 @@ SEASONS = {
         'Season': 'March/April/May',
         'StartDate': '03/01/2020',
         'EndDate': '05/31/2020',
-    }
+    },
 }
 
 
@@ -69,7 +70,7 @@ def get_projection(srs_wkt: str) -> str:
 
 
 def remove_prefix(raster_path, prefix):
-    return raster_path[len(prefix):]
+    return raster_path[len(prefix) :]
 
 
 def get_raster_metadata(raster_path: str) -> dict:
@@ -135,9 +136,24 @@ def calculate_overview_fields(mosaic_dataset, local_path):
     # This function calculates custom attribute values for the overview record
     print('Calculating field values for overview record')
     ds = os.path.join(local_path, mosaic_dataset)
-    ds_cursor = arcpy.da.UpdateCursor(ds, ['Tag', 'MinPS', 'Category', 'StartDate', 'EndDate', 'GroupName',
-                                           'Name', 'ProductType', 'Season', 'Polarization', 'Tile', 'DownloadURL',
-                                           'URLDisplay'])
+    ds_cursor = arcpy.da.UpdateCursor(
+        ds,
+        [
+            'Tag',
+            'MinPS',
+            'Category',
+            'StartDate',
+            'EndDate',
+            'GroupName',
+            'Name',
+            'ProductType',
+            'Season',
+            'Polarization',
+            'Tile',
+            'DownloadURL',
+            'URLDisplay',
+        ],
+    )
     if ds_cursor is not None:
         print('Updating Overview Field Values')
         for row in ds_cursor:
@@ -187,8 +203,9 @@ def main():
 
     csv_file = os.path.join(args.working_directory, f'{config["project_name"]}_{config["dataset_name"]}.csv')
 
-    raster_function_template = ''.join([f'{template_directory / template};'
-                                        for template in config['raster_function_templates']])
+    raster_function_template = ''.join(
+        [f'{template_directory / template};' for template in config['raster_function_templates']]
+    )
     if config['default_raster_function_template'] != 'None':
         default_raster_function_template = str(template_directory / config['default_raster_function_template'])
     else:
@@ -214,11 +231,13 @@ def main():
         )
 
         logging.info('Creating mosaic dataset')
-        mosaic_dataset = str(arcpy.management.CreateMosaicDataset(
-            in_workspace=geodatabase,
-            in_mosaicdataset_name=config['dataset_name'],
-            coordinate_system=3857,
-        ))
+        mosaic_dataset = str(
+            arcpy.management.CreateMosaicDataset(
+                in_workspace=geodatabase,
+                in_mosaicdataset_name=config['dataset_name'],
+                coordinate_system=3857,
+            )
+        )
 
         logging.info(f'Adding source rasters to {mosaic_dataset}')
         arcpy.management.AddRastersToMosaicDataset(
@@ -274,8 +293,8 @@ def main():
             cell_size=3,
             metadata_level='BASIC',
             transmission_fields='Name;StartDate;EndDate;MinPS;MaxPS;LowPS;HighPS;Date;ZOrder;Dataset_ID;CenterX;'
-                                'CenterY;Tag;GroupName;StartDate;EndDate;ProductType;Season;Polarization;Tile;'
-                                'DownloadURL;URLDisplay',
+            'CenterY;Tag;GroupName;StartDate;EndDate;ProductType;Season;Polarization;Tile;'
+            'DownloadURL;URLDisplay',
             use_time='DISABLED',
             start_time_field='StartDate',
             end_time_field='EndDate',
@@ -314,7 +333,16 @@ def main():
 
         os.environ['AWS_PROFILE'] = 'hyp3'
         logging.info(f'Moving CRF to {s3_overview}')
-        subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
+        subprocess.run(
+            [
+                'aws',
+                's3',
+                'cp',
+                local_overview,
+                s3_overview.replace('/vsis3/', 's3://'),
+                '--recursive',
+            ]
+        )
 
         logging.info('Adding overview to mosaic dataset')
         arcpy.management.AddRastersToMosaicDataset(
