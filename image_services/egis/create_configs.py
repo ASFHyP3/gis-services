@@ -2,6 +2,7 @@ import json
 
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
 
+
 SEASONS = {
     'JJA': {
         'Season': 'summer',
@@ -22,21 +23,18 @@ SEASONS = {
         'Season': 'spring',
         'SeasonAbbrev': 'Mar/Apr/May',
         'SeasonFull': 'March/April/May',
-    }
+    },
 }
 
 
 def make_configuration(data_type, polarization, season):
     config = {
-        "project_name": "GSSICB",
-        "s3_prefix": "tiles/",
-        "s3_suffix": f"_{SEASONS[season]['Season']}_{polarization.lower()}_{data_type}.tif",
-        "dataset_name": f"{data_type}_{polarization.upper()}_{season}",
-        "raster_function_templates": [
-            "ScaledCoherence.rft.xml",
-            "UnscaledCoherence.rft.xml"
-        ],
-        "default_raster_function_template": "UnscaledCoherence.rft.xml"
+        'project_name': 'GSSICB',
+        's3_prefix': 'tiles/',
+        's3_suffix': f"_{SEASONS[season]['Season']}_{polarization.lower()}_{data_type}.tif",
+        'dataset_name': f'{data_type}_{polarization.upper()}_{season}',
+        'raster_function_templates': ['ScaledCoherence.rft.xml', 'UnscaledCoherence.rft.xml'],
+        'default_raster_function_template': 'UnscaledCoherence.rft.xml',
     }
     return config
 
@@ -48,7 +46,7 @@ def make_metadata_fields(data_type, polarization, season):
         'polarization': polarization,
         'months_abbreviated': SEASONS[season]['SeasonAbbrev'],
         'season': SEASONS[season]['Season'],
-        'months_full': SEASONS[season]['SeasonFull']
+        'months_full': SEASONS[season]['SeasonFull'],
     }
     return metadata
 

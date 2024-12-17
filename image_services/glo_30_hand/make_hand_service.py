@@ -19,7 +19,7 @@ parser.add_argument(
         'Rasters from the glo-30-hand collection will be selected using this '
         'filter before they are added to the mosaic dataset. The syntax is as '
         'expected by the `filter` option of arcpy.management.AddRastersToMosaicDataset.'
-    )
+    ),
 )
 args = parser.parse_args()
 
@@ -79,9 +79,18 @@ try:
             ['Tile', '!Name!.split("_")[4] + !Name!.split("_")[6]'],
             ['Tag', '"GLO30_HAND"'],
             ['Dataset_ID', '"Global_30m_HAND"'],
-            ['ProductName', '"GLO30_HAND_"+ !Name!.split("_")[4] + !Name!.split("_")[6]'],
-            ['URLDisplay', '"GLO30_HAND_"+ !Name!.split("_")[4] + !Name!.split("_")[6]'],
-            ['DownloadURL', '"https://glo-30-hand.s3.amazonaws.com/v1/2021/" + !Name! + ".tif"'],
+            [
+                'ProductName',
+                '"GLO30_HAND_"+ !Name!.split("_")[4] + !Name!.split("_")[6]',
+            ],
+            [
+                'URLDisplay',
+                '"GLO30_HAND_"+ !Name!.split("_")[4] + !Name!.split("_")[6]',
+            ],
+            [
+                'DownloadURL',
+                '"https://glo-30-hand.s3.amazonaws.com/v1/2021/" + !Name! + ".tif"',
+            ],
             ['MaxPS', '610'],
         ],
     )
@@ -132,7 +141,7 @@ try:
         cell_size=3,
         metadata_level='BASIC',
         transmission_fields='Name;MinPS;MaxPS;LowPS;HighPS;ZOrder;Dataset_ID;CenterX;CenterY;Tag;Tile;ProductName;'
-                            'DownloadURL;URLDisplay',
+        'DownloadURL;URLDisplay',
         use_time='DISABLED',
         max_num_of_download_items=50,
         max_num_of_records_returned=2000,
@@ -160,7 +169,7 @@ try:
             )
 
         logging.info('aws s3 cp')
-        subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace("/vsis3/", "s3://"), '--recursive'])
+        subprocess.run(['aws', 's3', 'cp', local_overview, s3_overview.replace('/vsis3/', 's3://'), '--recursive'])
 
     logging.info('AddRastersToMosaicDataset')
     arcpy.management.AddRastersToMosaicDataset(
@@ -195,18 +204,18 @@ try:
             raster_or_mosaic_layer=mosaic_dataset,
             out_sddraft=service_definition_draft.name,
             service_name=dataset_name,
-            summary="Height Above Nearest Drainage (HAND) is a terrain model that normalizes topography to the "
-                    "relative heights along the drainage network and is used to describe the relative soil "
-                    "gravitational potentials or the local drainage potentials. Each pixel value represents the "
-                    "vertical distance to the nearest drainage. The HAND data provides near-worldwide land coverage "
-                    "at 30 meters and was produced from the 2021 release of the Copernicus GLO-30 Public DEM as "
-                    "distributed in the Registry of Open Data on AWS (https://registry.opendata.aws/copernicus-dem/) "
-                    "using the the ASF Tools Python Package ("
-                    "https://hyp3-docs.asf.alaska.edu/tools/asf_tools_api/#asf_tools.hand.calculate) and the PySheds "
-                    "Python library (https://github.com/mdbartos/pysheds). The HAND data are provided as a tiled set "
-                    "of Cloud Optimized GeoTIFFs (COGs) with 30-meter (1 arcsecond) pixel spacing. The COGs are "
-                    "organized into the same 1 degree by 1 degree grid tiles as the GLO-30 DEM, and individual tiles "
-                    "are pixel-aligned to the corresponding COG DEM tile.",
+            summary='Height Above Nearest Drainage (HAND) is a terrain model that normalizes topography to the '
+            'relative heights along the drainage network and is used to describe the relative soil '
+            'gravitational potentials or the local drainage potentials. Each pixel value represents the '
+            'vertical distance to the nearest drainage. The HAND data provides near-worldwide land coverage '
+            'at 30 meters and was produced from the 2021 release of the Copernicus GLO-30 Public DEM as '
+            'distributed in the Registry of Open Data on AWS (https://registry.opendata.aws/copernicus-dem/) '
+            'using the the ASF Tools Python Package ('
+            'https://hyp3-docs.asf.alaska.edu/tools/asf_tools_api/#asf_tools.hand.calculate) and the PySheds '
+            'Python library (https://github.com/mdbartos/pysheds). The HAND data are provided as a tiled set '
+            'of Cloud Optimized GeoTIFFs (COGs) with 30-meter (1 arcsecond) pixel spacing. The COGs are '
+            'organized into the same 1 degree by 1 degree grid tiles as the GLO-30 DEM, and individual tiles '
+            'are pixel-aligned to the corresponding COG DEM tile.',
         )
 
         logging.info('StageService')
