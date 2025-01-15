@@ -235,7 +235,7 @@ try:
             ],
             [
                 'DownloadURL',
-                f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{config["s3_prefix"]}" ' f'+ !Name! + ".tif"',
+                f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{config["s3_prefix"]}" + !Name! + ".tif"',
             ],
         ],
     )
