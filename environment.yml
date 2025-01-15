@@ -1,0 +1,8 @@
+name: gis-services
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.8
+  - ruff
+  - mypy

@@ -18,8 +18,8 @@ def get_environment() -> Environment:
 
 def render_template(template: str, payload: dict) -> str:
     env = get_environment()
-    template = env.get_template(template)
-    rendered = template.render(payload)
+    template_object = env.get_template(template)
+    rendered = template_object.render(payload)
     return rendered
 
 
