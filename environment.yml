@@ -4,5 +4,8 @@ channels:
   - nodefaults
 dependencies:
   - python=3.7
-  - ruff
-  - mypy
+  - pip
+  - pip:
+    # conda-forge ruff seems to require Python >=3.8
+    - ruff
+    - mypy
