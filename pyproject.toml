@@ -1,7 +1,8 @@
 [project]
 name = "gis_services"
-# TODO: Pinning to 3.8 for ruff, figure out the actual appropriate version:
-requires-python = "==3.8"
+# TODO: not sure if the entire codebase was written for a particular Python version,
+#  choosing 3.7 for now based off of image_server/environment.yml
+requires-python = "==3.7"
 
 [tool.ruff]
 line-length = 120
@@ -31,7 +32,7 @@ case-sensitive = true
 lines-after-imports = 2
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.7"
 warn_redundant_casts = true
 warn_unused_ignores = true
 warn_unreachable = true
