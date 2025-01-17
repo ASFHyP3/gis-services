@@ -63,7 +63,7 @@ def get_raster_metadata(raster_path: str) -> dict:
 def update_csv(csv_file: str, rasters: List[str]):
     if os.path.isfile(csv_file):
         with open(csv_file) as f:
-            records = [record for record in csv.DictReader(f)]
+            records: list = [record for record in csv.DictReader(f)]
     else:
         records = []
     logging.info(f'Found {len(records)} items in {csv_file}')
@@ -235,7 +235,7 @@ try:
             ],
             [
                 'DownloadURL',
-                f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{config["s3_prefix"]}" ' f'+ !Name! + ".tif"',
+                f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{config["s3_prefix"]}" + !Name! + ".tif"',
             ],
         ],
     )

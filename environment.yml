@@ -1,0 +1,11 @@
+name: gis-services
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.7
+  - pip
+  - pip:
+    # conda-forge ruff seems to require Python >=3.8
+    - ruff
+    - mypy

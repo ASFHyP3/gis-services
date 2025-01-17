@@ -31,7 +31,7 @@ def make_configuration(data_type, polarization, season):
     config = {
         'project_name': 'GSSICB',
         's3_prefix': 'tiles/',
-        's3_suffix': f"_{SEASONS[season]['Season']}_{polarization.lower()}_{data_type}.tif",
+        's3_suffix': f'_{SEASONS[season]["Season"]}_{polarization.lower()}_{data_type}.tif',
         'dataset_name': f'{data_type}_{polarization.upper()}_{season}',
         'raster_function_templates': ['ScaledCoherence.rft.xml', 'UnscaledCoherence.rft.xml'],
         'default_raster_function_template': 'UnscaledCoherence.rft.xml',
@@ -65,8 +65,8 @@ def get_environment() -> Environment:
 
 def render_template(template: str, payload: dict) -> str:
     env = get_environment()
-    template = env.get_template(template)
-    rendered = template.render(payload)
+    template_object = env.get_template(template)
+    rendered = template_object.render(payload)
     return rendered
 
 
