@@ -16,12 +16,12 @@ def query_cmr(polarization):
     session = requests.Session()
     search_url = 'https://cmr.earthdata.nasa.gov/search/granules.umm_json'
 
-    params = {
+    params: dict = {
         'short_name': 'OPERA_L2_RTC-S1_V1',
         'attribute[]': f'string,POLARIZATION,{polarization}',
         'page_size': 2000,
     }
-    headers = {}
+    headers: dict = {}
     vsis3_uris = []
     while True:
         response = session.get(search_url, params=params, headers=headers)
