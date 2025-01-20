@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.3]
+### Removed
+- Remove `mypy` from [`static-analysis`](.github/workflows/static-analysis.yml). See https://github.com/ASFHyP3/gis-services/issues/176
+
 ## [0.7.2]
 ### Added
 - Add `mypy` to [`static-analysis`](.github/workflows/static-analysis.yml)
