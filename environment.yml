@@ -7,4 +7,4 @@ dependencies:
   - pip
   - pip:
     # conda-forge ruff seems to require Python >=3.8
-    - ruff
+    - -r requirements-static.txt
