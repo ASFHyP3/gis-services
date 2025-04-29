@@ -1,16 +1,18 @@
 import argparse
+import json
 import logging
 import os
 import subprocess
 import tempfile
 
 import arcpy
-
+from arcgis.gis.server import Server
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('working_directory')
+parser.add_argument('--server-connection-file', default='/home/arcgis/server_connection.json')
 parser.add_argument('--dataset-name', default='GLO30_HAND', help='Dataset name.')
 parser.add_argument(
     '--rasters-filter',
@@ -223,6 +225,14 @@ try:
             in_service_definition_draft=service_definition_draft.name,
             out_service_definition=service_definition,
         )
+
+        with open(args.server_connection_file) as f:
+            server_connection = json.load(f)
+        server = Server(**server_connection)
+
+        logging.info(f'Publishing {service_definition}')
+        server.publish_sd(service_definition, folder='GlobalHAND')
+
 except arcpy.ExecuteError:
     logging.error(arcpy.GetMessages())
     raise
