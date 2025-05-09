@@ -78,7 +78,6 @@ If setting up in a browser, go to the CloudFormation service in the AWS console 
 
 
 2. Specify parameters - some hints are:
-   * Bucket - S3 bucket where data are stored. Disasters data are generally stored in `hyp3-nasa-disasters`
    * CertificateARN - go to CertificateManager (in `hyp3`), find the active certificate, and copy that ARN
    * KeyName - KeyPair name for the user planning to first ssh into the instance (ex: jrsmale)
 
