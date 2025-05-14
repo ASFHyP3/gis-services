@@ -145,8 +145,8 @@ parser.add_argument('config_file')
 args = parser.parse_args()
 
 raster_store = '/home/arcgis/raster_store/'
-bucket = 'hyp3-nasa-disasters'
-overview_path = '/vsis3/hyp3-nasa-disasters/overviews/'
+bucket = 'asf-event-data'
+overview_path = '/vsis3/asf-event-data/image-services/overviews/'
 template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
 with open(args.config_file) as f:
@@ -235,7 +235,7 @@ try:
             ],
             [
                 'DownloadURL',
-                f'"https://s3-us-west-2.amazonaws.com/hyp3-nasa-disasters/{config["s3_prefix"]}" + !Name! + ".tif"',
+                f'"https://s3-us-west-2.amazonaws.com/{bucket}/{config["s3_prefix"]}" + !Name! + ".tif"',
             ],
         ],
     )

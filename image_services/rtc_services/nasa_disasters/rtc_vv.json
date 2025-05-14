@@ -1,6 +1,6 @@
 {
   "project_name": "RTCservices",
-  "s3_prefix": "RTC_services/",
+  "s3_prefix": "image-services/RTC_services/",
   "s3_suffix": "_VV.tif",
   "dataset_name": "RTC_VV",
   "raster_function_templates": [

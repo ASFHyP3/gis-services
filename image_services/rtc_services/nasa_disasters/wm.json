@@ -1,6 +1,6 @@
 {
   "project_name": "RTCservices",
-  "s3_prefix": "RTC_services/",
+  "s3_prefix": "image-services/RTC_services/",
   "s3_suffix": "_WM.tif",
   "dataset_name": "WM",
   "raster_function_templates": [
