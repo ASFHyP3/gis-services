@@ -6,8 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.7.4]
 ### Changed
-- Updated image service scripts and image server IAM permissions to work with data in s3://asf-event-data/ instead of
-  s3://hyp3-nasa-disasters/.
+- Updated image service scripts and image server IAM permissions to work with source data hosted in 
+  s3://asf-event-data/ instead of s3://hyp3-nasa-disasters/ (though overviews are still hosted in 
+  s3://hyp3-nasa-disasters/overviews)
 
 ## [0.7.3]
 ### Removed
