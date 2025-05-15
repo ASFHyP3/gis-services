@@ -164,6 +164,7 @@ Resources:
               - Effect: Allow
                 Action: s3:PutObject
                 Resource:
+                  - arn:aws:s3:::hyp3-nasa-disasters/overviews/*
                   - arn:aws:s3:::asf-event-data/image-services/overviews/*
                   - arn:aws:s3:::hyp3-examples/overviews/*
                   - arn:aws:s3:::hyp3-testing/*
