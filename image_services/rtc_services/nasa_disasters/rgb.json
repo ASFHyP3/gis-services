@@ -1,6 +1,6 @@
 {
   "project_name": "RTCservices",
-  "s3_prefix": "RTC_services/",
+  "s3_prefix": "image-services/RTC_services/",
   "s3_suffix": "rgb.tif",
   "dataset_name": "RGB",
   "raster_function_templates": [

@@ -2,7 +2,7 @@
 name = "gis_services"
 # TODO: not sure if the entire codebase was written for a particular Python version,
 #  choosing 3.7 for now based off of image_server/environment.yml
-requires-python = "==3.7"
+requires-python = "==3.7.*"
 
 [tool.ruff]
 line-length = 120
@@ -30,3 +30,9 @@ convention = "google"
 [tool.ruff.lint.isort]
 case-sensitive = true
 lines-after-imports = 2
+
+[tool.ruff.lint.flake8-annotations]
+suppress-dummy-args = true
+
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/*" = ["D1", "ANN"]

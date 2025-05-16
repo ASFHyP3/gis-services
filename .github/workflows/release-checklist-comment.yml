@@ -9,6 +9,6 @@ on:
 
 jobs:
   add-release-template-comment:
-    uses: ASFHyP3/actions/.github/workflows/reusable-release-checklist-comment.yml@v0.15.0
+    uses: ASFHyP3/actions/.github/workflows/reusable-release-checklist-comment.yml@v0.18.1
     secrets:
       USER_TOKEN: ${{ secrets.TOOLS_BOT_PAK }}
