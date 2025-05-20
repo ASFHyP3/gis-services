@@ -146,15 +146,8 @@ args = parser.parse_args()
 
 raster_store = '/home/arcgis/raster_store/'
 bucket = 'asf-event-data'
-template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
-
-# Some overview paths have caused difficulties. It's not clear if it's due to path length, or
-# having multiple prefix delimiters (/) after the bucket name, but if you encounter crawler errors,
-# try either shortening the prefix names or not embedding the overview prefix in other prefixes.
-# i.e. /vsis3/asf-event-data/image-service-overviews will work,
-# but /vsis3/asf-event-data/image-services/overviews will not.
 overview_path = f'/vsis3/{bucket}/image-service-overviews/'
-
+template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
 with open(args.config_file) as f:
     config = json.load(f)
