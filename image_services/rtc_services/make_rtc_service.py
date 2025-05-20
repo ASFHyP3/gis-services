@@ -146,7 +146,7 @@ args = parser.parse_args()
 
 raster_store = '/home/arcgis/raster_store/'
 bucket = 'asf-event-data'
-overview_path = f'/vsis3/{bucket}/image-service-overviews/'
+overview_path = f'/vsis3/{bucket}/image-service-overviews/'  # see https://github.com/ASFHyP3/gis-services/issues/194
 template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
 
 with open(args.config_file) as f:
