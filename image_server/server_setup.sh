@@ -6,6 +6,7 @@ echo ""
 read -sp 'asf_publisher password: ' asf_publisher_password
 echo ""
 
+echo "updating system packages"
 sudo apt update
 sudo apt upgrade -y
 
@@ -41,6 +42,7 @@ source /home/ubuntu/miniforge3/etc/profile.d/conda.sh
 mamba shell init --shell=bash
 mamba env create -f /home/ubuntu/gis-services/image_server/environment.yml -y
 conda env config vars set ARCGISHOME=/home/ubuntu/arcgis/server/ -n arcpy
+echo "mamba activate arcpy" >> .bashrc
 rm Miniforge3-Linux-x86_64.sh
 
 echo "creating server_connection.json"
