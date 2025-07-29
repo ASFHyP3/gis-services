@@ -60,8 +60,7 @@ cd gis-services
 
 2. Run the server setup script
 ```
-cd /home/ubuntu/
-./gis-services/image_server/server_setup.sh
+/home/ubuntu/gis-services/image_server/server_setup.sh
 ```
 
 3. Add any needed public keys to `/home/ubuntu/.ssh/authorized_keys` so that other Tools team members can ssh to the server

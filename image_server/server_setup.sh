@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+cd /home/ubuntu/
+
 read -sp 'siteadmin password: ' siteadmin_password
 echo ""
 read -sp 'asf_services password: ' asf_services_password
