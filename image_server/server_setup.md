@@ -60,6 +60,7 @@ cd gis-services
 
 2. Run the server setup script
 ```
+cd /home/ubuntu/
 ./gis-services/image_server/server_setup.sh
 ```
 
