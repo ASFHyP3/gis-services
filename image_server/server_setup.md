@@ -48,50 +48,6 @@ It takes about 5 minutes to stand up the instance and load balancer.
 
 1. SSH to the instance (IP address can be found in the EC2 Instance information under Public IP4)
 
-1. Increase the number of allowed opened files for the ubuntu user
-```
-echo 'ubuntu soft nofile 65535' | sudo tee -a /etc/security/limits.conf
-# log out and log back in
-# verify `ulimit -n` outputs 65535
-```
-
-1. Install the AWS CLI ([docs](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html))
-```
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
-rm -R awscliv2.zip aws
-```
-
-1. Retrieve the ArcGIS Server installation file and licence file
-```
-aws s3 cp s3://hyp3-software/ArcGISServer.tar.gz .
-aws s3 cp s3://hyp3-software/ArcGISImageServer_ArcGISServer_1561174.prvc .
-```
-
-3. Install ArcGIS Server ([docs](https://enterprise.arcgis.com/en/server/latest/install/linux/silently-install-arcgis-server.htm))
-```
-tar xvf ArcGISServer.tar.gz
-ArcGISServer/Setup -m silent -l yes -a ArcGISImageServer_ArcGISServer_1561174.prvc
-```
-
-1. Configure ArcGIS Server to start with the operating system ([docs](https://enterprise.arcgis.com/en/server/latest/install/linux/silently-install-arcgis-server.htm#ESRI_SECTION1_4B96E01A8AA344E3AD5E68A2DDBA8CA1))
-```
-sudo cp /home/ubuntu/arcgis/server/ramework/etc/scripts/arcgisserver.service /etc/systemd/system/
-sudo chmod 600 /etc/systemd/system/arcgisserver.service
-sudo systemctl enable arcgisserver.service
-sudo systemctl start arcgisserver.service
-```
-
-1. Create the site
-```
-/home/ubuntu/arcgis/server/tools/createsite/createsite.sh --username siteadmin --password <password>
-```
-
-3. Add any needed public keys to `/home/ubuntu/.ssh/authorized_keys` so that other Tools team members can ssh to the server
-
-## Set up our processing scripts
-
 1. Clone the [gis-services github repository](https://github.com/ASFHyP3/gis-services/) to `/home/ubuntu/` on the server
 ```
 cd /home/ubuntu/
@@ -100,36 +56,16 @@ cd gis-services
 # check out the `develop` branch if on a test server; check out the `main` branch if on a production server
 # git checkout main
 # git checkout develop
-exit
 ```
 
-2. Install mamba and create the arcpy conda environment
+2. Run the server setup script
 ```
-wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
-bash Mambaforge-Linux-x86_64.sh
-cd /home/ubuntu/gis-services/image_server/
-mamba env create -f environment.yml
-conda env config vars set ARCGISHOME=/home/ubuntu/arcgis/server/ -n arcpy
-rm Mambaforge-Linux-x86_64.sh
+./gis-services/image_server/server_setup.sh
 ```
 
-3. Activate the arcpy conda environment and verify that the arcpy package can be imported
-```
-conda activate arcpy
-python
-import arcpy
-```
+3. Add any needed public keys to `/home/ubuntu/.ssh/authorized_keys` so that other Tools team members can ssh to the server
 
-4. Create and edit a server_connection.json file in /home/ubuntu/ and populate it with the following information (refer to AWS Secrets Manager for username and password):
-```
-{
-    "url": "https://localhost:6443/arcgis/admin",
-    "username": "<username>",
-    "password": "<password>"
-}
-```
-
-5. Schedule scripts to run
+4. Schedule scripts to run
 
 ## Set up the ArcGIS Manager web application
 
