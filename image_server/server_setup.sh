@@ -14,7 +14,7 @@ echo 'ubuntu soft nofile 65535' | sudo tee -a /etc/security/limits.conf
 ulimit -S -n 65535
 
 echo "installing AWS CLI"
-sudo apt install zip
+sudo apt install -y zip
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
@@ -48,3 +48,6 @@ echo "{\"url\": \"https://localhost:6443/arcgis/admin\", \"username\": \"asf_pub
 
 echo "creating ArcGIS Server site"
 /home/ubuntu/arcgis/server/tools/createsite/createsite.sh --username siteadmin --password $siteadmin_password
+
+echo "rebooting server"
+sudo shutdown -r now
