@@ -139,7 +139,7 @@ gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--server-connection-file', default='/home/arcgis/server_connection.json')
+parser.add_argument('--server-connection-file', default='/home/ubuntu/server_connection.json')
 parser.add_argument('--working-directory', default=os.getcwd())
 parser.add_argument('config_file')
 args = parser.parse_args()

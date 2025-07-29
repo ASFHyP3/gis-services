@@ -1,11 +1,14 @@
 #!/bin/bash
 set -e
 
+cd /home/ubuntu/
+
 read -sp 'siteadmin password: ' siteadmin_password
 echo ""
-read -sp 'asf_publisher password: ' asf_publisher_password
+read -sp 'asf_services password: ' asf_services_password
 echo ""
 
+echo "updating system packages"
 sudo apt update
 sudo apt upgrade -y
 
@@ -41,13 +44,17 @@ source /home/ubuntu/miniforge3/etc/profile.d/conda.sh
 mamba shell init --shell=bash
 mamba env create -f /home/ubuntu/gis-services/image_server/environment.yml -y
 conda env config vars set ARCGISHOME=/home/ubuntu/arcgis/server/ -n arcpy
+echo "mamba activate arcpy" >> .bashrc
 rm Miniforge3-Linux-x86_64.sh
 
 echo "creating server_connection.json"
-echo "{\"url\": \"https://localhost:6443/arcgis/admin\", \"username\": \"asf_publisher\", \"password\": \"$asf_publisher_password\"}" > /home/ubuntu/server_connection.json
+echo "{\"url\": \"https://localhost:6443/arcgis/admin\", \"username\": \"asf_services\", \"password\": \"$asf_services_password\"}" > /home/ubuntu/server_connection.json
 
 echo "creating ArcGIS Server site"
 /home/ubuntu/arcgis/server/tools/createsite/createsite.sh --username siteadmin --password $siteadmin_password
+
+echo "installing crontab"
+crontab /home/ubuntu/gis-services/image_server/crontab.txt
 
 echo "rebooting server"
 sudo shutdown -r now

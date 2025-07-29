@@ -68,8 +68,7 @@ Make sure to check out the `develop` branch if on a test server; check out the `
 
 3. Run the server setup script, which prompt you for the sitadmin and asf_publisher passwords, which can be found in the tool user account's AWS Secrets Manager
 ```
-cd /home/ubuntu/
-./gis-services/image_server/server_setup.sh
+/home/ubuntu/gis-services/image_server/server_setup.sh
 ```
 Note that after this runs, the server will be re-booted. It might take a couple of minutes to be able to log into the server again after the restart. 
 
@@ -85,7 +84,7 @@ When deciding when to run each script, be mindful of how long running each scrip
 
 ![Load Balancer screenshot](images/load_balancer.png)
 
-2. Create an asf.alaska.edu DNS entry for the load balancer. DNS CNAME records are managed in ASF’s gitlab in the puppet project at https://gitlab.asf.alaska.edu/operations/puppet/-/blob/production/site/modules/dns/files/asf.alaska.edu.db#L112
+2. Create an asf.alaska.edu DNS entry for the load balancer. DNS CNAME records are managed in ASF’s gitlab in the puppet project at https://gitlab.asf.alaska.edu/operations/puppet/-/blob/production/modules/legacy_dns/files/asf.alaska.edu.db
 
 3. Visit the server URL and log in with the siteadmin credentials:
 ```
