@@ -66,8 +66,6 @@ cd /home/ubuntu/
 
 3. Add any needed public keys to `/home/ubuntu/.ssh/authorized_keys` so that other Tools team members can ssh to the server
 
-4. Schedule scripts to run
-
 ## Set up the ArcGIS Manager web application
 
 1. Find the “DNS name” for the new Load Balancer in the AWS EC2 console, e.g. gis-s-LoadB-OT2TD55ZH0GC-1897588225.us-west-2.elb.amazonaws.com
