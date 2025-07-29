@@ -19,7 +19,7 @@ Our current server configuration uses a single server to perform both of these f
 
 These steps only need to be run once per AWS account.
 
-1. Upload an SSL certificate into AWS ACM
+1. Upload an SSL certificate into AWS Certificate Manger (ACM)
    * The same Tools certificate can be used for any of our deployments
 
 2. Import a public key in the AWS EC2 console by setting up a [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html). 
@@ -30,15 +30,21 @@ These steps only need to be run once per AWS account.
 
 A CloudFormation template for this project is at https://github.com/ASFHyP3/gis-services/blob/main/image_server/cloudformation.yml and can be deployed either from the command line or the AWS CloudFormation console.
 
-If setting up in a browser, go to the CloudFormation service in the AWS console and create a new stack using new resources. Follow the steps below:
+If setting up in a browser, go to the CloudFormation service in the AWS console in the `us-west-2` region and follow the steps below:
 
-1. Upload the [CloudFormation template](cloudformation.yml)
+1.  Create a new stack using new resources. 
 
-2. Specify parameters - some hints are:
-   * CertificateARN - go to CertificateManager (in `hyp3`), find the active certificate, and copy that ARN
-   * KeyName - KeyPair name for the user planning to first ssh into the instance (ex: jrsmale)
+2.  Upload the [CloudFormation template](cloudformation.yml)
 
-3. Keep defaults on acknowledgement page
+3.  Specify parameters - some hints are:
+    * CertificateARN - go to CertificateManager (in `hyp3`), find the active `*.asf.alaska.edu` certificate, and copy that ARN
+    * KeyName - KeyPair name for the user planning to first ssh into the instance (ex: jrsmale)
+    * SecretArn - go to SecretsManger, find the ARN for `tools_user_accounts`, and copy that ARN
+    * SshCidrlp - paste `137.229.0.0/16`
+    * SubnetIds - select `subnet-be4983e3`, `subnet-31a2467b`, `subnet-97f10aef`, and `subnet-db2e63f0`
+    * VpcID - select `vpc-a182ecd9`
+
+4.  Keep defaults on acknowledgement page
 
 ![Specify Stack Details screenshot](images/stack_details.png)
 
@@ -48,25 +54,30 @@ It takes about 5 minutes to stand up the instance and load balancer.
 
 1. SSH to the instance (IP address can be found in the EC2 Instance information under Public IP4)
 
-1. Clone the [gis-services github repository](https://github.com/ASFHyP3/gis-services/) to `/home/ubuntu/` on the server
+2. Clone the [gis-services github repository](https://github.com/ASFHyP3/gis-services/) to `/home/ubuntu/` on the server
 ```
 cd /home/ubuntu/
 git clone https://github.com/ASFHyP3/gis-services/
 cd gis-services
-# check out the `develop` branch if on a test server; check out the `main` branch if on a production server
+```
+Make sure to check out the `develop` branch if on a test server; check out the `main` branch if on a production server.
+```
 # git checkout main
 # git checkout develop
 ```
 
-2. Run the server setup script
+3. Run the server setup script, which prompt you for the sitadmin and asf_publisher passwords, which can be found in the tool user account's AWS Secrets Manager
 ```
 cd /home/ubuntu/
 ./gis-services/image_server/server_setup.sh
 ```
+Note that after this runs, the server will be re-booted. It might take a couple of minutes to be able to log into the server again after the restart. 
 
-3. Add any needed public keys to `/home/ubuntu/.ssh/authorized_keys` so that other Tools team members can ssh to the server
+4. Add any needed public keys to `/home/ubuntu/.ssh/authorized_keys` so that other Tools team members can ssh to the server.
 
-4. Schedule scripts to run
+5. Schedule scripts to run using crontab with `sudo crontab -e`. Each script can be set up to run at a specific time by specifying the minute, hour, day, and month, and day of the week. For example, to run `make_rtc_services.sh` at midnight and noon every day with a log output added to `make_rgb_service.log`, the command should be written as: 
+`0 0,12 * * * script -qef -c "/home/ubuntu/gis-services/image_services/rtc_services/make_rtc_service.sh /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters/rgb.json" -a /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters/make_rgb_service.log`
+When deciding when to run each script, be mindful of how long running each script might take to avoid publishing multiple services at once. 
 
 ## Set up the ArcGIS Manager web application
 
