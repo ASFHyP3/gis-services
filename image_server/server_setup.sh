@@ -51,5 +51,8 @@ echo "{\"url\": \"https://localhost:6443/arcgis/admin\", \"username\": \"asf_ser
 echo "creating ArcGIS Server site"
 /home/ubuntu/arcgis/server/tools/createsite/createsite.sh --username siteadmin --password $siteadmin_password
 
+echo "installing crontab"
+crontab /home/ubuntu/gis-services/image_server/crontab.txt
+
 echo "rebooting server"
 sudo shutdown -r now
