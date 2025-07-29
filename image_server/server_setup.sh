@@ -22,20 +22,23 @@ aws s3 cp s3://hyp3-software/ArcGISImageServer_ArcGISServer_1561174.prvc .
 aws s3 cp s3://hyp3-software/ArcGISServer.tar.gz .
 tar xvf ArcGISServer.tar.gz
 ArcGISServer/Setup -m silent -l yes -a /home/ubuntu/ArcGISImageServer_ArcGISServer_1561174.prvc
-rm -R ArcGISImageServer_ArcGISServer_1561174.prvc ArcGISServer
+rm -R ArcGISImageServer_ArcGISServer_1561174.prvc ArcGISServer.tar.gz ArcGISServer
 
 echo "configuring ArcGIS Server to run at startup"
+/home/ubuntu/arcgis/server/stopserver.sh
 sudo cp /home/ubuntu/arcgis/server/framework/etc/scripts/arcgisserver.service /etc/systemd/system/
 sudo chmod 600 /etc/systemd/system/arcgisserver.service
 sudo systemctl enable arcgisserver.service
+sudo systemctl start arcgisserver.service
 
 echo "installing arcpy conda environment"
-wget https://github.com/conda-forge/miniforge/releases/download/25.3.0-3/Miniforge3-25.3.0-3-Linux-x86_64.sh
-bash Miniforge3-25.3.0-3-Linux-x86_64.sh -b
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+bash Miniforge3-Linux-x86_64.sh -b
 source /home/ubuntu/miniforge3/etc/profile.d/conda.sh
 mamba env create -f /home/ubuntu/gis-services/image_server/environment.yml -y
 conda env config vars set ARCGISHOME=/home/ubuntu/arcgis/server/ -n arcpy
-rm Miniforge3-25.3.0-3-Linux-x86_64.sh
+mamba shell init
+rm Miniforge3-Linux-x86_64.sh
 
 echo "creating server_connection.json"
 echo "{\"url\": \"https://localhost:6443/arcgis/admin\", \"username\": \"asf_publisher\", \"password\": \"$asf_publisher_password\"}" > /home/ubuntu/server_connection.json
