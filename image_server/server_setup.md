@@ -74,7 +74,8 @@ Note that after this runs, the server will be re-booted. It might take a couple 
 
 4. Add any needed public keys to `/home/ubuntu/.ssh/authorized_keys` so that other Tools team members can ssh to the server.
 
-5. Schedule scripts to run using crontab with `sudo crontab -e`. Each script can be set up to run at a specific time by specifying the minute, hour, day, and month, and day of the week. For example, to run `make_rtc_services.sh` at midnight and noon every day with a log output added to `make_rgb_service.log`, the command should be written as: 
+5. Review and revise the default crontab as needed with `crontab -e`.  
+Each script can be set up to run at a specific time by specifying the minute, hour, day, and month, and day of the week. For example, to run `make_rtc_services.sh` at midnight and noon every day with a log output added to `make_rgb_service.log`, the command should be written as: 
 `0 0,12 * * * script -qef -c "/home/ubuntu/gis-services/image_services/rtc_services/make_rtc_service.sh /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters/rgb.json" -a /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters/make_rgb_service.log`
 When deciding when to run each script, be mindful of how long running each script might take to avoid publishing multiple services at once. 
 
