@@ -102,6 +102,7 @@ https://<asf dns name>.asf.alaska.edu/arcgis/manager/
 
 5. Create a publisher role
    ![publisher role screenshot](images/publisher_role.png)
+   Make sure this name and password matches what is stored in `/home/ubuntu/server_connection.json`
 
 6. Create admin user accounts 
    1. Security -> users -> new user
