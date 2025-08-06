@@ -3,11 +3,9 @@ channels:
   - conda-forge
   - esri
 dependencies:
-  - python=3.7
-  - arcgis-server-py3=10.9.1
+  - python=3.11
+  - arcgis-server-py3=11.5
   - boto3
-  - gdal>=2.4.4,<3
+  - gdal
   - lxml
   - tenacity
-variables:
-  ARCGISHOME: /opt/arcgis/server/
