@@ -26,7 +26,6 @@ args = parser.parse_args()
 
 dataset_name = args.dataset_name
 working_directory = args.working_directory
-raster_store = '/home/arcgis/raster_store/'
 
 geodatabase = f'{working_directory}{dataset_name}.gdb'
 mosaic_dataset = f'{geodatabase}/{dataset_name}'
@@ -159,7 +158,7 @@ try:
         update_missing_only='UPDATE_ALL',
     )
 
-    with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
+    with tempfile.TemporaryDirectory() as temp_dir:
         local_overview = os.path.join(temp_dir, local_overview_filename)
         with arcpy.EnvManager(cellSize=600):
             logging.info(f'CopyRaster from {mosaic_dataset} to {local_overview}')

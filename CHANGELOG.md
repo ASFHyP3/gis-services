@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [0.8.0]
+### Changed
+- Updated `image_server` installation guide to install ArcGIS Server 11.5 on Ubuntu 24.04.
+- Updated `image_service` scripts to run in the updated 11.5 environment.
+- Raster function templates updated to support ArcGIS Image Server 11.5
+
 ## [0.7.5]
 ### Changed
 - Update image service scripts and image server IAM permissions to work with overviews hosted at
