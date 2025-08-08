@@ -66,7 +66,7 @@ Make sure to check out the `develop` branch if on a test server; check out the `
 # git checkout develop
 ```
 
-3. Run the server setup script, which prompt you for the sitadmin and asf_publisher passwords, which can be found in the tool user account's AWS Secrets Manager
+3. Run the server setup script. It will prompt you for the sitadmin and asf_publisher passwords, which can be found in the tool user account's AWS Secrets Manager.
 ```
 /home/ubuntu/gis-services/image_server/server_setup.sh
 ```
