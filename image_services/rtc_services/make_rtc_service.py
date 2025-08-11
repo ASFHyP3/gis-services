@@ -139,12 +139,11 @@ gdal.SetConfigOption('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--server-connection-file', default='/home/arcgis/server_connection.json')
+parser.add_argument('--server-connection-file', default='/home/ubuntu/server_connection.json')
 parser.add_argument('--working-directory', default=os.getcwd())
 parser.add_argument('config_file')
 args = parser.parse_args()
 
-raster_store = '/home/arcgis/raster_store/'
 bucket = 'asf-event-data'
 overview_path = f'/vsis3/{bucket}/image-service-overviews/'  # see https://github.com/ASFHyP3/gis-services/issues/194
 template_directory = Path(__file__).parent.absolute() / 'raster_function_templates'
@@ -307,7 +306,7 @@ try:
         update_missing_only='UPDATE_ALL',
     )
 
-    with tempfile.TemporaryDirectory(dir=raster_store) as temp_dir:
+    with tempfile.TemporaryDirectory() as temp_dir:
         local_overview = os.path.join(temp_dir, local_overview_filename)
 
         logging.info(f'Generating {local_overview}')

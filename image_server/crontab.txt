@@ -1,0 +1,9 @@
+0 0,12 * * * script -qef -c "/home/ubuntu/gis-services/image_services/rtc_services/make_rtc_service.sh /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters/rgb.json" -a /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters/make_rgb_service.log
+0 3,15 * * * script -qef -c "/home/ubuntu/gis-services/image_services/rtc_services/make_rtc_service.sh /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters/rtc_vv.json" -a /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters/make_rtc_vv_service.log
+0 6,18 * * * script -qef -c "/home/ubuntu/gis-services/image_services/rtc_services/make_rtc_service.sh /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters/wm.json" -a /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters/make_wm_service.log
+0 9,21 * * * script -qef -c "/home/ubuntu/gis-services/image_services/rtc_services/make_rtc_service.sh /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters/rtc_vh.json" -a /home/ubuntu/gis-services/image_services/rtc_services/nasa_disasters/make_rtc_vh_service.log
+
+55 8 * * * sudo /sbin/shutdown -r now
+
+55 23 * * * script -qef -c "/home/ubuntu/gis-services/image_services/rtc_services/rtc_service_cleanup.sh" > /home/ubuntu/gis-services/image_services/rtc_services/rtc_service_cleanup.log
+0 0 * * * script -qef -c "/home/ubuntu/gis-services/image_services/updating_scripts/time_slider_updates.sh"
